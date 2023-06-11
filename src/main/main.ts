@@ -1,4 +1,3 @@
-/* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -12,7 +11,6 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 class AppUpdater {
@@ -31,6 +29,10 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
+ipcMain.on('greet', async (event, arg) => {
+  console.log(`Incomming message: `, arg);
+  event.reply('greet', "Hi mom")
+})
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
@@ -71,9 +73,11 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
+    width: 1280,
     height: 728,
+    frame: false,
     icon: getAssetPath('icon.png'),
+    title: 'Ancelo',
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -98,8 +102,6 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
@@ -134,4 +136,3 @@ app
       if (mainWindow === null) createWindow();
     });
   })
-  .catch(console.log);

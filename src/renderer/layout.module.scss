@@ -1,0 +1,23 @@
+.root__layout {
+  display: flex;
+  position: relative;
+  min-width: 100vw;
+  background: rgba(252, 252, 252, 0.4);
+  backdrop-filter: blur(24px);
+  z-index: 1000;
+
+  & .side__bar {
+    max-width: 333px;
+    min-width: 333px;
+  }
+
+  & .main__content {
+    position: relative;
+    width: 100%;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+    background: linear-gradient(233.56deg, rgba(255, 255, 255, 0.28) 28.76%, rgba(255, 255, 255, 0) 77.84%);
+    backdrop-filter: blur(25px);
+    overflow-x: hidden;
+  }
+}

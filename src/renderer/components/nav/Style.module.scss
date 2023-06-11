@@ -1,0 +1,11 @@
+.app__navigation {
+  display: flex;
+  align-items: center;
+  column-gap: 24px;
+
+  & .nav__item {
+    display: flex;
+    align-items: center;
+
+  }
+}
