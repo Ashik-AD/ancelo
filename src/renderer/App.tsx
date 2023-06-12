@@ -1,23 +1,16 @@
-import { MemoryRouter as Router, Route, Routes } from "react-router-dom";
-import icon from "../../assets/icon.svg";
-import "./App.css";
-import { useEffect } from "react";
-import Navigation from "./components/nav/Navigation";
+import { Route, Routes } from "react-router-dom";
+import "./App.scss";
 import Layout from "./Layout";
+import AppLayout from "./AppLayout";
 
 export default function App() {
   return (
     <Layout>
-    <main className={`App`}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Navigation />} />
-        </Routes>
-      </Router>
-      </main>
+      <AppLayout>
+          <Routes>
+            <Route path="/" element={<h1>Hello world</h1>} />
+          </Routes>
+      </AppLayout>
     </Layout>
   );
 }
-
-
-
