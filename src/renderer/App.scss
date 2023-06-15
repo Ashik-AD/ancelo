@@ -86,6 +86,12 @@ li {
 
 
 /* TYPOGRAPHY */
+.title {
+  font-style: normal;
+  font-size: 90px;
+  font-weight: 700;
+  line-height: 116px;
+}
 h1, .h1 {
   font-style: normal;
   font-size: 50px;
@@ -98,6 +104,12 @@ h2, .h2 {
   font-size: 38px;
   font-weight: 500;
   line-height: 45px;
+}
+.text-lg {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
 }
 p, .p {
   font-size: 16px;
