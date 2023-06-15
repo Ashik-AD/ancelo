@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.db"
+}
+
+model Tasks {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  duration    Int
+}
+
+model Sessions {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  duration    Int
+  schedule    DateTime?
+  theme       String?
+  thumbnail   String?
+  background  String?
+  tasks       SessionTasks[]
+}
+
+model SessionTasks {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  duration    Int
+  Sessions    Sessions? @relation(fields: [sessionsId], references: [id])
+  sessionsId  String?
+}
+
+model Routines {
+  id         String         @id @default(cuid())
+  title      String
+  startAt    DateTime
+  finishAt   DateTime
+  repeatDays String
+  interval   Int
+  cover      String
+  tasks      RoutineTasks[]
+}
+
+model RoutineTasks {
+  id         String    @id @default(cuid())
+  title      String
+  duration   Int
+  Routines   Routines? @relation(fields: [routinesId], references: [id])
+  routinesId String?
+}
