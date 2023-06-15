@@ -1,0 +1,17 @@
+@import '../../variables';
+
+.field__wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 9.8px;
+
+& .form__label {
+  font-size: 12px;
+  letter-spacing: 0.08rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 15px;
+  color: $primary;
+}
+
+}

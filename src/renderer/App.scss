@@ -33,6 +33,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
+  outline-color: transparent;
 }
 *::before,
 *::after {
@@ -129,3 +131,29 @@ button, .btn {
     }
   }
 }
+
+input[type=text], input[type=number], textarea {
+  height: 56px;
+  background: transparent;
+  padding-inline: 24px;
+  font-family: inherit;
+  font-size: 16px;
+  color: $primary;
+  border: 1px solid $dark;
+  border-radius: 8px;
+  &:focus {
+    border-color: #6c0d9f;
+    box-shadow: 0 1px 1px #6b139bab;
+  }
+}
+
+textarea {
+  min-height: 120px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+::placeholder{
+  color:#6C6C6C;
+  font-size: 16px;
+}
+
