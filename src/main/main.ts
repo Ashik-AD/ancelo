@@ -12,6 +12,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+import server from './server'
 
 class AppUpdater {
   constructor() {
@@ -95,6 +96,7 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+      server;
     }
   });
 
