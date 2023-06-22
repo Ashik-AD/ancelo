@@ -11,10 +11,12 @@ datasource db {
 }
 
 model Tasks {
-  id          String @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   description String
   duration    Int
+  complete    Boolean  @default(false)
+  created_at  DateTime @default(now())
 }
 
 model Sessions {
@@ -27,6 +29,7 @@ model Sessions {
   thumbnail   String?
   background  String?
   tasks       SessionTasks[]
+  created_at  DateTime       @default(now())
 }
 
 model SessionTasks {
@@ -36,6 +39,8 @@ model SessionTasks {
   duration    Int
   Sessions    Sessions? @relation(fields: [sessionsId], references: [id])
   sessionsId  String?
+  complete    Boolean   @default(false)
+  created_at  DateTime  @default(now())
 }
 
 model Routines {
@@ -47,6 +52,7 @@ model Routines {
   interval   Int
   cover      String
   tasks      RoutineTasks[]
+  created_at DateTime       @default(now())
 }
 
 model RoutineTasks {
@@ -55,4 +61,6 @@ model RoutineTasks {
   duration   Int
   Routines   Routines? @relation(fields: [routinesId], references: [id])
   routinesId String?
+  created_at DateTime  @default(now())
+  complete   Boolean   @default(false)
 }
