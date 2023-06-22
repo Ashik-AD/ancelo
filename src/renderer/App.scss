@@ -105,6 +105,12 @@ h2, .h2 {
   font-weight: 500;
   line-height: 45px;
 }
+h3, .h3 {
+  font-style: normal;
+  font-size: 28px;
+  font-family: Outfit;
+  font-weight: 500;
+}
 .text-lg {
   font-style: normal;
   font-weight: 600;
@@ -120,6 +126,18 @@ p, .p {
   font-size: 12px;
   line-height: 14px;
   font-weight: 500;
+}
+.normal {
+  font-weight: 400;
+}
+.medium {
+  font-weight: 500;
+}
+.semiBold {
+  font-weight: 600;
+}
+.bold {
+  font-weight: 700;
 }
 
 button, .btn {
