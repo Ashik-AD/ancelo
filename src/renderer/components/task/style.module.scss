@@ -3,7 +3,7 @@
 .task__item {
   display: flex;
   gap: 2rem;
-  padding: 28px 30px;
+  padding: 16px 30px;
   align-items: center;
   border-bottom: 1px solid $primary;
 
@@ -16,5 +16,11 @@
     & .task__title {
       color: $dark;
     }
+
   }
+    & .task__duration {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 }
