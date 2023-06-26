@@ -3,6 +3,7 @@ import { useState } from "react";
 import Form from "renderer/components/form/Form";
 import Input from "renderer/components/form/Input";
 import TextArea from "renderer/components/form/TextArea";
+import CurrentTask from "renderer/components/task/CurrentTask";
 import TaskItem from "renderer/components/task/TaskItem";
 
 type State = {
@@ -46,7 +47,8 @@ function Task() {
   }
   return (
     <div>
-      <h1>Tasks</h1>
+      <CurrentTask />
+      <TaskItem />
       <TaskItem />
       {sucess || error}
       <Form onSubmit={handleSubmitForm}>

@@ -2,6 +2,8 @@
  * @params { id, title, description, duration}
  * @method { repeateTask(taskId), toggleRandomTask() }
  */
+import TaskDuration from "../taskDuration/TaskDuration";
+import ProgressBar from '../progressbar/ProgressBar'
 import { Icon } from "@iconify/react";
 import style from "./style.module.scss";
 const props = {
@@ -13,20 +15,20 @@ const props = {
 function CurrentTask() {
   return (
     <div>
-      <article>
-        <div>
-          <h2>{props.title}</h2>
-          <p className={`small`}>
-            {props.description || `No task description`}
-          </p>
+      <div>
+        <h2>{props.title}</h2>
+        <p className={`small`}>
+          {props.description || `No task description`}
+        </p>
+      </div>
+      <div className={style.task_controller}>
+        <TaskDuration duration={120} />
+        <div className={style.task_controls}>
+          <Icon icon="pajamas:repeat" />
+          <Icon icon="ri:shuffle-line" />
         </div>
-        <div className={style.task_controller}>
-          <div className={style.task_controls}>
-            <Icon icon="pajamas:repeat" />
-            <Icon icon="ri:shuffle-fill" />
-          </div>
-        </div>
-      </article>
+      </div>
+      <ProgressBar duration={25} />
     </div>
   );
 }

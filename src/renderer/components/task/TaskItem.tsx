@@ -12,7 +12,7 @@ function TaskItem() {
     duration: 234,
     handleUpdateDescription: function() {
       console.log("helllo world");
-    },
+    }
   };
 
   return (

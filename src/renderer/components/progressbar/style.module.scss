@@ -1,0 +1,27 @@
+@import '../../variables';
+@mixin progressBar($backgroundColor) {
+  height: 8px;
+  background: $backgroundColor;
+  border-radius: 4px;
+}
+.progress__bar {
+  display: flex;
+  flex-direction: column;
+  column-gap: 8px;
+
+  & .timer {
+    display: flex;
+    justify-content: space-between;
+  }
+  & .bar {
+    display: flex;
+    width: 100%;
+    @include progressBar($primary);
+    overflow: hidden;
+
+    & .bar__inner {
+      @include progressBar($skin);
+      transition: width 250ms linear;
+    }
+  }
+}
