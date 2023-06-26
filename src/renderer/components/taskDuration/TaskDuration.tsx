@@ -20,7 +20,7 @@ function calculateDuration(duration: number | string) {
   if (duration > 60) {
     const hr = Math.floor(duration / 60);
     const min = duration % 60;
-    return `${hr}${hr > 1 ? "hrs" : "hr"} ${min}${min > 1 ? "mins" : "min"}`;
+    return `${hr}${hr > 1 ? "hrs" : "hr"} ${min > 0 ? `${min}${min > 1 ? "mins" : "min"}` : ''}`;
   }
   return `${duration}${duration > 1 ? "mins" : "min"}`;
 }
