@@ -17,11 +17,11 @@ function ProgressBar({ duration }: { duration: number }) {
       duration,
     ])
     : null;
-  const remainingMinute = useMemo(() =>
+  const remainingMinute = useMemo(() => duration != progress ?
     formatNumber(
-      Math.floor((duration % 60) - (minute == 0 ? 1 : minute)),
-    ), [minute, duration]);
-  const remainingSecond = duration != progress ? formatNumber(59 - second) : 0;
+      Math.floor((duration % 60) - minute - 1)
+    ) : '00', [minute, duration]);
+  const remainingSecond = duration != progress ? formatNumber(59 - second) : '00';
 
   useEffect(() => {
     function calculateProgress() {
@@ -47,10 +47,8 @@ function ProgressBar({ duration }: { duration: number }) {
       clearInterval(timer);
     };
   }, [duration, second, progress]);
-  const progressBarWidth = (count.current * 1000) / (duration * 60 * 1000) * 100;
+  const progressBarWidth = Math.floor((count.current * 1000) / (duration * 60 * 1000) * 100);
 
-
-  console.log(count.current);
   return (
     <div className={style.progress__bar}>
       <div className={style.timer}>
