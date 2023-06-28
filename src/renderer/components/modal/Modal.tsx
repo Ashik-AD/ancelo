@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface Props {
@@ -7,23 +7,22 @@ interface Props {
 }
 function Modal({ children, onClose }: Props) {
   let portalElement = document.querySelector(".modal") as HTMLDivElement;
+
   useEffect(() => {
+    const overlay = document.createElement("div");
+    overlay.setAttribute("id", "modal__overlay");
+    portalElement.append(overlay);
     if (!portalElement) {
       portalElement = document.createElement("div");
       portalElement.setAttribute("class", "modal");
     }
     if (onClose) {
-      portalElement.addEventListener("click", (eve: any) => {
-        if(eve.currentTarget.classList.contains("modal")){
-        onClose();
-        }
-      });
+      overlay.addEventListener("click", onClose);
     }
-    portalElement.classList.add("modal--active");
     return () => {
-      portalElement.classList.remove("modal--active");
+      portalElement.removeChild(overlay)
       if (onClose) {
-        portalElement.removeEventListener("click", onClose);
+        overlay.removeEventListener("click", onClose);
       }
     };
   }, []);
