@@ -6,29 +6,29 @@ import TaskDuration from "../taskDuration/TaskDuration";
 import ProgressBar from '../progressbar/ProgressBar'
 import { Icon } from "@iconify/react";
 import style from "./style.module.scss";
-const props = {
-  id: 1,
-  title: `Create electron application`,
-  description: "hello world",
-  duration: 25,
-};
-function CurrentTask() {
+interface Props {
+  id: number;
+  title: string;
+  description?: string;
+  duration: number;
+}
+function CurrentTask(props: Props) {
   return (
-    <div>
-      <div>
+    <div className={style.current__task}>
+      <div className={style.task__title}>
         <h2>{props.title}</h2>
         <p className={`small`}>
           {props.description || `No task description`}
         </p>
       </div>
-      <div className={style.task_controller}>
+      <div className={style.task__controller}>
         <TaskDuration duration={120} />
-        <div className={style.task_controls}>
+        <div className={style.task__controls}>
           <Icon icon="pajamas:repeat" />
           <Icon icon="ri:shuffle-line" />
         </div>
       </div>
-      <ProgressBar duration={25} />
+      <ProgressBar duration={props.duration} />
     </div>
   );
 }

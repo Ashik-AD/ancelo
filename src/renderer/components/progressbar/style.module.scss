@@ -7,7 +7,7 @@
 .progress__bar {
   display: flex;
   flex-direction: column;
-  column-gap: 8px;
+  gap: 8px;
 
   & .timer {
     display: flex;

@@ -19,7 +19,9 @@ function Modal({ children, onClose }: Props) {
     if (onClose) {
       overlay.addEventListener("click", onClose);
     }
+    portalElement.classList.add('modal--active')
     return () => {
+      portalElement.classList.remove('modal--active')
       portalElement.removeChild(overlay)
       if (onClose) {
         overlay.removeEventListener("click", onClose);

@@ -195,16 +195,24 @@ textarea {
   left: 0;
   z-index: 9999;
 
- & #modal__overlay {
-    background: rgba(70, 70, 70, 0.4);
-    position: absolute;
+  &--active {
   height: 100vh;
   width: 100vw;
   top: 0;
   left: 0;
   display: flex;
   align-items: center;
-  z-index: -1;
+  justify-content: center;
+  }
+
+  & #modal__overlay {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(70, 70, 70, 0.4);
+    top: 0;
+    left: 0;
+    z-index: -1;
   }
 }
 
