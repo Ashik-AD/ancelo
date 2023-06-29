@@ -17,7 +17,6 @@ app.listen(port, () => {
 });
 app.post("/tasks", async (req, res, next) => {
   try {
-    console.log(req.body)
     const { title, duration, description } = await req.body as Tasks;
     const save = await prisma.tasks.create({
       data: {
@@ -26,14 +25,35 @@ app.post("/tasks", async (req, res, next) => {
         description,
       },
     });
-    res.status(200).json(save)
+    res.status(200).json(save);
   } catch (error) {
     res.status(400).send({ error: `Can't create task` });
     console.log(error);
-    next("Something went wrong")
+    next("Something went wrong");
   }
 });
-app.get('/tasks', async (req, res, next) => {
-
-})
+app.get("/tasks", async (req, res, next) => {
+  try {
+    const tasks = await prisma.tasks.findMany();
+    res.json({ tasks });
+  } catch (error) {
+    res.json({ error: `Can't fetch task` });
+    console.log(error);
+  }
+});
+app.get("/tasks/today", async (req, res, next) => {
+  try {
+    const tasks = await prisma.tasks.findMany({
+      where: {
+        created_at: {
+          lte: new Date()
+        }
+      }
+    })
+    res.json({tasks})
+  } catch (error) {
+    res.json({ error: `Something went wrong`});
+    console.log(error);
+  }
+});
 export default app;
