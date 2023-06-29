@@ -142,6 +142,7 @@ p, .p {
 
 button, .btn {
   padding: 15px 62px;
+  border: 1px solid $primary;
   border-radius: 8px;
   font-family: inherit;
   font-weight: 500;
@@ -151,6 +152,7 @@ button, .btn {
 
   &__primary {
     background: $skin;
+    border-color: $skin;
     transition: 200ms;
 
     &:hover {

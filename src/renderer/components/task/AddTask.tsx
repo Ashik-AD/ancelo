@@ -5,21 +5,21 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import TextArea from "../form/TextArea";
 import Modal from "../modal/Modal";
-import style from './style.module.scss'
+import style from "./style.module.scss";
+import { toast } from "react-hot-toast";
 type State = {
   title: string;
-  duration?: string;
+  duration: number;
   description?: string;
 };
 
 function AddTask() {
   const [input, setInput] = useState<State>({
     title: "",
-    duration: "",
+    duration: 25,
     description: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [sucess, setSuccess] = useState<string | null>(null);
 
   const { showModal, onToggle } = useModal();
   function handleMutateInput(
@@ -32,20 +32,21 @@ function AddTask() {
     event: React.SyntheticEvent<HTMLFormElement>,
   ) {
     const { title, duration, description } = input;
-    if (!title.trim() || !duration?.trim()) {
+    if (!title.trim() || !duration) {
       return setError("Empty field founds");
     }
 
     try {
-      const req = await fetcher(`/tasks`, {
+      await fetcher(`/tasks`, {
         method: "POST",
         body: JSON.stringify({ title, duration, description }),
       });
-      console.log(req);
-      setSuccess("One task created");
+      toast.success("One task created");
+      onToggle()
     } catch (error) {
       console.log(error);
       setError(`Can't create task`);
+      toast.error("Can't create task");
     }
   }
   return (
@@ -54,8 +55,9 @@ function AddTask() {
       {showModal && (
         <Modal onClose={onToggle}>
           <div className={style.add__task}>
-            {sucess || error}
-            <Form onSubmit={handleSubmitForm}>
+            <h2>Create New Task</h2>
+            <Form onSubmit={handleSubmitForm} className={style.task__form}>
+              {error}
               <Input
                 type="text"
                 name="title"
@@ -68,7 +70,7 @@ function AddTask() {
                 name="duration"
                 label="Duration"
                 placeholder="25"
-                defaultValue={input.duration || 25}
+                defaultValue={input.duration}
                 onBlur={handleMutateInput}
               />
               <TextArea
@@ -77,7 +79,7 @@ function AddTask() {
                 defaultValue={input.description}
                 onBlur={handleMutateInput}
               />
-              <button>Create Task</button>
+              <button className="btn btn__primary">Create Task</button>
             </Form>
           </div>
         </Modal>

@@ -3,26 +3,25 @@
  */
 import style from "./style.module.scss";
 import TaskDuration from "../taskDuration/TaskDuration";
-function TaskItem() {
-  const props = {
-    id: 1,
-    bulletNo: 2,
-    title: "Hello world",
-    description: undefined,
-    duration: 234,
-    handleUpdateDescription: function() {
-      console.log("helllo world");
-    }
-  };
+import { Tasks } from "@prisma/client";
 
+interface Props extends Tasks {
+  bulletNo: number;
+  onUpdateDescription: (id: string) => void;
+}
+function TaskItem(
+  { id, bulletNo, title, description, duration, onUpdateDescription }: Props,
+) {
   return (
     <article className={style.task__item}>
-      <span className="semiBold small">#{props.bulletNo}</span>
+      <span className="semiBold small">#{bulletNo}</span>
       <div className={`${style.task__details} h3`}>
-        <h3 className={style.task__title}>{props.title}</h3>
-        <span className="small pointer">Add description</span>
+        <h3 className={style.task__title}>{title}</h3>
+        <span className="small pointer" onClick={() => onUpdateDescription(id)}>
+          {description || "Add description"}
+        </span>
       </div>
-      <TaskDuration duration={25} />
+      <TaskDuration duration={duration} />
     </article>
   );
 }
