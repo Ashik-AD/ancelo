@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-
-import Style from './layout.module.scss'
+import { Toaster } from "react-hot-toast";
+import Style from "./layout.module.scss";
 
 function Layout({ children }: { children: ReactNode }) {
   return (
@@ -9,6 +9,7 @@ function Layout({ children }: { children: ReactNode }) {
         <h2>Music Player Bar</h2>
       </div>
       <div className={Style.main__content}>
+        <Toaster />
         {children}
       </div>
     </div>
