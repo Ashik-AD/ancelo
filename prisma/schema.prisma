@@ -15,7 +15,7 @@ model Tasks {
   title       String
   description String
   duration    Int
-  complete    Boolean  @default(false)
+  completed   Boolean  @default(false)
   created_at  DateTime @default(now())
 }
 
@@ -39,7 +39,7 @@ model SessionTasks {
   duration    Int
   Sessions    Sessions? @relation(fields: [sessionsId], references: [id])
   sessionsId  String?
-  complete    Boolean   @default(false)
+  completed   Boolean   @default(false)
   created_at  DateTime  @default(now())
 }
 
@@ -62,5 +62,5 @@ model RoutineTasks {
   Routines   Routines? @relation(fields: [routinesId], references: [id])
   routinesId String?
   created_at DateTime  @default(now())
-  complete   Boolean   @default(false)
+  completed  Boolean   @default(false)
 }
