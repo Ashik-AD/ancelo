@@ -17,6 +17,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    gap: 28px;
     flex-grow: 1;
     background: linear-gradient(233.56deg, rgba(255, 255, 255, 0.28) 28.76%, rgba(255, 255, 255, 0) 77.84%);
     border-top-left-radius: 24px;
@@ -30,5 +31,5 @@
   flex-direction: column;
   width: 100%;
   padding: 24px;
-  grid-row: 28px;
+  row-gap: 28px;
 }
