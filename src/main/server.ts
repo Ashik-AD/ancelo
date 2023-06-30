@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.listen(port, () => {
   console.log(`Server listening ${port}`);
 });
+
 app.post("/tasks", async (req, res, next) => {
   try {
     const { title, duration, description } = await req.body as Tasks;
@@ -32,7 +33,7 @@ app.post("/tasks", async (req, res, next) => {
     next("Something went wrong");
   }
 });
-app.get("/tasks", async (req, res, next) => {
+app.get("/tasks", async (req, res) => {
   try {
     const tasks = await prisma.tasks.findMany();
     res.json({ tasks });
@@ -41,18 +42,25 @@ app.get("/tasks", async (req, res, next) => {
     console.log(error);
   }
 });
-app.get("/tasks/today", async (req, res, next) => {
+app.get("/tasks/today", async (req, res) => {
   try {
+    const todayDate = new Date().toISOString().split("T")[0];
     const tasks = await prisma.tasks.findMany({
       where: {
         created_at: {
-          lte: new Date()
-        }
-      }
-    })
-    res.json({tasks})
+          gte: new Date(todayDate).toISOString(),
+        },
+        AND: {
+          completed: false,
+        },
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+    });
+    res.json({ tasks });
   } catch (error) {
-    res.json({ error: `Something went wrong`});
+    res.json({ error: `Something went wrong` });
     console.log(error);
   }
 });
