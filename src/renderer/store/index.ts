@@ -5,7 +5,9 @@ interface TaskStore {
   queue: Tasks | null;
   completed: Tasks[];
   current: Tasks | null;
+  start: boolean;
   setList: (payload: Tasks[]) => void;
+  setStart: () => void;
   addTask: (payload: Tasks) => void;
   setQueue: (payload: Tasks) => void;
   setCurrent: (payload: Tasks) => void;
@@ -16,9 +18,11 @@ export const useTaskStore = create<TaskStore>()((set) => ({
   queue: null,
   completed: [],
   current: null,
+  start: false,
   setList: (payload) => set({ list: payload }),
   setQueue: (payload) => set({ queue: payload }),
   setCurrent: (payload) => set({ current: payload }),
+  setStart: () => set((state) => ({ start: !state.start })),
   setCompleted: (payload) =>
     set((state) => ({ completed: state.completed.push(payload) })),
   addTask: (payload) => set((state) => ({ list: state.list.push(payload) })),
