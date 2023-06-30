@@ -5,15 +5,21 @@ import CurrentTask from "renderer/components/task/CurrentTask";
 import TaskList from "renderer/components/task/TaskList";
 import { useTaskStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
+import type { Tasks } from "@prisma/client";
 function Task() {
-  const { list, setList } = useTaskStore(
-    (state) => ({ list: state.list, setList: state.setList }),
+  const { list, setList, setCurrentTask } = useTaskStore(
+    (state) => ({
+      list: state.list,
+      setList: state.setList,
+      start: state.start,
+      setCurrentTask: state.setCurrent,
+    }),
     shallow,
   );
 
   useEffect(() => {
     fetcher("/tasks/today").then((res) => {
-      console.log(res.tasks)
+      setCurrentTask(res.tasks[0]);
       setList(res.tasks);
     })
       .catch((err) => {
@@ -22,7 +28,7 @@ function Task() {
   }, []);
   return (
     <div>
-      <CurrentTask id={1} title="Hello world" duration={25} />
+      <CurrentTask />
       <TaskList list={list} />
       <AddTask />
     </div>
