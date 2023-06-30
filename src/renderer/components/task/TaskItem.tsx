@@ -15,8 +15,8 @@ function TaskItem(
   return (
     <article className={style.task__item}>
       <span className="semiBold small">#{bulletNo}</span>
-      <div className={`${style.task__details} h3`}>
-        <h3 className={style.task__title}>{title}</h3>
+      <div className={`${style.task__details} h4`}>
+        <h4 className={style.task__title}>{title}</h4>
         <span className="small pointer" onClick={() => onUpdateDescription(id)}>
           {description || "Add description"}
         </span>
