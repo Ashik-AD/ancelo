@@ -5,8 +5,10 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import TextArea from "../form/TextArea";
 import Modal from "../modal/Modal";
+import { shallow } from "zustand/shallow";
 import style from "./style.module.scss";
 import { toast } from "react-hot-toast";
+import { useTaskStore } from "renderer/store";
 type State = {
   title: string;
   duration: number;
@@ -14,6 +16,7 @@ type State = {
 };
 
 function AddTask() {
+  const addTask = useTaskStore((state) => state.setList, shallow);
   const [input, setInput] = useState<State>({
     title: "",
     duration: 25,
@@ -37,12 +40,13 @@ function AddTask() {
     }
 
     try {
-      await fetcher(`/tasks`, {
+      const res = await fetcher(`/tasks`, {
         method: "POST",
         body: JSON.stringify({ title, duration, description }),
       });
+      addTask(res);
       toast.success("One task created");
-      onToggle()
+      onToggle();
     } catch (error) {
       console.log(error);
       setError(`Can't create task`);

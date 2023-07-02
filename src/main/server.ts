@@ -48,7 +48,7 @@ app.get("/tasks/today", async (req, res) => {
     const tasks = await prisma.tasks.findMany({
       where: {
         created_at: {
-          gte: new Date(todayDate).toISOString(),
+          gte: new Date(todayDate)
         },
         AND: {
           completed: false,
