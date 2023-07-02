@@ -16,7 +16,7 @@ type State = {
 };
 
 function AddTask() {
-  const addTask = useTaskStore((state) => state.setList, shallow);
+  const addTask = useTaskStore((state) => state.addTask, shallow);
   const [input, setInput] = useState<State>({
     title: "",
     duration: 25,
