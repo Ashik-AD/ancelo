@@ -2,20 +2,18 @@ import { create } from "zustand";
 import { Tasks } from "@prisma/client";
 interface TaskStore {
   list: Tasks[];
-  queue: Tasks | null;
   completed: Tasks[];
   current: Tasks | null;
   start: boolean;
   addList: (payload: Tasks[]) => void;
+  addCurrent: () => void;
   addStart: () => void;
   addTask: (payload: Tasks) => void;
-  addQueue: (payload: Tasks) => void;
-  addCurrent: (payload: Tasks) => void;
+  addNext: () => void;
   addCompleted: (payload: Tasks) => void;
 }
 export const useTaskStore = create<TaskStore>()((set) => ({
   list: [],
-  queue: null,
   completed: [],
   current: null,
   start: false,
@@ -28,8 +26,29 @@ export const useTaskStore = create<TaskStore>()((set) => ({
         list,
       };
     }),
-  addQueue: (payload) => set({ queue: payload }),
-  addCurrent: (payload) => set({ current: payload }),
+  addCurrent: () =>
+    set((state) => ({
+      current: state.list[0],
+      list: state.list.slice(1, state.list.length),
+    })),
+  addNext: () =>
+    set((state) => {
+      if (state.list.length == 0) {
+        return {
+          ...state,
+          completed: [...state.completed, state.current!!],
+          current: null,
+        };
+      }
+      const currentTask = state.list.splice(0, 1);
+      const completed = [...state.completed, state.current!!];
+      return {
+        ...state,
+        list: [...state.list],
+        current: currentTask[0],
+        completed,
+      };
+    }),
   addStart: () => set((state) => ({ start: !state.start })),
   addCompleted: (payload) =>
     set((state) => {
