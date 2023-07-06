@@ -8,7 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useTaskStore } from "./store";
 
 function AppLayout({ children }: { children: ReactNode }) {
-  const { addList, addCurrent} = useTaskStore(
+  const { addList, addCurrent } = useTaskStore(
     (state) => ({
       addList: state.addList,
       addCurrent: state.addCurrent,
@@ -19,7 +19,7 @@ function AppLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     fetcher("/tasks/today").then((res) => {
       addList(res.tasks);
-      addCurrent(res.tasks[0]);
+      addCurrent();
     })
       .catch((err) => {
         console.log(err);

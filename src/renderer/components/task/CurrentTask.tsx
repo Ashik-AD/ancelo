@@ -8,12 +8,16 @@ import { Icon } from "@iconify/react";
 import style from "./style.module.scss";
 import { useTaskStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
+import { useEffect, useState } from "react";
 
 function CurrentTask() {
-  const { current, start } = useTaskStore((state) => ({
+  const { current, listLength, setNextTask } = useTaskStore((state) => ({
     current: state.current,
     start: state.start,
+    setNextTask: state.addNext,
+    listLength: state.list.length
   }), shallow);
+
   if (!current) return null;
   return (
     <div className={style.current__task}>
@@ -30,7 +34,11 @@ function CurrentTask() {
           <Icon icon="ri:shuffle-line" />
         </div>
       </div>
-      {<ProgressBar duration={current.duration} />}
+      <ProgressBar
+        duration={current.duration}
+        onProgressFinish={setNextTask}
+        reset={listLength != 0 || current ? true : false}
+      />
     </div>
   );
 }

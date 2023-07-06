@@ -6,10 +6,9 @@ import { shallow } from "zustand/shallow";
 function Task() {
   const taskList = useTaskStore(
     (state) => state.list,
-    shallow,
   );
+  console.log(taskList)
 
-  console.log(taskList);
   return (
     <div>
       <CurrentTask />
