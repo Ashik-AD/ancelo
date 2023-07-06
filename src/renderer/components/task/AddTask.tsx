@@ -31,9 +31,7 @@ function AddTask() {
     const { name, value } = event.target;
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
   }
-  async function handleSubmitForm(
-    event: React.SyntheticEvent<HTMLFormElement>,
-  ) {
+  async function handleSubmitForm() {
     const { title, duration, description } = input;
     if (!title.trim() || !duration) {
       return setError("Empty field founds");

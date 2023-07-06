@@ -4,18 +4,16 @@ import TaskList from "renderer/components/task/TaskList";
 import { useTaskStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 function Task() {
-  const { list, start } = useTaskStore(
-    (state) => ({
-      list: state.list,
-      start: state.start,
-    }),
+  const taskList = useTaskStore(
+    (state) => state.list,
     shallow,
   );
 
+  console.log(taskList);
   return (
     <div>
       <CurrentTask />
-      <TaskList list={list} />
+      <TaskList list={taskList} />
       <AddTask />
     </div>
   );

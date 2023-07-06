@@ -6,13 +6,12 @@ interface TaskStore {
   completed: Tasks[];
   current: Tasks | null;
   start: boolean;
-  setList: (payload: Tasks[]) => void;
+  addList: (payload: Tasks[]) => void;
+  addStart: () => void;
   addTask: (payload: Tasks) => void;
-  setStart: () => void;
-  addTask: (payload: Tasks) => void;
-  setQueue: (payload: Tasks) => void;
-  setCurrent: (payload: Tasks) => void;
-  setCompleted: (payload: Tasks) => void;
+  addQueue: (payload: Tasks) => void;
+  addCurrent: (payload: Tasks) => void;
+  addCompleted: (payload: Tasks) => void;
 }
 export const useTaskStore = create<TaskStore>()((set) => ({
   list: [],
@@ -20,12 +19,24 @@ export const useTaskStore = create<TaskStore>()((set) => ({
   completed: [],
   current: null,
   start: false,
-  setList: (payload) => set({ list: payload }),
-  addTask: (payload) => set(state => ({list: state.list.push(payload)})),
-  setQueue: (payload) => set({ queue: payload }),
-  setCurrent: (payload) => set({ current: payload }),
-  setStart: () => set((state) => ({ start: !state.start })),
-  setCompleted: (payload) =>
-    set((state) => ({ completed: state.completed.push(payload) })),
-  addTask: (payload) => set((state) => ({ list: state.list.push(payload) })),
+  addList: (payload) => set({ list: payload }),
+  addTask: (payload) =>
+    set((state) => {
+      let list = [...state.list, payload];
+      return {
+        ...state,
+        list,
+      };
+    }),
+  addQueue: (payload) => set({ queue: payload }),
+  addCurrent: (payload) => set({ current: payload }),
+  addStart: () => set((state) => ({ start: !state.start })),
+  addCompleted: (payload) =>
+    set((state) => {
+      const completed = [...state.completed, payload];
+      return {
+        ...state,
+        completed,
+      };
+    }),
 }));

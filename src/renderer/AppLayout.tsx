@@ -8,18 +8,18 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useTaskStore } from "./store";
 
 function AppLayout({ children }: { children: ReactNode }) {
-  const { setList, setCurrentTask } = useTaskStore(
+  const { addList, addCurrent} = useTaskStore(
     (state) => ({
-      setList: state.setList,
-      setCurrentTask: state.setCurrent,
+      addList: state.addList,
+      addCurrent: state.addCurrent,
     }),
     shallow,
   );
 
   useEffect(() => {
     fetcher("/tasks/today").then((res) => {
-      setList(res.tasks);
-      setCurrentTask(res.tasks[0]);
+      addList(res.tasks);
+      addCurrent(res.tasks[0]);
     })
       .catch((err) => {
         console.log(err);

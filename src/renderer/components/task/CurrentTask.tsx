@@ -30,7 +30,7 @@ function CurrentTask() {
           <Icon icon="ri:shuffle-line" />
         </div>
       </div>
-      {start && <ProgressBar duration={current.duration} />}
+      {<ProgressBar duration={current.duration} />}
     </div>
   );
 }

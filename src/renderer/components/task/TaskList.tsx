@@ -5,7 +5,7 @@ interface Props {
   list: Tasks[];
 }
 function TaskList({ list }: Props) {
-  if (list.length < 1) {
+  if (list.length == 0 || !Array.isArray(list)) {
     return <h2>No Task for Today</h2>;
   }
 
