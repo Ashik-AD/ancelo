@@ -8,7 +8,7 @@ export default function App() {
     <Layout>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<Task />} />
+          <Route index element={<Task />} />
         </Routes>
       </AppLayout>
     </Layout>

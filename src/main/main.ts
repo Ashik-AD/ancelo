@@ -8,7 +8,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -48,8 +48,9 @@ if (isDebug) {
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
+
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
   return installer
     .default(
@@ -57,6 +58,10 @@ const installExtensions = async () => {
       forceDownload
     )
     .catch(console.log);
+
+  // const reactDevToolPath = path.join(os.homedir(), '.config/chromium/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi');
+  // return await session.defaultSession.loadExtension(reactDevToolPath).catch(console.log)
+
 };
 
 const createWindow = async () => {
