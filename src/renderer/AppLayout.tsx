@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useEffect } from "react";
 import { shallow } from "zustand/shallow";
-import fetcher from "main/lib/fetch";
+import fetcher from "../lib/fetch";
 import Navigation from "./components/nav/Navigation";
 import Style from "./layout.module.scss";
 import { BrowserRouter as Router } from "react-router-dom";

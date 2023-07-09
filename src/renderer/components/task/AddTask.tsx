@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useModal } from "renderer/hooks/useModal";
-import fetcher from "main/lib/fetch";
+import fetcher from "../../../lib/fetch";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import TextArea from "../form/TextArea";

@@ -1,5 +1,5 @@
 import express from "express";
-import prisma from "./lib/prisma";
+import prisma from "../lib/prisma";
 import bodyParser from "body-parser";
 import cors from "cors";
 
