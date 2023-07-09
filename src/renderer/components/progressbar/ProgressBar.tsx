@@ -4,6 +4,7 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import style from "./style.module.scss";
 import { ProgressContext } from "renderer/ProgressProvider";
+import useProgress from "renderer/hooks/useProgress";
 
 interface Props {
   duration: number;
@@ -11,7 +12,10 @@ interface Props {
   reset?: boolean;
 }
 function ProgressBar({ duration, onProgressFinish, reset }: Props) {
-  const {hour, second, minute, progress}= useContext(ProgressContext)
+  const {hour, second, minute, progress, stopTimer, resetTimer}= useProgress()
+  if(progress == duration * 60){
+    stopTimer()
+  }
   // const [hour, setHour] = useState(0);
   // const [minute, setMinute] = useState(0);
   // const [second, setSecond] = useState(0);

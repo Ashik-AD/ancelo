@@ -1,57 +1,117 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { useTaskStore } from "../store";
+import { shallow } from "zustand/shallow";
 
-const useProgress = (duration: number, onFinish: () => void) => {
-  const [hour, setHour] = useState(0);
-  const [minute, setMinute] = useState(0);
-  const [second, setSecond] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const count = useRef(0);
+interface Cb {
+  hour: number;
+  minute: number;
+  second: number;
+  progress: number;
+}
 
-  // const hasHour = useMemo(() => duration / 60 >= 1, [duration]);
-  // const remainingHour = hasHour
-  //   ? useMemo(() => formatNumber(Math.floor((duration / 60) - hour)), [
-  //     hour,
-  //     duration,
-  //   ])
-  //   : null;
-  // const remainingMinute = useMemo(() =>
-  //   duration != progress
-  //     ? formatNumber(
-  //       Math.floor((duration % 60) - minute - 1),
-  //     )
-  //     : "00", [minute, duration]);
-  // const remainingSecond = duration != progress
-  //   ? formatNumber(59 - second)
-  //   : "00";
+class Counter {
+  private static instance: Counter;
+  private progress: number = 0;
+  private hour: number = 0;
+  private minute: number = 0;
+  private second: number = 0;
+  private timer: any;
+  private cb: any;
+  private constructor() { }
 
-  const calcProgress = useCallback(function calculateProgress() {
-    if (second >= 59) {
-      setSecond(0);
-      setMinute((prevMinute) => prevMinute + 1);
-      setProgress((prevProgress) => prevProgress + 1);
-    } else {
-      setSecond((prevSecond) => prevSecond + 1);
+  public static getInstance() {
+    if (!Counter.instance) {
+      Counter.instance = new Counter();
     }
+    return Counter.instance;
+  }
 
-    if (minute > 59) {
-      setMinute(0);
-      setHour((prevHour) => prevHour + 1);
+  public getValues() {
+    return {
+      hour: this.hour,
+      minute: this.minute,
+      second: this.second,
+      progress: this.progress,
+    };
+  }
+
+  public incrementEachSecond(cb: (value: Cb) => void) {
+    this.cb = cb;
+
+    const calcTime = () => {
+      if (this.second >= 59) {
+        this.second = 0;
+        this.minute += 1;
+      } else {
+        this.second++;
+      }
+
+      if (this.minute > 59) {
+        this.minute = 0;
+        this.hour += 1;
+      }
+      this.progress++;
+
+      this.cb({
+        hour: this.hour,
+        second: this.second,
+        minute: this.minute,
+        progress: this.progress,
+      });
+    };
+
+    if (!this.timer) {
+      this.timer = setInterval(calcTime, 1000);
     }
-    count.current += 1;
-  }, [second]);
+  }
+
+  public stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
+  public reset() {
+    this.hour = 0;
+    this.minute = 0;
+    this.second = 0;
+    this.progress = 0;
+  }
+}
+
+export default function useProgress() {
+  const current = useTaskStore((state) => state.current, shallow);
+  const counter = useMemo(() => Counter.getInstance(), []);
+  const time = useMemo(() => counter.getValues(), [current]);
+
+  const [second, setSecond] = useState(() => time.second);
+  const [minute, setMinute] = useState(() => time.minute);
+  const [hour, setHour] = useState(() => time.hour);
+  const [progress, setProgress] = useState(() => time.progress);
+  const resetTimer = useCallback(() => counter.reset(), []);
+  const stopTimer = useCallback(() => counter.stop(), []);
 
   useEffect(() => {
-    let timer = setInterval(calcProgress, 1000);
-    if (progress == duration) {
-      if (onFinish) onFinish();
-      clearInterval(timer);
-    }
-    return () => {
-      clearInterval(timer);
+    let onIncrementCount = null;
+    onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
+      setSecond(second);
+      setMinute(minute);
+      setHour(hour);
+      setProgress(progress);
     };
-  }, [duration, second, progress]);
-  const progressBarWidth = (count.current * 1000) / (duration * 60 * 1000) *
-    100;
-  return { hour, minute, second, progress: progressBarWidth } as const;
-};
-export default useProgress;
+    counter.incrementEachSecond(onIncrementCount);
+    return () => {
+      onIncrementCount = null;
+      counter.incrementEachSecond(() => { });
+    };
+  }, []);
+
+  return {
+    second,
+    hour,
+    minute,
+    progress,
+    resetTimer,
+    stopTimer,
+  } as const;
+}
