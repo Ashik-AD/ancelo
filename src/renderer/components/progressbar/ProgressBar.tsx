@@ -4,6 +4,7 @@
 import style from "./style.module.scss";
 import useProgress from "renderer/hooks/useProgress";
 import { addZeroLessThanTen, formatDuration } from "lib/formatDuration";
+import { useEffect } from "react";
 
 interface Props {
   duration: number;
@@ -13,14 +14,17 @@ interface Props {
 function ProgressBar({ duration, onProgressFinish, reset }: Props) {
   const { hour, second, minute, progress, stopTimer, resetTimer } =
     useProgress();
-  if (progress == duration * 60) {
-    onProgressFinish();
-    if (reset) {
-      resetTimer();
-    } else {
-      stopTimer();
+
+  useEffect(() => {
+    if (progress == duration * 60) {
+      if (reset) {
+        resetTimer();
+      } else {
+        stopTimer();
+      }
+      onProgressFinish();
     }
-  }
+  }, [progress]);
   const progressBarWidth = (progress * 1000) / (duration * 60 * 1000) *
     100;
   return (

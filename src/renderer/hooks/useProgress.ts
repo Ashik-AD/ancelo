@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTaskStore } from "../store";
 import { shallow } from "zustand/shallow";
 
@@ -82,7 +82,7 @@ class Counter {
 export default function useProgress() {
   const current = useTaskStore((state) => state.current, shallow);
   const counter = useMemo(() => Counter.getInstance(), []);
-  const time = useMemo(() => counter.getValues(), [current]);
+  const time = useMemo(() => counter.getValues(), [current?.id]);
 
   const [second, setSecond] = useState(() => time.second);
   const [minute, setMinute] = useState(() => time.minute);
@@ -104,7 +104,7 @@ export default function useProgress() {
       onIncrementCount = null;
       counter.incrementEachSecond(() => { });
     };
-  }, []);
+  }, [current?.id]);
 
   return {
     second,
