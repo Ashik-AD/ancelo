@@ -1,10 +1,14 @@
 import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 import { Tasks } from "@prisma/client";
-interface TaskStore {
+interface TasksState {
   list: Tasks[];
   completed: Tasks[];
   current: Tasks | null;
   start: boolean;
+}
+
+interface TasksAction {
   addList: (payload: Tasks[]) => void;
   addCurrent: () => void;
   addStart: () => void;
@@ -12,7 +16,7 @@ interface TaskStore {
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
 }
-export const useTaskStore = create<TaskStore>()((set) => ({
+export const useTaskStore = create(immer<TasksState & TasksAction>((set) => ({
   list: [],
   completed: [],
   current: null,
@@ -20,42 +24,29 @@ export const useTaskStore = create<TaskStore>()((set) => ({
   addList: (payload) => set({ list: payload }),
   addTask: (payload) =>
     set((state) => {
-      let list = [...state.list, payload];
-      return {
-        ...state,
-        list,
-      };
+      state.list.push(payload);
     }),
   addCurrent: () =>
-    set((state) => ({
-      current: state.list[0],
-      list: state.list.slice(1, state.list.length),
-    })),
+    set((state) => {
+      state.current = state.list[0];
+      state.list = state.list.slice(1, state.list.length);
+    }),
   addNext: () =>
     set((state) => {
       if (state.list.length == 0) {
-        return {
-          ...state,
-          completed: [...state.completed, state.current!!],
-          current: null,
-        };
+        state.completed.push(state.current!!);
+        state.current = null;
       }
       const currentTask = state.list.splice(0, 1);
-      const completed = [...state.completed, state.current!!];
-      return {
-        ...state,
-        list: [...state.list],
-        current: currentTask[0],
-        completed,
-      };
+      state.completed.push(state.current!!);
+      state.current = currentTask[0];
     }),
-  addStart: () => set((state) => ({ start: !state.start })),
+  addStart: () =>
+    set((state) => {
+      state.start = !state.start;
+    }),
   addCompleted: (payload) =>
     set((state) => {
-      const completed = [...state.completed, payload];
-      return {
-        ...state,
-        completed,
-      };
+      state.completed.push(payload);
     }),
-}));
+})));
