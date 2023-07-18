@@ -15,3 +15,117 @@
 }
 
 }
+
+.time__picker {
+  position: relative;
+  scroll-behavior: smooth;
+  z-index: 1;
+
+  & .input {
+    display: flex;
+    align-items: center;
+
+    & .input__value {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+
+      & .colon {
+        font-weight: 600;
+      }
+
+      & .meridiem {
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  & .picker__wrapper {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    max-height: 180px;
+    background: rgba(220, 224, 232, 0.7);
+    padding: 8px 14px;
+    border-radius: 8px;
+    backdrop-filter: blur(42px);
+    overflow: hidden;
+
+    & > div {
+      overflow: hidden;
+    }
+
+    & .time__label {
+      color: #6e6867;
+      font-weight: 500!important;
+      margin-bottom: 8px;
+    }
+
+    & ::-webkit-scrollbar {
+      width: 5px;
+    }
+    & ::-webkit--scrollbar-thumb {
+      background: transparent;
+      transition: 200ms;
+    }
+    & > div:hover ::-webkit-scrollbar-thumb {
+      background: rgb(107 19 155 / 40%);
+      transition: 200ms;
+    }
+
+  }
+
+  & .overlay {
+      position: fixed;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      visibility: hidden;
+  }
+
+  &:has(.show__picker) {
+    .overlay {
+
+   visibility: visible;
+    }
+  }
+
+  & .show__picker {
+    visibility: visible;
+  }
+
+  & .hide__picker {
+    visibility: hidden;
+  }
+
+  & .list__wrapper {
+    min-height: 0;
+    height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+
+    & .item {
+      font-weight: 500;
+      padding: 4px 6px;
+      text-align: center;
+      border-radius: 2px;
+      transition: background 150ms linear;
+      cursor: pointer;
+
+      &-active {
+        background: rgb(107 19 155 / 50%)!important;
+        color: $white;
+      }
+      &:hover {
+        background: rgb(107 19 155 / 12%);
+        transition: all 150ms linear;
+      }
+    }
+  }
+
+}
