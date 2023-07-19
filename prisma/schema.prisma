@@ -23,8 +23,8 @@ model Sessions {
   id          String         @id @default(cuid())
   title       String
   description String?
-  duration    Int
-  schedule    DateTime?
+  duration    Int?
+  schedule    String
   theme       String?
   thumbnail   String?
   background  String?
