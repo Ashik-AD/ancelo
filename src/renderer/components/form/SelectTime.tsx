@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import style from "./style.module.scss";
 import { addZeroLessThanTen } from "lib/formatDuration";
 
-type Time = {
+export type Time = {
   hours: number;
   minutes: number;
   meridiem: "AM" | "PM";
@@ -43,10 +43,10 @@ export default function SelectTime({ onSelectTime }: Props) {
   const minutes = listFrom(0, 60);
 
   useEffect(() => {
-    if (isPicked) {
+    if (isPicked || isShowPicker) {
       onSelectTime(time);
     }
-  }, [isPicked, time]);
+  }, [isPicked, isShowPicker, time]);
 
   const handlePick = (id: keyof Time, value: number | string) => {
     setTime((prevTime) => ({ ...prevTime, [id]: value }));
@@ -55,6 +55,7 @@ export default function SelectTime({ onSelectTime }: Props) {
 
   const handleTogglePicker = () => {
     setIsShowPicker((prevPicker) => !prevPicker);
+    setIsPicked(true)
   };
 
   const pickerWrapperCls = isShowPicker
@@ -68,12 +69,7 @@ export default function SelectTime({ onSelectTime }: Props) {
         aria-label="Time picker"
         onClick={handleTogglePicker}
       >
-        {!isPicked && (
-          <span className={style.picker__label}>
-            Select Time
-          </span>
-        )}
-        {isPicked && (
+        {(isPicked) ? (
           <div className={style.input__value}>
             <span className={style.time}>{addZeroLessThanTen(time.hours)}</span>
             <span className={style.colon}>:</span>
@@ -82,7 +78,10 @@ export default function SelectTime({ onSelectTime }: Props) {
             </span>
             <span className={style.meridiem}>{time.meridiem}</span>
           </div>
-        )}
+        ) : 
+          (<span className={style.picker__label}>
+            Select Time
+          </span>)}
       </div>
       <div className={`${style.picker__wrapper} ${pickerWrapperCls}`}>
         <div className={style.picker__hour}>
