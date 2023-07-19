@@ -3,7 +3,8 @@ import prisma from "../lib/prisma";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import type { Tasks } from "@prisma/client";
+import type { Sessions, Tasks } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const app = express();
 const port = 6699;
@@ -33,6 +34,7 @@ app.post("/tasks", async (req, res, next) => {
     next("Something went wrong");
   }
 });
+
 app.get("/tasks", async (req, res) => {
   try {
     const tasks = await prisma.tasks.findMany();
@@ -42,13 +44,14 @@ app.get("/tasks", async (req, res) => {
     console.log(error);
   }
 });
+
 app.get("/tasks/today", async (req, res) => {
   try {
     const todayDate = new Date().toISOString().split("T")[0];
     const tasks = await prisma.tasks.findMany({
       where: {
         created_at: {
-          gte: new Date(todayDate)
+          gte: new Date(todayDate),
         },
         AND: {
           completed: false,
@@ -61,6 +64,30 @@ app.get("/tasks/today", async (req, res) => {
     res.json({ tasks });
   } catch (error) {
     res.json({ error: `Something went wrong` });
+    console.log(error);
+  }
+});
+
+app.post("/sessions", async (req, res) => {
+  const { title, description, schedule } = req.body as Pick<
+    Sessions,
+    "title" | "description" | "schedule"
+  >;
+  try {
+    const session = await prisma.sessions.create({
+      data: {
+        duration: 3,
+        title,
+        description,
+        schedule,
+      },
+    });
+    res.json({ session });
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      res.json({ error: error.message });
+    }
+    res.json({ error: "Something went wrong. Cant able to create session" });
     console.log(error);
   }
 });
