@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Tasks } from "@prisma/client";
-import { SessionSlice, sessionSlice } from "./sessions";
-import { taskSlice } from "./tasks";
 interface TasksState {
   list: Tasks[];
   completed: Tasks[];
@@ -18,7 +16,7 @@ interface TasksAction {
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
 }
-export const useTaskStore = create(immer<TasksState & TasksAction>((set) => ({
+export const taskSlice = create(immer<TasksState & TasksAction>((set) => ({
   list: [],
   completed: [],
   current: null,
@@ -53,13 +51,3 @@ export const useTaskStore = create(immer<TasksState & TasksAction>((set) => ({
     }),
 })));
 
-// export interface Store {
-//   tasks: TasksSlice;
-//   sessions: SessionSlice;
-// }
-export default function useStore() {
-  return ({
-    tasks: taskSlice,
-    sessions: sessionSlice,
-  });
-}
