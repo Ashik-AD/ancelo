@@ -1,13 +1,11 @@
 import AddTask from "renderer/components/task/AddTask";
 import CurrentTask from "renderer/components/task/CurrentTask";
 import TaskList from "renderer/components/task/TaskList";
-import { useTaskStore } from "renderer/store";
-import { shallow } from "zustand/shallow";
+import { useAppStore } from "renderer/store";
 function Task() {
-  const taskList = useTaskStore(
-    (state) => state.list,
+  const taskList = useAppStore(
+    (state) => state.tasks.getState().list,
   );
-  console.log(taskList)
 
   return (
     <div>

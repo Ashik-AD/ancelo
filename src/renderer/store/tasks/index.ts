@@ -16,7 +16,8 @@ interface TasksAction {
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
 }
-export const taskSlice = create(immer<TasksState & TasksAction>((set) => ({
+export type TaskSlice = TasksState & TasksAction;
+export const taskSlice = create(immer<TaskSlice>((set) => ({
   list: [],
   completed: [],
   current: null,

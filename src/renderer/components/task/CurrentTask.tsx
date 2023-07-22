@@ -6,16 +6,20 @@ import TaskDuration from "../taskDuration/TaskDuration";
 import ProgressBar from "../progressbar/ProgressBar";
 import { Icon } from "@iconify/react";
 import style from "./style.module.scss";
-import { useTaskStore } from "renderer/store";
+import { useAppStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 
 function CurrentTask() {
-  const { current, listLength, setNextTask } = useTaskStore((state) => ({
-    current: state.current,
-    start: state.start,
-    setNextTask: state.addNext,
-    listLength: state.list.length,
-  }), shallow);
+  const { current, listLength, setNextTask } = useAppStore(
+    ({ tasks }) =>
+      tasks((state) => ({
+        current: state.current,
+        start: state.start,
+        setNextTask: state.addNext,
+        listLength: state.list.length,
+      })),
+    shallow,
+  );
 
   if (!current) return null;
   return (

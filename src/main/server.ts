@@ -68,6 +68,17 @@ app.get("/tasks/today", async (req, res) => {
   }
 });
 
+app.get("/sessions", async (req, res) => {
+  try {
+    const sessions = await prisma.sessions.findMany();
+    res.json(sessions);
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      res.json({ error: error.message });
+    }
+    res.json({ error: `Someting went wrong. Session can't seems to fetch` });
+  }
+});
 app.post("/sessions", async (req, res) => {
   const { title, description, schedule } = req.body as Pick<
     Sessions,

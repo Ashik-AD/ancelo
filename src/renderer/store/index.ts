@@ -1,65 +1,16 @@
 import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
-import { Tasks } from "@prisma/client";
 import { SessionSlice, sessionSlice } from "./sessions";
-import { taskSlice } from "./tasks";
-interface TasksState {
-  list: Tasks[];
-  completed: Tasks[];
-  current: Tasks | null;
-  start: boolean;
-}
+import { TaskSlice, taskSlice } from "./tasks";
 
-interface TasksAction {
-  addList: (payload: Tasks[]) => void;
-  addCurrent: () => void;
-  addStart: () => void;
-  addTask: (payload: Tasks) => void;
-  addNext: () => void;
-  addCompleted: (payload: Tasks) => void;
+export interface Store {
+  tasks: TaskSlice;
+  sessions: SessionSlice;
 }
-export const useTaskStore = create(immer<TasksState & TasksAction>((set) => ({
-  list: [],
-  completed: [],
-  current: null,
-  start: false,
-  addList: (payload) => set({ list: payload }),
-  addTask: (payload) =>
-    set((state) => {
-      state.list.push(payload);
-    }),
-  addCurrent: () =>
-    set((state) => {
-      state.current = state.list[0];
-      state.list = state.list.slice(1, state.list.length);
-    }),
-  addNext: () =>
-    set((state) => {
-      if (state.list.length == 0) {
-        state.completed.push(state.current!!);
-        state.current = null;
-      }
-      const currentTask = state.list.splice(0, 1);
-      state.completed.push(state.current!!);
-      state.current = currentTask[0];
-    }),
-  addStart: () =>
-    set((state) => {
-      state.start = !state.start;
-    }),
-  addCompleted: (payload) =>
-    set((state) => {
-      state.completed.push(payload);
-    }),
-})));
-
-// export interface Store {
-//   tasks: TasksSlice;
-//   sessions: SessionSlice;
-// }
-export default function useStore() {
+function useStore() {
   return ({
     tasks: taskSlice,
     sessions: sessionSlice,
   });
 }
+
+export const useAppStore = create(() => useStore());

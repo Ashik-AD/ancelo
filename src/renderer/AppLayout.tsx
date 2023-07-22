@@ -5,19 +5,22 @@ import fetcher from "../lib/fetch";
 import Navigation from "./components/nav/Navigation";
 import Style from "./layout.module.scss";
 import { BrowserRouter as Router } from "react-router-dom";
-import useStore from "./store";
 import { toast } from "react-hot-toast";
+import { useAppStore } from "./store";
 
 function AppLayout({ children }: { children: ReactNode }) {
-  const { tasks, sessions } = useStore();
-  const { addTaskList, addCurrentTask } = tasks(
-    (state) => ({
-      addTaskList: state.addList,
-      addCurrentTask: state.addCurrent,
-    }),
+  const { addTaskList, addCurrentTask } = useAppStore(
+    ({ tasks }) =>
+      tasks((state) => ({
+        addTaskList: state.addList,
+        addCurrentTask: state.addCurrent,
+      })),
     shallow,
   );
-  const addSessionList = sessions((state) => state.addLists, shallow);
+  const addSessionList = useAppStore(
+    ({ sessions }) => sessions.getState().addLists,
+    shallow,
+  );
 
   useEffect(() => {
     (async function () {

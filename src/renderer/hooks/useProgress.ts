@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTaskStore } from "../store";
+import { useAppStore } from "../store";
 import { shallow } from "zustand/shallow";
 
 interface Cb {
@@ -17,7 +17,7 @@ class Counter {
   private second: number = 0;
   private timer: any;
   private cb: any;
-  private constructor() { }
+  private constructor() {}
 
   public static getInstance() {
     if (!Counter.instance) {
@@ -80,7 +80,10 @@ class Counter {
 }
 
 export default function useProgress() {
-  const current = useTaskStore((state) => state.current, shallow);
+  const current = useAppStore(
+    ({ tasks }) => tasks((state) => state.current),
+    shallow,
+  );
   const counter = useMemo(() => Counter.getInstance(), []);
   const time = useMemo(() => counter.getValues(), [current?.id]);
 
@@ -102,7 +105,7 @@ export default function useProgress() {
     counter.incrementEachSecond(onIncrementCount);
     return () => {
       onIncrementCount = null;
-      counter.incrementEachSecond(() => { });
+      counter.incrementEachSecond(() => {});
     };
   }, [current?.id]);
 

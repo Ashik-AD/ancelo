@@ -5,15 +5,23 @@
   flex-direction: column;
   row-gap: 9.8px;
 
-& .form__label {
-  font-size: 12px;
-  letter-spacing: 0.08rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  line-height: 15px;
-  color: $primary;
-}
+  & .form__label {
+    font-size: 12px;
+    letter-spacing: 0.08rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 15px;
+    color: $primary;
+  }
 
+  &__error {
+    & .form__label {
+      color: $red;
+    }
+    & input {
+      border-color: $red;
+    }
+  }
 }
 
 .time__picker {
@@ -58,7 +66,7 @@
 
     & .time__label {
       color: #6e6867;
-      font-weight: 500!important;
+      font-weight: 500 !important;
       margin-bottom: 8px;
     }
 
@@ -73,23 +81,21 @@
       background: rgb(107 19 155 / 40%);
       transition: 200ms;
     }
-
   }
 
   & .overlay {
-      position: fixed;
-      height: 100vh;
-      width: 100vw;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      visibility: hidden;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    visibility: hidden;
   }
 
   &:has(.show__picker) {
     .overlay {
-
-   visibility: visible;
+      visibility: visible;
     }
   }
 
@@ -118,7 +124,7 @@
       cursor: pointer;
 
       &-active {
-        background: rgb(107 19 155 / 50%)!important;
+        background: rgb(107 19 155 / 50%) !important;
         color: $white;
       }
       &:hover {
@@ -127,5 +133,4 @@
       }
     }
   }
-
 }

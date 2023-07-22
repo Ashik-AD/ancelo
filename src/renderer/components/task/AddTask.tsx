@@ -8,7 +8,7 @@ import Modal from "../modal/Modal";
 import { shallow } from "zustand/shallow";
 import style from "./style.module.scss";
 import { toast } from "react-hot-toast";
-import { useTaskStore } from "renderer/store";
+import { useAppStore } from "renderer/store";
 type State = {
   title: string;
   duration: number;
@@ -16,7 +16,10 @@ type State = {
 };
 
 function AddTask() {
-  const addTask = useTaskStore((state) => state.addTask, shallow);
+  const addTask = useAppStore(
+    ({ tasks }) => tasks((state) => state.addTask),
+    shallow,
+  );
   const [input, setInput] = useState<State>({
     title: "",
     duration: 25,
