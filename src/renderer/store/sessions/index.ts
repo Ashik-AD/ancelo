@@ -1,4 +1,4 @@
-import { Sessions } from "@prisma/client";
+import type { Sessions } from "lib/api";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -9,13 +9,13 @@ type State = {
 
 type Action = {
   addLists: (payload: Sessions[]) => void;
-  addSession: (payload: Sessions) => void;
+  addSessions: (payload: Sessions) => void;
   setActive: (payload: Sessions) => void;
 };
 
-export type SessionSlice = State & Action;
+export type SessionsSlice = State & Action;
 
-export const sessionSlice = create(immer<SessionSlice>((set) => ({
+export const sessionSlice = create(immer<SessionsSlice>((set) => ({
   lists: [],
   active: null,
   addLists: (payload) =>
@@ -26,7 +26,8 @@ export const sessionSlice = create(immer<SessionSlice>((set) => ({
     set((state) => {
       state.active = payload;
     }),
-  addSession: (payload) => set((state) => {
-    state.lists.push(payload)
-  })
+  addSessions: (payload) =>
+    set((state) => {
+      state.lists.push(payload);
+    }),
 })));
