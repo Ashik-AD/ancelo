@@ -25,14 +25,14 @@ model Sessions {
   description String?
   duration    Int?
   schedule    String
-  theme       String?
-  thumbnail   String?
+  thumbnail   String
   background  String?
-  tasks       SessionTasks[]
+  items       SessionItems[]
+  count       Int?
   created_at  DateTime       @default(now())
 }
 
-model SessionTasks {
+model SessionItems {
   id          String    @id @default(cuid())
   title       String
   description String?
