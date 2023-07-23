@@ -9,6 +9,7 @@ type State = {
 
 type Action = {
   addLists: (payload: Sessions[]) => void;
+  addSession: (payload: Sessions) => void;
   setActive: (payload: Sessions) => void;
 };
 
@@ -25,4 +26,7 @@ export const sessionSlice = create(immer<SessionSlice>((set) => ({
     set((state) => {
       state.active = payload;
     }),
+  addSession: (payload) => set((state) => {
+    state.lists.push(payload)
+  })
 })));

@@ -10,7 +10,7 @@ export default function App() {
       <AppLayout>
         <Routes>
           <Route index element={<Task />} />
-          <Route path="/session/" element={<Session />} />
+          <Route path="/session/*" element={<Session />} />
         </Routes>
       </AppLayout>
     </Layout>

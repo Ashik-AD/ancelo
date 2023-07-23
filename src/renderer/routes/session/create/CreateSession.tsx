@@ -1,11 +1,13 @@
-import fetcher from "lib/fetch";
 import { useState } from "react";
+import fetcher from "lib/fetch";
 import { toast } from "react-hot-toast";
+import { useAppStore } from "renderer/store";
 import Form from "renderer/components/form/Form";
 import Input from "renderer/components/form/Input";
 import SelectTime from "renderer/components/form/SelectTime";
 import type { Time } from "renderer/components/form/SelectTime";
 import TextArea from "renderer/components/form/TextArea";
+import { useNavigate } from "react-router-dom";
 
 type SessionState = {
   title: string;
@@ -24,6 +26,11 @@ export default function CreateSession() {
     schedule: "",
   });
   const [error, setError] = useState<InputError | null>(null);
+
+  const router = useNavigate()
+  const addSession = useAppStore(({ sessions }) =>
+    sessions.getState().addSession
+  );
 
   const handleInputChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -59,16 +66,20 @@ export default function CreateSession() {
     });
 
     if (res.error) {
-      toast.error(res.error || `Can't create session`, {style: {background: '#f97391'}});
+      toast.error(res.error || `Can't create session`, {
+        style: { background: "#f97391" },
+      });
       return;
     }
 
     toast.success(`${res.title} session created successfully`);
+    addSession(res);
     setInputs({
       title: "",
       schedule: "",
       description: "",
     });
+    router('/session/')
   };
 
   const handleSelectTime = async (time: Time) => {
@@ -120,7 +131,7 @@ export default function CreateSession() {
         onChange={handleInputChange}
         placeholder="Saturday Funday"
         label="Title"
-        error={error?.element == 'title' ? error.message : ''}
+        error={error?.element == "title" ? error.message : ""}
       />
       <SelectTime onSelectTime={handleSelectTime} />
       <TextArea
