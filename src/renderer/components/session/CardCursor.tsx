@@ -1,35 +1,28 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { useCallback, useState } from "react";
 import style from "./style.module.scss";
 
-export type CustomCursorRef = {
-  moveCursor: (event: MouseEvent) => void;
-};
-const CustomCursor = forwardRef<
-  CustomCursorRef,
-  unknown
->((prop, ref) => {
-  const [coordinate, setCoordinat] = useState({
+const CustomCursor = () => {
+  const [coordinate, setCoordinate] = useState({
     x: 0,
     y: 0,
   });
 
-  useImperativeHandle(ref, () => {
-    return {
-      moveCursor: function (evt: MouseEvent) {
-        setCoordinat({
-          x: evt.offsetX,
-          y: evt.offsetY,
-        });
-      },
-    };
+  const updateCoordinate = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const {offsetY, offsetX} = e.nativeEvent
+    setCoordinate({
+      x: offsetX - 30,
+      y: offsetY - 30
+    })
   }, []);
-  console.log(coordinate);
   return (
-    <div
-      className={style.custome__cursor}
-      style={{ top: `${coordinate.y}px`, left: `${coordinate.x}px` }}
-    >
-    </div>
+    <>
+      <div
+        className={style.custome__cursor}
+        style={{ top: `${coordinate.y}px`, left: `${coordinate.x}px` }}
+      >
+      </div>
+      <div className={style.cursor__overlay} onMouseMove={updateCoordinate}></div>
+    </>
   );
-});
+};
 export default CustomCursor;

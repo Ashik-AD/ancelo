@@ -1,8 +1,6 @@
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Sessions } from "lib/api";
 import CustomCursor from "./CardCursor";
-import type { CustomCursorRef } from "./CardCursor";
 import style from "./style.module.scss";
 
 export default function SessionCard(
@@ -16,25 +14,11 @@ export default function SessionCard(
     id,
   }: Sessions,
 ) {
-  const cursorRef = useRef<CustomCursorRef>(null);
-  const boundedRef = useRef<HTMLElement | null>(null);
-  useEffect(() => {
-    let element = boundedRef.current;
-    element?.addEventListener(
-      "mousemove",
-      cursorRef.current?.moveCursor,
-      false,
-    );
-    return () => {
-      element?.removeEventListener("mousemove", cursorRef.current?.moveCursor);
-    };
-  }, []);
   return (
-    <Link to={id} relative="path">
+    <Link to={id} relative="path" className={style.card__wrapper}>
       <article
         className={style.session__card}
         style={{ backgroundImage: `url(${thumbnail})` }}
-        ref={boundedRef}
       >
         <div className={style.thumbnail__wrapper}>
           <img
@@ -54,7 +38,7 @@ export default function SessionCard(
             <span>{schedule || "No Schedule"}</span>
           </div>
         </div>
-        <CustomCursor ref={cursorRef} />
+        <CustomCursor />
       </article>
     </Link>
   );

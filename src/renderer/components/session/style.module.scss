@@ -1,70 +1,90 @@
 @import '../../variables';
-
-.session__card {
-  position: relative;
-  display: flex;
-  height: 140px;
-  border-radius: 24px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  overflow: hidden;
-
-  & .thumbnail__wrapper {
-    width: 140px;
-    min-width: 100px;
-    height: 100%;
-
-    & .thumbnail {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      aspect-ratio: 1/1;
-    }
-  }
-
-  & .card__content {
+.card__wrapper {
+  .session__card {
+    position: relative;
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 1.6rem;
-    padding: 1rem;
-    background: rgba(255, 252, 255, 0.4);
-    border-top-right-radius: 24px;
-    border-bottom-right-radius: 24px;
-    backdrop-filter: blur(10px);
+    height: 140px;
+    border-radius: 24px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     overflow: hidden;
-    z-index: 1;
+    user-select:none;
 
-    &__header {
+    & .thumbnail__wrapper {
+      width: 140px;
+      min-width: 100px;
+      height: 100%;
+
+      & .thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 1/1;
+      }
+    }
+
+    & .card__content {
       display: flex;
+      flex: 1;
       flex-direction: column;
-      gap: 9px;
+      justify-content: center;
+      row-gap: 1.6rem;
+      padding: 1rem;
+      background: rgba(255, 252, 255, 0.4);
+      border-top-right-radius: 24px;
+      border-bottom-right-radius: 24px;
+      backdrop-filter: blur(10px);
+      z-index: 1;
+      overflow: hidden;
+
+      &__header {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      & .card__stat {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+      }
     }
-    & .card__stat {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
+    & .custome__cursor {
+      position: absolute;
+      height: 60px;
+      width: 60px;
+      background: #7637a9;
+      border-radius: 50%;
+      opacity: 0;
+      visibility: hidden;
+      transition: 200ms linear;
+      pointer-events: click-through;
+      z-index: 0;
     }
-  }
-  & .custome__cursor {
-    position: absolute;
-    height: 42px;
-    width: 42px;
-    background: #7637a9;
-    border-radius: 50%;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.6);
-    transition: 200ms linear;
-    z-index: 0;
-    pointer-events: click-through;
-  }
-  &:hover .custome__cursor {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-    transition: 200ms linear;
+    &:hover .custome__cursor {
+      opacity: 1;
+      visibility: visible;
+      animation: shrinkGrow 800ms infinite 200ms linear;
+      transform: scale(0.6);
+
+      @keyframes shrinkGrow {
+        from {
+          transform: scale(0.6);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+    }
+
+    & .cursor__overlay {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      user-select: none;
+      pointer-events: click-through;
+      z-index: 3;
+
+    }
   }
 }
