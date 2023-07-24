@@ -5,7 +5,7 @@
   flex-direction: column;
   row-gap: 9.8px;
 
-  & .form__label {
+  & .input__label {
     font-size: 12px;
     letter-spacing: 0.08rem;
     font-weight: 500;
@@ -15,11 +15,10 @@
   }
 
   &__error {
-    & .form__label {
-      color: $red;
-    }
-    & input {
+    & input,
+    & .input {
       border-color: $red;
+      color:$red;
     }
   }
 }

@@ -8,6 +8,7 @@ import SelectTime from "renderer/components/form/SelectTime";
 import type { Time } from "renderer/components/form/SelectTime";
 import TextArea from "renderer/components/form/TextArea";
 import { useNavigate } from "react-router-dom";
+import style from "./style.module.scss";
 
 type SessionState = {
   title: string;
@@ -27,9 +28,9 @@ export default function CreateSession() {
   });
   const [error, setError] = useState<InputError | null>(null);
 
-  const router = useNavigate()
+  const router = useNavigate();
   const addSession = useAppStore(({ sessions }) =>
-    sessions.getState().addSession
+    sessions.getState().addSessions
   );
 
   const handleInputChange = (
@@ -79,7 +80,7 @@ export default function CreateSession() {
       schedule: "",
       description: "",
     });
-    router('/session/')
+    router("/session/");
   };
 
   const handleSelectTime = async (time: Time) => {
@@ -124,24 +125,32 @@ export default function CreateSession() {
       onSubmit={handleSubmitForm}
     >
       {error && <p>{error.message}</p>}
-      <Input
-        type="text"
-        name="title"
-        value={inputs.title}
-        onChange={handleInputChange}
-        placeholder="Saturday Funday"
-        label="Title"
-        error={error?.element == "title" ? error.message : ""}
-      />
-      <SelectTime onSelectTime={handleSelectTime} />
-      <TextArea
-        label="Description"
-        name="description"
-        value={inputs.description}
-        onChange={handleInputChange}
-        placeholder="Add short description about your session"
-      />
-      <button className="btn btn__primary">Create Session</button>
+      <div className={style.form__wrapper}>
+        <div className={style.span__two}>
+          <Input
+            type="text"
+            name="title"
+            value={inputs.title}
+            onChange={handleInputChange}
+            placeholder="Saturday Funday"
+            label="Title"
+            error={error?.element == "title" ? error.message : ""}
+          />
+        </div>
+        <SelectTime onSelectTime={handleSelectTime} label="Schedule" />
+        <div className={style.span__full}>
+          <TextArea
+            label="Description"
+            name="description"
+            value={inputs.description}
+            onChange={handleInputChange}
+            placeholder="Add short description about your session"
+          />
+        </div>
+        <div>
+          <button className="btn btn__primary">Create Session</button>
+        </div>
+      </div>
     </Form>
   );
 }

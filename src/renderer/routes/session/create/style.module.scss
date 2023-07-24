@@ -1,0 +1,21 @@
+.form__wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 720px) {
+    & {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: end;
+
+      & .span__two {
+        grid-column: span 2;
+      }
+
+      & .span__full {
+        grid-column: span 3;
+      }
+    }
+  }
+}

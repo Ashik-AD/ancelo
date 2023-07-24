@@ -16,6 +16,8 @@ type PickerListProps = {
 
 interface Props {
   onSelectTime: (time: Time) => void;
+  label?: string;
+  error?: string;
 }
 
 const currentTime = (): Time => {
@@ -34,7 +36,8 @@ const currentTime = (): Time => {
 const listFrom = (min: number, max: number) => {
   return Array(max).fill(min, 0, max).map((_, index) => min + index);
 };
-export default function SelectTime({ onSelectTime }: Props) {
+
+export default function SelectTime({ onSelectTime, label, error }: Props) {
   const [time, setTime] = useState(() => currentTime());
   const [isPicked, setIsPicked] = useState(false);
   const [isShowPicker, setIsShowPicker] = useState(false);
@@ -55,33 +58,46 @@ export default function SelectTime({ onSelectTime }: Props) {
 
   const handleTogglePicker = () => {
     setIsShowPicker((prevPicker) => !prevPicker);
-    setIsPicked(true)
+    setIsPicked(true);
   };
 
   const pickerWrapperCls = isShowPicker
     ? style.show__picker
     : style.hide__picker;
   return (
-    <div className={`${style.time__picker} picker`}>
+    <div
+      className={`${style.time__picker} 
+        ${style.field__wrapper} ${
+        error?.trim() && style.field__wrapper__error
+      } picker`}
+    >
+      {label?.trim() && (
+        <label htmlFor={label} className={style.input__label}>{label}</label>
+      )}
       <div
         className={`${style.input} input`}
         role="textbox"
         aria-label="Time picker"
         onClick={handleTogglePicker}
       >
-        {(isPicked) ? (
-          <div className={style.input__value}>
-            <span className={style.time}>{addZeroLessThanTen(time.hours)}</span>
-            <span className={style.colon}>:</span>
-            <span className={style.time}>
-              {addZeroLessThanTen(time.minutes)}
+        {(isPicked)
+          ? (
+            <div className={style.input__value}>
+              <span className={style.time}>
+                {addZeroLessThanTen(time.hours)}
+              </span>
+              <span className={style.colon}>:</span>
+              <span className={style.time}>
+                {addZeroLessThanTen(time.minutes)}
+              </span>
+              <span className={style.meridiem}>{time.meridiem}</span>
+            </div>
+          )
+          : (
+            <span className={style.picker__label}>
+              Select Time
             </span>
-            <span className={style.meridiem}>{time.meridiem}</span>
-          </div>
-        ) : 
-          (<span className={style.picker__label}>
-            Select Time
-          </span>)}
+          )}
       </div>
       <div className={`${style.picker__wrapper} ${pickerWrapperCls}`}>
         <div className={style.picker__hour}>

@@ -11,7 +11,7 @@ function Input({ name, type, label, error, ...rest }: Props) {
     <div
       className={`${Style.field__wrapper} ${error && Style.field__wrapper__error}`}
     >
-      {label && <label className={Style.form__label}>{label}</label>}
+      {label && <label className={Style.input__label}>{label}</label>}
       <input type={type} name={name} {...rest} />
     </div>
   );

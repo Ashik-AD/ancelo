@@ -13,9 +13,9 @@ type Action = {
   setActive: (payload: Sessions) => void;
 };
 
-export type SessionsSlice = State & Action;
+export type SessionSlice = State & Action;
 
-export const sessionSlice = create(immer<SessionsSlice>((set) => ({
+export const sessionSlice = create(immer<SessionSlice>((set) => ({
   lists: [],
   active: null,
   addLists: (payload) =>
