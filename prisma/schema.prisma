@@ -28,7 +28,6 @@ model Sessions {
   thumbnail   String
   background  String?
   items       SessionItems[]
-  count       Int?
   created_at  DateTime       @default(now())
 }
 
