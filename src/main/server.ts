@@ -5,6 +5,7 @@ import cors from "cors";
 
 import type { Sessions, Tasks } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { thumbnailNameByTime } from "../lib/thumbnail";
 
 const app = express();
 const port = 6699;
@@ -70,8 +71,26 @@ app.get("/tasks/today", async (req, res) => {
 
 app.get("/sessions", async (req, res) => {
   try {
-    const sessions = await prisma.sessions.findMany();
-    res.json(sessions);
+    const sessions = await prisma.sessions.findMany({
+      include: {
+        _count: {
+          select: {
+            items: true,
+          },
+        },
+      },
+    });
+    const normalize = sessions.map((session) => ({
+      id: session.id,
+      title: session.title,
+      description: session.description,
+      thumbnail: session.thumbnail,
+      itemsCount: session._count.items,
+      created_at: session.created_at,
+      schedule: session.schedule,
+      duration: session.duration,
+    }));
+    res.json(normalize);
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       res.json({ error: error.message });
@@ -85,12 +104,13 @@ app.post("/sessions", async (req, res) => {
     "title" | "description" | "schedule"
   >;
   try {
+    const thumbnail = thumbnailNameByTime(schedule);
     const session = await prisma.sessions.create({
       data: {
-        duration: 3,
         title,
         description,
         schedule,
+        thumbnail,
       },
     });
     res.json({ session });
