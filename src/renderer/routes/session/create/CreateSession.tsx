@@ -74,7 +74,7 @@ export default function CreateSession() {
     }
 
     toast.success(`${res.title} session created successfully`);
-    addSession(res);
+    addSession({...res.session});
     setInputs({
       title: "",
       schedule: "",
@@ -137,7 +137,11 @@ export default function CreateSession() {
             error={error?.element == "title" ? error.message : ""}
           />
         </div>
-        <SelectTime onSelectTime={handleSelectTime} label="Schedule" />
+        <SelectTime 
+          onSelectTime={handleSelectTime} 
+          label="Schedule"
+          clear={inputs.schedule ? true : false}
+        />
         <div className={style.span__full}>
           <TextArea
             label="Description"
