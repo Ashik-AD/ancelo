@@ -140,7 +140,7 @@ export default function CreateSession() {
         <SelectTime 
           onSelectTime={handleSelectTime} 
           label="Schedule"
-          clear={inputs.schedule ? true : false}
+          clear={!inputs.schedule ? true : false}
         />
         <div className={style.span__full}>
           <TextArea

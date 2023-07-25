@@ -50,6 +50,8 @@
 
   & .picker__wrapper {
     position: absolute;
+    top: 100%;
+    left: 0;
     display: flex;
     gap: 8px;
     max-height: 180px;

@@ -18,30 +18,41 @@ interface Props {
   onSelectTime: (time: Time) => void;
   label?: string;
   error?: string;
+  clear?: boolean;
 }
 
 const currentTime = (): Time => {
   let date = new Date();
   const meridiem = date.toLocaleString().split(" ")
     .pop()!! as "AM" | "PM";
-  const hours = +date.getHours() > 12 ? +date.getHours() - 12 : date.getHours();
 
   return {
     minutes: date.getMinutes(),
-    hours,
+    hours: date.getHours(),
     meridiem,
   };
 };
+
+function formatHours12Sys(hours: number) {
+  if (typeof hours != "number" && Number.isNaN(hours)) {
+    throw new Error("Hours is not number");
+  }
+  return hours > 12 ? hours - 12 : hours;
+}
 
 const listFrom = (min: number, max: number) => {
   return Array(max).fill(min, 0, max).map((_, index) => min + index);
 };
 
-export default function SelectTime({ onSelectTime, label, error }: Props) {
+export default function SelectTime(
+  { onSelectTime, label, error, clear }: Props,
+) {
   const [time, setTime] = useState(() => currentTime());
   const [isPicked, setIsPicked] = useState(false);
   const [isShowPicker, setIsShowPicker] = useState(false);
+  const hours12Sys = formatHours12Sys(time.hours);
 
+  const pickerRef = useRef<HTMLDivElement | null>(null)
   const hours = listFrom(1, 12);
   const minutes = listFrom(0, 60);
 
@@ -50,6 +61,28 @@ export default function SelectTime({ onSelectTime, label, error }: Props) {
       onSelectTime(time);
     }
   }, [isPicked, isShowPicker, time]);
+
+  useEffect(() => {
+    if (clear) {
+      setIsPicked(false);
+      setIsShowPicker(false);
+    }
+  }, [clear]);
+
+  useEffect(() =>{
+
+    pickerRef.current?.addEventListener('focus', () => {
+      setIsShowPicker(true)
+    })
+
+    pickerRef.current?.addEventListener('focusout', () => {
+      setIsShowPicker(false)
+    })
+
+    pickerRef.current?.addEventListener('focusin', () => {})
+
+  }, [])
+
 
   const handlePick = (id: keyof Time, value: number | string) => {
     setTime((prevTime) => ({ ...prevTime, [id]: value }));
@@ -79,12 +112,14 @@ export default function SelectTime({ onSelectTime, label, error }: Props) {
         role="textbox"
         aria-label="Time picker"
         onClick={handleTogglePicker}
+        tabIndex={0}
+        ref={pickerRef}
       >
         {(isPicked)
           ? (
             <div className={style.input__value}>
               <span className={style.time}>
-                {addZeroLessThanTen(time.hours)}
+                {addZeroLessThanTen(formatHours12Sys(time.hours))}
               </span>
               <span className={style.colon}>:</span>
               <span className={style.time}>
@@ -104,7 +139,7 @@ export default function SelectTime({ onSelectTime, label, error }: Props) {
           <h5 className={style.time__label}>Hours</h5>
           <PickerList
             list={hours}
-            matchValue={time.hours}
+            matchValue={hours12Sys}
             onPick={(hours) => handlePick("hours", hours)}
           />
         </div>
@@ -144,7 +179,7 @@ function PickerList({ list, matchValue, onPick }: PickerListProps) {
   }, []);
 
   return (
-    <ul className={style.list__wrapper} ref={wrapperRef}>
+    <ul className={style.list__wrapper} ref={wrapperRef} tabIndex={0}>
       {list.map((item) => {
         const isMatched = matchValue == item;
         return (
@@ -154,6 +189,7 @@ function PickerList({ list, matchValue, onPick }: PickerListProps) {
             data-value={item}
             onClick={(evt) => onPick(evt.currentTarget.dataset.value!!)}
             ref={isMatched ? activeRef : null}
+            tabIndex={0}
           >
             {item}
           </li>
