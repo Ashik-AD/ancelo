@@ -28,9 +28,18 @@ const SelectTasks = forwardRef<SelectTasksHandle, SelectTasksProps>(
 
     useImperativeHandle(ref, () => ({
       selected: function () {
-        const tasks = selectedTasks?.map((task) => ({
-          ...task,
-        }));
+        const tasks = selectedTasks?.filter((task) => {
+          if (task["selected"] === true) {
+            return {
+              id: task.id,
+              title: task.title,
+              description: task.description,
+              duration: task.duration,
+              completed: false,
+              created_at: task.created_at,
+            };
+          }
+        });
         return tasks;
       },
     }), []);
