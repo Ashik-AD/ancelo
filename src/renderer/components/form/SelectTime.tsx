@@ -52,7 +52,7 @@ export default function SelectTime(
   const [isShowPicker, setIsShowPicker] = useState(false);
   const hours12Sys = formatHours12Sys(time.hours);
 
-  const pickerRef = useRef<HTMLDivElement | null>(null)
+  const pickerRef = useRef<HTMLDivElement | null>(null);
   const hours = listFrom(1, 12);
   const minutes = listFrom(0, 60);
 
@@ -69,20 +69,13 @@ export default function SelectTime(
     }
   }, [clear]);
 
-  useEffect(() =>{
-
-    pickerRef.current?.addEventListener('focus', () => {
-      setIsShowPicker(true)
-    })
-
-    pickerRef.current?.addEventListener('focusout', () => {
-      setIsShowPicker(false)
-    })
-
-    pickerRef.current?.addEventListener('focusin', () => {})
-
-  }, [])
-
+  useEffect(() => {
+    pickerRef.current?.addEventListener("keydown", (evt) => {
+      if (evt.key == "Enter") {
+        setIsShowPicker((prevState) => !prevState);
+      }
+    });
+  }, []);
 
   const handlePick = (id: keyof Time, value: number | string) => {
     setTime((prevTime) => ({ ...prevTime, [id]: value }));
