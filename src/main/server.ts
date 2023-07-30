@@ -99,10 +99,12 @@ app.get("/sessions", async (req, res) => {
   }
 });
 app.post("/sessions", async (req, res) => {
-  const { title, description, schedule } = req.body as Pick<
-    Sessions,
-    "title" | "description" | "schedule"
-  >;
+  const { title, description, schedule, tasks } = req.body as
+    & Pick<
+      Sessions,
+      "title" | "description" | "schedule"
+    >
+    & { tasks: Tasks[] };
   try {
     const thumbnail = thumbnailNameByTime(schedule);
     const session = await prisma.sessions.create({
@@ -111,6 +113,9 @@ app.post("/sessions", async (req, res) => {
         description,
         schedule,
         thumbnail,
+        items: {
+          create: tasks,
+        },
       },
     });
     res.json({ session });

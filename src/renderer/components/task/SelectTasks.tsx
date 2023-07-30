@@ -28,19 +28,21 @@ const SelectTasks = forwardRef<SelectTasksHandle, SelectTasksProps>(
 
     useImperativeHandle(ref, () => ({
       selected: function () {
-        const tasks = selectedTasks?.filter((task) => {
+        let normalizedTasks: Tasks[] = [];
+
+        selectedTasks?.forEach((task) => {
           if (task["selected"] === true) {
-            return {
+            normalizedTasks.push({
               id: task.id,
               title: task.title,
               description: task.description,
               duration: task.duration,
               completed: false,
               created_at: task.created_at,
-            };
+            });
           }
         });
-        return tasks;
+        return normalizedTasks;
       },
     }), [selectedTasks]);
 
