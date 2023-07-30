@@ -8,9 +8,9 @@ import SelectTime from "renderer/components/form/SelectTime";
 import type { Time } from "renderer/components/form/SelectTime";
 import TextArea from "renderer/components/form/TextArea";
 import { useNavigate } from "react-router-dom";
-import style from "../style.module.scss";
+import style from "./style.module.scss";
 
-type SessionState = {
+export type SessionFormState = {
   title: string;
   description?: string;
   schedule: string;
@@ -20,8 +20,12 @@ type InputError = {
   element: string;
   message: string;
 };
-export default function SessionForm() {
-  const [inputs, setInputs] = useState<SessionState>({
+
+interface SessionFormProps {
+  onCreate?: (values: SessionFormState) => void;
+}
+export default function SessionForm({ onCreate }: SessionFormProps) {
+  const [inputs, setInputs] = useState<SessionFormState>({
     title: "",
     description: "",
     schedule: "",
@@ -61,26 +65,30 @@ export default function SessionForm() {
       return;
     }
 
-    const res = await fetcher("/sessions", {
-      method: "POST",
-      body: JSON.stringify(inputs),
-    });
-
-    if (res.error) {
-      toast.error(res.error || `Can't create session`, {
-        style: { background: "#f97391" },
+    if (!onCreate) {
+      const res = await fetcher("/sessions", {
+        method: "POST",
+        body: JSON.stringify(inputs),
       });
+
+      if (res.error) {
+        toast.error(res.error || `Can't create session`, {
+          style: { background: "#f97391" },
+        });
+        return;
+      }
+
+      toast.success(`${res.session.title} session created successfully`);
+      addSession({ ...res.session });
+      setInputs({
+        title: "",
+        schedule: "",
+        description: "",
+      });
+      router("/session/");
       return;
     }
-
-    toast.success(`${res.title} session created successfully`);
-    addSession({ ...res.session });
-    setInputs({
-      title: "",
-      schedule: "",
-      description: "",
-    });
-    router("/session/");
+    onCreate(inputs);
   };
 
   const handleSelectTime = async (time: Time) => {
