@@ -42,7 +42,7 @@ const SelectTasks = forwardRef<SelectTasksHandle, SelectTasksProps>(
         });
         return tasks;
       },
-    }), []);
+    }), [selectedTasks]);
 
     useEffect(() => {
       setSelectedTasks(tasks as ExtendedTasks[]);
