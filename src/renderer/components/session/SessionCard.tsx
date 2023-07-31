@@ -15,7 +15,7 @@ export default function SessionCard(
   }: Sessions,
 ) {
   return (
-    <Link to={id} relative="path" className={style.card__wrapper}>
+    <Link to={`/session/detail/${id}`} className={style.card__wrapper}>
       <article
         className={style.session__card}
         style={{ backgroundImage: `url(${thumbnail})` }}

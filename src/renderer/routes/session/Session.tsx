@@ -7,6 +7,7 @@ export default function Session() {
     <Routes>
       <Route index element={<SessionList />} />
       <Route path="/create" element={<CreateSession />} />
+      <Route path="/detail/:id" element={<h1>Hello </h1>} />
     </Routes>
   );
 }
