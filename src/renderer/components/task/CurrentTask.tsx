@@ -2,7 +2,7 @@
  * @params { id, title, description, duration}
  * @method { repeateTask(taskId), toggleRandomTask() }
  */
-import TaskDuration from "../taskDuration/TaskDuration";
+import TaskDuration from "./TaskDuration";
 import ProgressBar from "../progressbar/ProgressBar";
 import { Icon } from "@iconify/react";
 import style from "./style.module.scss";

@@ -6,7 +6,7 @@ function TaskDuration({ duration }: { duration: string | number }) {
   return (
     <div className={style.task__duration}>
       <Icon icon="mdi:clock-outline" />
-      <span className="medium">
+      <span className="text-small bold">
         {calculateDuration(duration)}
       </span>
     </div>
