@@ -197,6 +197,18 @@ textarea {
   font-size: 16px;
 }
 
+// Need to clear the padding because of full width banner
+.content__main:has(div.content__full) {
+  padding: 0;
+
+  & .nav__wrapper {
+    position: absolute;
+    width: 100%;
+    padding: 0 24px;
+    top: 24px;
+  }
+}
+
 // Modal
 .modal {
   position: fixed;

@@ -42,14 +42,14 @@ function AppLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <Router>
-      <div className={Style.app__layout}>
+    <main className={`content__main ${Style.app__layout}`}>
+      <Router>
         <div className="nav__wrapper">
           <Navigation />
         </div>
-        <section>{children}</section>
-      </div>
-    </Router>
+        {children}
+      </Router>
+    </main>
   );
 }
 export default AppLayout;
