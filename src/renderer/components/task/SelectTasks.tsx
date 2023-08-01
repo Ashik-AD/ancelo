@@ -13,11 +13,16 @@ import style from "./style.module.scss";
 export interface SelectTasksProps {
   tasks: Tasks[];
 }
+export type SelectedTasks  = {
+  title: string,
+  description: string,
+  duration: number
+}
 type ExtendedTasks = Tasks & {
   selected: boolean;
 };
 export interface SelectTasksHandle {
-  selected: () => Tasks[];
+  selected: () => SelectedTasks[];
 }
 
 const SelectTasks = forwardRef<SelectTasksHandle, SelectTasksProps>(
@@ -28,17 +33,14 @@ const SelectTasks = forwardRef<SelectTasksHandle, SelectTasksProps>(
 
     useImperativeHandle(ref, () => ({
       selected: function () {
-        let normalizedTasks: Tasks[] = [];
+        let normalizedTasks: SelectedTasks[] = [];
 
         selectedTasks?.forEach((task) => {
           if (task["selected"] === true) {
             normalizedTasks.push({
-              id: task.id,
               title: task.title,
               description: task.description,
               duration: task.duration,
-              completed: false,
-              created_at: task.created_at,
             });
           }
         });
