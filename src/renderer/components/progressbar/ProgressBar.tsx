@@ -10,10 +10,11 @@ interface Props {
   duration: number;
   onProgressFinish: () => void;
   reset?: boolean;
+  start: boolean;
 }
-function ProgressBar({ duration, onProgressFinish, reset }: Props) {
+function ProgressBar({ start = false, duration, onProgressFinish, reset }: Props) {
   const { hour, second, minute, progress, stopTimer, resetTimer } =
-    useProgress();
+    useProgress(start);
 
   useEffect(() => {
     if (progress == duration * 60) {

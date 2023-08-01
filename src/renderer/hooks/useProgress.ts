@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppStore } from "../store";
 import { shallow } from "zustand/shallow";
 
+export type UseProgressProps = {
+  start: boolean;
+};
 interface Cb {
   hour: number;
   minute: number;
@@ -79,7 +82,7 @@ class Counter {
   }
 }
 
-export default function useProgress() {
+export default function useProgress(start: boolean) {
   const current = useAppStore(
     ({ tasks }) => tasks((state) => state.current),
     shallow,
@@ -96,18 +99,20 @@ export default function useProgress() {
 
   useEffect(() => {
     let onIncrementCount = null;
-    onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
-      setSecond(second);
-      setMinute(minute);
-      setHour(hour);
-      setProgress(progress);
-    };
-    counter.incrementEachSecond(onIncrementCount);
+    if (start) {
+      onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
+        setSecond(second);
+        setMinute(minute);
+        setHour(hour);
+        setProgress(progress);
+      };
+      counter.incrementEachSecond(onIncrementCount);
+    }
     return () => {
       onIncrementCount = null;
       counter.incrementEachSecond(() => {});
     };
-  }, [current?.id]);
+  }, [current?.id, start]);
 
   return {
     second,

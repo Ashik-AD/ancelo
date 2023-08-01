@@ -10,7 +10,7 @@ import { useAppStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 
 function CurrentTask() {
-  const { current, listLength, setNextTask } = useAppStore(
+  const { current, listLength, setNextTask, start } = useAppStore(
     ({ tasks }) =>
       tasks((state) => ({
         current: state.current,
@@ -41,6 +41,7 @@ function CurrentTask() {
         duration={current.duration}
         onProgressFinish={setNextTask}
         reset={listLength != 0 || current ? true : false}
+        start={start}
       />
     </div>
   );
