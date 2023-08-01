@@ -106,13 +106,17 @@ app.post("/sessions", async (req, res) => {
     >
     & { tasks: Tasks[] };
   try {
-    const thumbnail = thumbnailNameByTime(schedule);
+    let thumbnail = thumbnailNameByTime(schedule);
+    let duration = tasks?.reduce((acc, cur) => {
+      return cur.duration + acc;
+    }, 0)
     const session = await prisma.sessions.create({
       data: {
         title,
         description,
         schedule,
         thumbnail,
+        duration,
         items: {
           create: tasks,
         },
@@ -125,6 +129,20 @@ app.post("/sessions", async (req, res) => {
     }
     res.json({ error: "Something went wrong. Cant able to create session" });
     console.log(error);
+  }
+});
+
+app.get("/sessions/:sessionId/tasks", async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const tasks = await prisma.sessionItems.findMany({
+      where: {
+        sessionsId: sessionId,
+      },
+    });
+    res.send({ tasks });
+  } catch (error) {
+    res.send({ error: error.message });
   }
 });
 export default app;
