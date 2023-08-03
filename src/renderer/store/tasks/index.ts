@@ -6,6 +6,7 @@ interface TasksState {
   completed: Tasks[];
   current: Tasks | null;
   start: boolean;
+  listId: string | undefined;
 }
 
 interface TasksAction {
@@ -15,6 +16,7 @@ interface TasksAction {
   addTask: (payload: Tasks) => void;
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
+  addListId: (payload: string) => void;
 }
 export type TaskSlice = TasksState & TasksAction;
 export const taskSlice = create(immer<TaskSlice>((set) => ({
@@ -22,6 +24,7 @@ export const taskSlice = create(immer<TaskSlice>((set) => ({
   completed: [],
   current: null,
   start: false,
+  listId: undefined,
   addList: (payload) => set({ list: payload }),
   addTask: (payload) =>
     set((state) => {
@@ -37,6 +40,7 @@ export const taskSlice = create(immer<TaskSlice>((set) => ({
       if (state.list.length == 0) {
         state.completed.push(state.current!!);
         state.current = null;
+        return;
       }
       const currentTask = state.list.splice(0, 1);
       state.completed.push(state.current!!);
@@ -50,5 +54,8 @@ export const taskSlice = create(immer<TaskSlice>((set) => ({
     set((state) => {
       state.completed.push(payload);
     }),
+  addListId: (payload) => set((state) => {
+    state.listId = payload;
+  })
 })));
 

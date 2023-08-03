@@ -4,7 +4,7 @@ import TaskList from "renderer/components/task/TaskList";
 import { useAppStore } from "renderer/store";
 function Task() {
   const taskList = useAppStore(
-    (state) => state.tasks.getState().list,
+    ({tasks}) => tasks(({list}) => list) 
   );
 
   return (

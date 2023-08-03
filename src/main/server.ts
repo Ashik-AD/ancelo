@@ -109,7 +109,7 @@ app.post("/sessions", async (req, res) => {
     let thumbnail = thumbnailNameByTime(schedule);
     let duration = tasks?.reduce((acc, cur) => {
       return cur.duration + acc;
-    }, 0)
+    }, 0);
     const session = await prisma.sessions.create({
       data: {
         title,
@@ -143,6 +143,23 @@ app.get("/sessions/:sessionId/tasks", async (req, res) => {
     res.send({ tasks });
   } catch (error) {
     res.send({ error: error.message });
+  }
+});
+
+app.delete("/sessions/:id/flush", async (req, res) => {
+  try {
+    var id = req.params.id;
+    if (!id) {
+      throw new Error(`Invalid session id`);
+    }
+    await prisma.sessions.delete({ where: { id } });
+    res.send({ message: `Session deleted successfully!` });
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      res.send({ error: `Session is not found` });
+    }
+    console.log(error);
+    res.send({ error: `Something went wrong`, dev: error.message });
   }
 });
 export default app;

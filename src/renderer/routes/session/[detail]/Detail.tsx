@@ -10,12 +10,24 @@ import Start from "renderer/components/start/Start";
 
 export default function Detail() {
   const { id } = useParams();
-  const session = useAppStore(
-    ({ sessions }) =>
-      sessions((session) => session.lists.find((item) => item.id == id)),
+  const { session, started, addList, addListId, addToCurrentTask } = useAppStore(
+    ({ sessions, tasks }) =>
+      ({
+        session: sessions((session) => session.lists.find((item) => item.id == id)),
+        started: tasks((task) => task.start && task.listId == id),
+        addListId: tasks.getState().addListId,
+        addList: tasks.getState().addList, 
+        addToCurrentTask: tasks.getState().addCurrent
+      }),
     shallow,
   );
   const { data, isLoading, error } = useFetch(`/sessions/${id}/tasks`);
+
+  let handleStart = () => {
+    addList(data?.tasks)
+    addToCurrentTask()
+    addListId(id!!);
+  }
 
   return (
     <div className={`content__full`}>
@@ -30,7 +42,7 @@ export default function Detail() {
         duration={session?.duration?.toString()!!}
         schedule={session?.schedule!!}
       />
-      <Start />
+      <Start onStart={handleStart} started={started} />
 
       <h4>Tasks</h4>
       {data?.tasks && <TaskList list={data?.tasks} />}

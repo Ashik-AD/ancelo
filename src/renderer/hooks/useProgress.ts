@@ -83,8 +83,11 @@ class Counter {
 }
 
 export default function useProgress(start: boolean) {
-  const current = useAppStore(
-    ({ tasks }) => tasks((state) => state.current),
+  const { current, isStart } = useAppStore(
+    ({ tasks }) => tasks((state) => ({
+    current: state.current,
+    isStart: state.start
+    })),
     shallow,
   );
   const counter = useMemo(() => Counter.getInstance(), []);
@@ -99,7 +102,7 @@ export default function useProgress(start: boolean) {
 
   useEffect(() => {
     let onIncrementCount = null;
-    if (start) {
+    if (start || isStart) {
       onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
         setSecond(second);
         setMinute(minute);
@@ -112,7 +115,7 @@ export default function useProgress(start: boolean) {
       onIncrementCount = null;
       counter.incrementEachSecond(() => {});
     };
-  }, [current?.id, start]);
+  }, [current?.id, start, isStart]);
 
   return {
     second,

@@ -13,7 +13,7 @@ function AppLayout({ children }: { children: ReactNode }) {
     ({ tasks }) =>
       tasks((state) => ({
         addTaskList: state.addList,
-      })),
+      }), shallow),
     shallow,
   );
   const addSessionList = useAppStore(
