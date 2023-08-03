@@ -6,6 +6,7 @@ import useFetch from "renderer/hooks/useFetch";
 import { useAppStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 import Stats from "renderer/components/stats/Stats";
+import Start from "renderer/components/start/Start";
 
 export default function Detail() {
   const { id } = useParams();
@@ -29,9 +30,9 @@ export default function Detail() {
         duration={session?.duration?.toString()!!}
         schedule={session?.schedule!!}
       />
+      <Start />
 
       <h4>Tasks</h4>
-
       {data?.tasks && <TaskList list={data?.tasks} />}
     </div>
   );

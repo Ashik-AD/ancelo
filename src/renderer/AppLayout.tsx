@@ -9,11 +9,10 @@ import { toast } from "react-hot-toast";
 import { useAppStore } from "./store";
 
 function AppLayout({ children }: { children: ReactNode }) {
-  const { addTaskList, addCurrentTask } = useAppStore(
+  const { addTaskList } = useAppStore(
     ({ tasks }) =>
       tasks((state) => ({
         addTaskList: state.addList,
-        addCurrentTask: state.addCurrent,
       })),
     shallow,
   );
@@ -36,7 +35,6 @@ function AppLayout({ children }: { children: ReactNode }) {
       }
 
       addTaskList(taskList.tasks);
-      addCurrentTask();
       addSessionList(sessionList);
     })();
   }, []);
