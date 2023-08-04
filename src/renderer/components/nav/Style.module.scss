@@ -43,5 +43,9 @@
     & svg {
       font-size: 18px;
     }
+
+    &:focus {
+      border-color: $skin;
+    }
   }
 }

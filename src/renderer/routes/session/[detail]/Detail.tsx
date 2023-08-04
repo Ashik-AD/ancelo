@@ -39,7 +39,7 @@ export default function Detail() {
       </Banner>
       <Stats
         totalTask={session?.itemsCount!!}
-        duration={session?.duration?.toString()!!}
+        duration={session?.duration!!}
         schedule={session?.schedule!!}
       />
       <Start onStart={handleStart} started={started} />
