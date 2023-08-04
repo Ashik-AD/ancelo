@@ -40,6 +40,7 @@ export const taskSlice = create(immer<TaskSlice>((set) => ({
       if (state.list.length == 0) {
         state.completed.push(state.current!!);
         state.current = null;
+        state.start = false;
         return;
       }
       const currentTask = state.list.splice(0, 1);
