@@ -8,7 +8,7 @@ function Navigation() {
     <nav className={Style.app__navigation}>
       <div className={Style.nav__main}>
         <NavItem
-          path="/"
+          path="/index.html"
           icon={<Icon icon="vscode-icons:file-type-taskfile" />}
           label={"My Task"}
         />
