@@ -8,22 +8,18 @@ import { useEffect } from "react";
 
 interface Props {
   duration: number;
-  onProgressFinish: () => void;
+  onProgressFinish?: () => void;
   reset?: boolean;
   start: boolean;
 }
-function ProgressBar({ start = false, duration, onProgressFinish, reset }: Props) {
-  const { hour, second, minute, progress, stopTimer, resetTimer } =
-    useProgress(start);
+function ProgressBar(
+  { start = false, duration, onProgressFinish, reset }: Props,
+) {
+  const { hour, second, minute, progress } = useProgress(start);
 
   useEffect(() => {
     if (progress == duration * 60) {
-      if (reset) {
-        resetTimer();
-      } else {
-        stopTimer();
-      }
-      onProgressFinish();
+      onProgressFinish && onProgressFinish();
     }
   }, [progress]);
   const progressBarWidth = (progress * 1000) / (duration * 60 * 1000) *
