@@ -6,6 +6,7 @@ import cors from "cors";
 import type { Sessions, Tasks } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { thumbnailNameByTime } from "../lib/thumbnail";
+import path from "path";
 
 const app = express();
 const port = 6699;
@@ -17,6 +18,8 @@ app.use(bodyParser.json());
 app.listen(port, () => {
   console.log(`Server listening ${port}`);
 });
+
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.post("/tasks", async (req, res, next) => {
   try {
