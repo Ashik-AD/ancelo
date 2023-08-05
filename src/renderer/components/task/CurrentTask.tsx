@@ -10,12 +10,11 @@ import { useAppStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 
 function CurrentTask() {
-  const { current, listLength, setNextTask, start } = useAppStore(
+  const { current, listLength, start } = useAppStore(
     ({ tasks }) =>
       tasks((state) => ({
         current: state.current,
         start: state.start,
-        setNextTask: state.addNext,
         listLength: state.list.length,
       })),
     shallow,
@@ -39,7 +38,6 @@ function CurrentTask() {
       </div>
       <ProgressBar
         duration={current.duration}
-        onProgressFinish={setNextTask}
         reset={listLength != 0 || current ? true : false}
         start={start}
       />
