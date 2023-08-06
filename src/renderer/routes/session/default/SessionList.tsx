@@ -3,23 +3,7 @@ import SessionCard from "renderer/components/session/SessionCard";
 import { useAppStore } from "renderer/store";
 import { shallow } from "zustand/shallow";
 import style from "./style.module.scss";
-import morning from "../../../../images/thumbnail_morning.png";
-import afternoon from "../../../../images/thumbnail_afternoon.png";
-import evening from "../../../../images/thumbnail_evening.png";
-import night from "../../../../images/thumbnail_night.png";
-
-type Thumbnails = {
-  morning: string;
-  afternoon: string;
-  evening: string;
-  night: string;
-};
-const thumbnails: Thumbnails = {
-  morning,
-  afternoon,
-  evening,
-  night,
-};
+import images, { Images } from "renderer/components/images";
 
 export default function SessionList() {
   const sessions = useAppStore(
@@ -30,7 +14,7 @@ export default function SessionList() {
     <SessionCard
       key={session.id}
       {...session}
-      thumbnail={thumbnails[session.thumbnail as keyof Thumbnails]}
+      thumbnail={images[session.thumbnail as keyof Images]}
     />
   ));
   return (
