@@ -13,7 +13,11 @@ function TaskItem(
   { id, bulletNo, title, description, duration, onUpdateDescription }: Props,
 ) {
   return (
-    <article className={style.task__item}>
+    <article
+      tabIndex={0}
+      aria-label="Today's your task"
+      className={style.task__item}
+    >
       <span className="semiBold small">#{bulletNo}</span>
       <div className={`${style.task__details}`}>
         <h4 className={style.task__title}>{title}</h4>

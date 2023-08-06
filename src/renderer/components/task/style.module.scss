@@ -8,6 +8,9 @@
   align-items: center;
   border-bottom: 1px solid $primary;
 
+  &:focus {
+    border-color: $skin;
+  }
   & .task__details {
     flex-grow: 1;
     display: flex;
