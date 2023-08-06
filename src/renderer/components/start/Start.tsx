@@ -1,9 +1,8 @@
-import { ReactNode, useCallback, useEffect } from "react";
+import { ReactNode, useCallback } from "react";
 import { Icon } from "@iconify/react";
 
 import style from "./style.module.scss";
 import { useAppStore } from "renderer/store";
-import { shallow } from "zustand/shallow";
 import useProgress from "renderer/hooks/useProgress";
 
 interface Props {
@@ -13,30 +12,20 @@ interface Props {
 }
 
 export default function Start({ children, started = false, onStart }: Props) {
-  const { startTask, isStarted, currentTask, loadNextTask } = useAppStore(
+  const { startTask, isStarted } = useAppStore(
     ({ tasks }) =>
       tasks((task) => ({
         startTask: task.addStart,
         isStarted: task.start,
         currentTask: task.current,
         loadNextTask: task.addNext,
-      }), shallow),
-    shallow,
+      })),
   );
 
   const start = started || isStarted;
   // running this hook let's me count progress globally and can sync progress automaticaly
   // component that uses progressbar component even they're unmounted and sync when mounting
-  const { progress, resetTimer } = useProgress(start);
-  let duration = currentTask?.duration!! * 60;
-
-  useEffect(() => {
-  
-  if (progress == duration) {
-    loadNextTask();
-    resetTimer()
-  }
-  }, [progress, currentTask?.duration])
+   useProgress(start);
 
   let handleStart = useCallback(() => {
     onStart && onStart();
