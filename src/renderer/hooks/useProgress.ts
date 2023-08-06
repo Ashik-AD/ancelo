@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppStore } from "../store";
-import { shallow } from "zustand/shallow";
+import { playAlert } from "renderer/components/play-alert/PlayAlert";
 
 export type UseProgressProps = {
   start: boolean;
@@ -71,6 +71,7 @@ class Counter {
   public stop() {
     if (this.timer) {
       clearInterval(this.timer);
+      this.timer = null;
     }
   }
 
@@ -83,46 +84,60 @@ class Counter {
 }
 
 export default function useProgress(start: boolean) {
-  const { current, isStart } = useAppStore(
-    ({ tasks }) => tasks((state) => ({
-    current: state.current,
-    isStart: state.start
-    })),
-    shallow,
+  const { current, isStart, setNextTask } = useAppStore(
+    ({ tasks }) =>
+      tasks((state) => ({
+        current: state.current,
+        isStart: state.start,
+        setNextTask: state.addNext,
+      })),
   );
-  const counter = useMemo(() => Counter.getInstance(), []);
+
+  const intervalTime = useAppStore(({ settings }) =>
+    settings(({ interval }) => interval)
+  );
+
+  const counter = useMemo(() => Counter.getInstance(), [current?.id]);
   const time = useMemo(() => counter.getValues(), [current?.id]);
 
-  const [second, setSecond] = useState(() => time.second);
-  const [minute, setMinute] = useState(() => time.minute);
-  const [hour, setHour] = useState(() => time.hour);
-  const [progress, setProgress] = useState(() => time.progress);
-  const resetTimer = useCallback(() => counter.reset(), []);
-  const stopTimer = useCallback(() => counter.stop(), []);
+  const [second, setSecond] = useState(time.second);
+  const [minute, setMinute] = useState(time.minute);
+  const [hour, setHour] = useState(time.hour);
+  const [progress, setProgress] = useState(time.progress);
+
+  const onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
+    setSecond(second);
+    setMinute(minute);
+    setHour(hour);
+    setProgress(progress);
+  };
 
   useEffect(() => {
-    let onIncrementCount = null;
     if (start || isStart) {
-      onIncrementCount = ({ hour, second, minute, progress }: Cb) => {
-        setSecond(second);
-        setMinute(minute);
-        setHour(hour);
-        setProgress(progress);
-      };
       counter.incrementEachSecond(onIncrementCount);
     }
     return () => {
-      onIncrementCount = null;
       counter.incrementEachSecond(() => {});
     };
   }, [current?.id, start, isStart]);
+
+  useEffect(() => {
+    if (minute == current?.duration) {
+      playAlert.play();
+      counter.stop();
+      counter.reset();
+      setMinute(0);
+      setTimeout(() => {
+        setNextTask();
+        counter.incrementEachSecond(onIncrementCount)
+      }, intervalTime);
+    }
+  }, [minute, current?.id, intervalTime]);
 
   return {
     second,
     hour,
     minute,
     progress,
-    resetTimer,
-    stopTimer,
   } as const;
 }
