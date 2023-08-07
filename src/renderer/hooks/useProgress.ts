@@ -128,6 +128,7 @@ export default function useProgress(start: boolean) {
       counter.reset();
       setMinute(0);
       setTimeout(() => {
+        playAlert.play();
         setNextTask();
         counter.incrementEachSecond(onIncrementCount)
       }, intervalTime);
