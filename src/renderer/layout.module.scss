@@ -11,6 +11,11 @@
   & .side__bar {
     max-width: 333px;
     min-width: 333px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 1rem 1.25rem;
   }
 
   & .main__content {
