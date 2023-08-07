@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppStore } from "../store";
 import { playAlert } from "renderer/components/play-alert/PlayAlert";
 
@@ -84,12 +84,13 @@ class Counter {
 }
 
 export default function useProgress(start: boolean) {
-  const { current, isStart, setNextTask } = useAppStore(
+  const { current, isStart, setNextTask, allTaskCompleted } = useAppStore(
     ({ tasks }) =>
       tasks((state) => ({
         current: state.current,
         isStart: state.start,
         setNextTask: state.addNext,
+        allTaskCompleted: state.list?.length == 0,
       })),
   );
 
@@ -113,6 +114,13 @@ export default function useProgress(start: boolean) {
   };
 
   useEffect(() => {
+    if (allTaskCompleted) {
+      counter.stop();
+      counter.reset();
+    }
+  }, [allTaskCompleted]);
+
+  useEffect(() => {
     if (start || isStart) {
       counter.incrementEachSecond(onIncrementCount);
     }
@@ -127,11 +135,16 @@ export default function useProgress(start: boolean) {
       counter.stop();
       counter.reset();
       setMinute(0);
-      setTimeout(() => {
-        playAlert.play();
-        setNextTask();
-        counter.incrementEachSecond(onIncrementCount)
-      }, intervalTime);
+      if (!allTaskCompleted) {
+        setTimeout(() => {
+          playAlert.play();
+          setNextTask();
+          counter.incrementEachSecond(onIncrementCount);
+        }, intervalTime);
+      }
+      else {
+        setNextTask()
+      }
     }
   }, [minute, current?.id, intervalTime]);
 
