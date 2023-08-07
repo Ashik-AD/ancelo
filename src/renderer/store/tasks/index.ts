@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import {devtools} from 'zustand/middleware'
 import { Tasks } from "@prisma/client";
 interface TasksState {
   list: Tasks[];
@@ -19,7 +20,7 @@ interface TasksAction {
   addListId: (payload: string) => void;
 }
 export type TaskSlice = TasksState & TasksAction;
-export const taskSlice = create(immer<TaskSlice>((set) => ({
+export const taskSlice = create(devtools(immer<TaskSlice>((set) => ({
   list: [],
   completed: [],
   current: null,
@@ -58,5 +59,5 @@ export const taskSlice = create(immer<TaskSlice>((set) => ({
   addListId: (payload) => set((state) => {
     state.listId = payload;
   })
-})));
+}))));
 
