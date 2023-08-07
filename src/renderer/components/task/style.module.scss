@@ -112,3 +112,79 @@
   align-items: center;
   gap: 4px;
 }
+
+.mini__task {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  & .current__running__task {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: $gradient-1;
+    padding: 12px 1rem;
+    border-radius: 1rem;
+
+    & .banner {
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+
+    & .title {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  & .queue__task {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: $gradient-1;
+    padding: 14px 12px;
+    border-radius: 1rem;
+    backdrop-filter: blur(28px);
+
+
+      &__title {
+        color: $primary;
+        white-space: nowrap;
+      }
+
+    & .task {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &__thumbnail {
+        display: block;
+        background: $bg-gradient;
+        padding: 8px 10px;
+        border-radius: 8px;
+        color: $white;
+        font-weight: 700;
+      }
+
+      & .body {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+
+        & .title {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
