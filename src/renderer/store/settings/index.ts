@@ -17,7 +17,7 @@ export type SettingSlice = State & Action;
 
 export const settingSlice = create(immer<SettingSlice>((set) => ({
   theme: "default",
-  interval: 3000,
+  interval: 300_000,
 
   setTheme: (payload) =>
     set((state) => {
