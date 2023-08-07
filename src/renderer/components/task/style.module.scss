@@ -141,6 +141,7 @@
   }
 
   & .queue__task {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -148,42 +149,70 @@
     padding: 14px 12px;
     border-radius: 1rem;
     backdrop-filter: blur(28px);
+    z-index: 1;
 
+    &__title {
+      color: $primary;
+      white-space: nowrap;
+    }
 
-      &__title {
-        color: $primary;
-        white-space: nowrap;
-      }
+    & .queue__item {
+      position: relative;
 
-    & .task {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-
-      &:hover {
-        opacity: 0.8;
-      }
-
-      &__thumbnail {
-        display: block;
-        background: $bg-gradient;
-        padding: 8px 10px;
-        border-radius: 8px;
-        color: $white;
-        font-weight: 700;
-      }
-
-      & .body {
+      & .task {
         display: flex;
-        flex-direction: column;
-        gap: 8px;
-        overflow: hidden;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
 
-        & .title {
-          white-space: nowrap;
-          text-overflow: ellipsis;
+        &:hover {
+          opacity: .8;
         }
+
+        &__thumbnail {
+          display: block;
+          background: $bg-gradient;
+          padding: 8px 10px;
+          border-radius: 8px;
+          color: $white;
+          font-weight: 700;
+        }
+
+        & .body {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          overflow: hidden;
+
+          & .title {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      & .task__popup {
+        position: absolute;
+        width: 100%;
+        max-width: 400px;
+        min-width: 360px;
+        left: calc(100% + 1rem);
+        top: 0;
+        background: rgb(255 255 255 / 90%);
+        backdrop-filter: blur(42px);
+        padding: 1rem 1.2rem;
+        border-radius: 1rem;
+        visibility: hidden;
+
+        & .meta {
+          display: flex;
+          justify-content: space-between;
+          gap: 24px;
+          margin-top: 24px;
+        }
+      }
+      &:hover .task__popup {
+        visibility: visible;
+        transition: 200ms ease;
       }
     }
   }

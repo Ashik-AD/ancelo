@@ -2,8 +2,6 @@ import { useAppStore } from "renderer/store";
 import style from "./style.module.scss";
 import TaskDuration from "./TaskDuration";
 import { Tasks } from "@prisma/client";
-import Modal from "../modal/Modal";
-import { useState } from "react";
 import { useModal } from "renderer/hooks/useModal";
 
 export default function MiniTask() {
@@ -55,24 +53,24 @@ function Queue({ list }: { list: Tasks[] }) {
   );
 }
 
-function QueueItem({ title, duration, ...rest }: Tasks) {
-  var {showModal, onToggle} = useModal()
+function QueueItem({ title, duration, description, created_at }: Tasks) {
   return (
-    <>
-      <article className={`${style.task}`} onClick={onToggle}>
+    <article className={style.queue__item}>
+      <div className={`${style.task}`}>
         <span className={`${style.task__thumbnail}`}>🍀</span>
         <div className={`${style.body}`}>
           <h5 className={style.title}>{title}</h5>
           <TaskDuration duration={duration} />
         </div>
-      </article>
-
-      {
-        showModal && 
-      <Modal onClose={onToggle}>
-        <h1>Hello mom</h1>
-      </Modal>
-      }
-    </>
+      </div>
+      <div className={`${style.task__popup}`}>
+        <h3>{title}</h3>
+        <p className="medium">{description}</p>
+        <div className={style.meta}>
+          <TaskDuration duration={duration} />
+          <span>Created at: {created_at.toString()}</span>
+        </div>
+      </div>
+    </article>
   );
 }
