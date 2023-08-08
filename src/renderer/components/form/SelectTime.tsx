@@ -16,6 +16,7 @@ type PickerListProps = {
 
 interface Props {
   onSelectTime: (time: Time) => void;
+  value?: string;
   label?: string;
   error?: string;
   clear?: boolean;
@@ -44,8 +45,9 @@ const listFrom = (min: number, max: number) => {
   return Array(max).fill(min, 0, max).map((_, index) => min + index);
 };
 
+
 export default function SelectTime(
-  { onSelectTime, label, error, clear }: Props,
+  { onSelectTime, label, error, clear, value }: Props,
 ) {
   const [time, setTime] = useState(() => currentTime());
   const [isPicked, setIsPicked] = useState(false);
@@ -55,6 +57,18 @@ export default function SelectTime(
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const hours = listFrom(1, 12);
   const minutes = listFrom(0, 60);
+  
+  useEffect(() => {
+    if(value){
+      const [hours, rest] = value.split(':')
+      const [minutes, meridiem] = rest.split(' ')
+      setTime({
+        hours: +hours,
+        minutes: +minutes,
+        meridiem: meridiem as Time['meridiem']
+      })
+    }
+  }, [value])
 
   useEffect(() => {
     if (isPicked || isShowPicker) {
@@ -108,7 +122,7 @@ export default function SelectTime(
         tabIndex={0}
         ref={pickerRef}
       >
-        {(isPicked)
+        {(isPicked || value)
           ? (
             <div className={style.input__value}>
               <span className={style.time}>
