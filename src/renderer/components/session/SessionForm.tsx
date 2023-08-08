@@ -24,11 +24,12 @@ type InputError = {
 
 interface SessionFormProps {
   onCreate?: (values: SessionFormState) => void;
+  onCancel?: () => void;
   values?: SessionFormState;
   isUpdate?: boolean;
 }
 export default function SessionForm(
-  { onCreate, values, isUpdate }: SessionFormProps,
+  { onCreate, onCancel, values, isUpdate }: SessionFormProps,
 ) {
   const [inputs, setInputs] = useState<SessionFormState>({
     title: "",
@@ -38,19 +39,20 @@ export default function SessionForm(
   const [error, setError] = useState<InputError | null>(null);
 
   const router = useNavigate();
-  const addSession = useAppStore(({ sessions }) =>
-    sessions.getState().addSessions, shallow
+  const addSession = useAppStore(
+    ({ sessions }) => sessions.getState().addSessions,
+    shallow,
   );
 
   useEffect(() => {
-    if(values){
+    if (values) {
       setInputs({
         title: values?.title,
         schedule: values?.schedule,
-        description: values?.description
-      })
+        description: values?.description,
+      });
     }
-  }, [values])
+  }, [values]);
 
   const handleInputChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -175,7 +177,17 @@ export default function SessionForm(
             placeholder="Add short description about your session"
           />
         </div>
-        <div>
+        <div className={style.btn__wrapper}>
+          {(isUpdate || onCancel) &&
+            (
+              <button
+                type="button"
+                className="btn btn__secondary"
+                onClick={onCancel}
+              >
+                Cancel
+              </button>
+            )}
           <button className="btn btn__primary">
             {isUpdate ? "Update" : "Create"} Session
           </button>
