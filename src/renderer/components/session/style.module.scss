@@ -131,6 +131,7 @@
     padding: .4rem .6rem;
     min-width: 160px;
     border-radius: 0.8rem;
+    visibility: hidden;
 
     & li {
       display: flex;
@@ -147,6 +148,10 @@
     & .action__icon {
       font-size: 18px;
     }
+  }
+  &:hover .action__content {
+    transition: all 300ms;
+    visibility: visible;
   }
 }
 
