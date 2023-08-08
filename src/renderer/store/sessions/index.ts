@@ -1,3 +1,4 @@
+import { session } from "electron";
 import type { Sessions } from "lib/api";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
@@ -10,6 +11,8 @@ type State = {
 type Action = {
   addLists: (payload: Sessions[]) => void;
   addSessions: (payload: Sessions) => void;
+  updateSession: (payload: Sessions) => void;
+  removeSession: (payload: string | number) => void;
   setActive: (payload: Sessions) => void;
 };
 
@@ -29,5 +32,23 @@ export const sessionSlice = create(immer<SessionSlice>((set) => ({
   addSessions: (payload) =>
     set((state) => {
       state.lists.push(payload);
+    }),
+
+  removeSession: (payload) =>
+    set((session) => {
+      var sessionIndex = session.lists.findIndex((item) => item.id == payload);
+      session.lists.splice(sessionIndex, 1);
+    }),
+
+  updateSession: (payload) =>
+    set((state) => {
+      let updatedList = state.lists.map((session) => {
+        if (session.id == payload.id) {
+          return { ...payload };
+        }
+        return { ...session };
+      });
+
+      state.lists = updatedList;
     }),
 })));
