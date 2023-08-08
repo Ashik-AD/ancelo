@@ -19,7 +19,7 @@ app.listen(port, () => {
   console.log(`Server listening ${port}`);
 });
 
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.post("/tasks", async (req, res, next) => {
   try {
@@ -146,6 +146,36 @@ app.get("/sessions/:sessionId/tasks", async (req, res) => {
     res.send({ tasks });
   } catch (error) {
     res.send({ error: error.message });
+  }
+});
+
+app.patch("/sessions/:id", async (req, res) => {
+  let id = req.params.id;
+
+  const { title, schedule, description } = req.body as Sessions;
+
+  try {
+    let thumbnail = thumbnailNameByTime(schedule);
+
+    const updatedSession = await prisma.sessions.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        schedule,
+        description,
+        thumbnail,
+      },
+    });
+    res.json({session: updatedSession})
+  } catch (error) {
+    if(error instanceof PrismaClientKnownRequestError){
+      if(error.code){
+        res.json({error: `Can't update database.\n error: ${error}`})
+      }
+    }
+    res.json({error: error.message})
   }
 });
 
