@@ -1,5 +1,7 @@
 .stats {
   display: flex;
+  align-items: center;
   gap: 24px;
+  flex-wrap: wrap;
   padding: 0.8rem 24px;
 }
