@@ -1,6 +1,6 @@
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./style.module.scss";
-const day = [
+const days = [
   "sunday",
   "monday",
   "tuesday",
@@ -9,7 +9,7 @@ const day = [
   "friday",
   "saturday",
 ];
-export type DaySchedule = typeof day;
+export type DaySchedule = typeof days;
 export interface DayScheduleSelectProps {
   onSelect: (selected: DaySchedule) => void;
   selected?: DaySchedule;
@@ -18,7 +18,7 @@ export interface DayScheduleSelectProps {
 export default function DayScheduleSelect(
   { onSelect, selected, label }: DayScheduleSelectProps,
 ) {
-  const [selectedDays, setSelectedDays] = useState<DaySchedule>([]);
+  const [selectedDays, setSelectedDays] = useState<DaySchedule>(selected || []);
 
   const handleSelectDay = (evt: React.MouseEvent<HTMLButtonElement>) => {
     var value = evt.currentTarget.value;
@@ -37,16 +37,16 @@ export default function DayScheduleSelect(
     onSelect && onSelect(selectedDays)
   }, [selectedDays])
 
-  const renderDay = day.map((d) => (
+  const renderDay = days.map((day) => (
     <button
-      key={d}
-      aria-selected={selectedDays.findIndex((day) => day == d) != -1 }
-      aria-label={d}
+      key={day}
+      aria-selected={selectedDays.findIndex((selected) => selected == day) != -1 }
+      aria-label={day}
       className={style.option}
-      value={d}
+      value={day}
       onClick={handleSelectDay}
     >
-      {d[0]}
+      {day[0]}
     </button>
   ));
   return (
