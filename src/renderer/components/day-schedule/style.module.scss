@@ -1,0 +1,35 @@
+@import '../../variables';
+
+.day__selection {
+  display: flex;
+  flex-direction: column;
+  gap: 9.8px;
+
+  & .selection__btn__wrapper {
+    display: flex;
+    gap: 16px;
+
+    & .option {
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 28px;
+      padding: unset;
+      border-radius: 14px;
+      text-transform: uppercase;
+      font-weight: 500;
+
+      &[aria-selected='true'] {
+        background: $skin;
+        color: $white;
+        border-color: $skin;
+      }
+
+      &:focus {
+        border-color: yellow;
+      }
+    }
+  }
+}
