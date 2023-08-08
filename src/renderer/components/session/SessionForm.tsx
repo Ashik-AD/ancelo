@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import fetcher from "lib/fetch";
 import { toast } from "react-hot-toast";
 import { useAppStore } from "renderer/store";
@@ -9,6 +9,7 @@ import type { Time } from "renderer/components/form/SelectTime";
 import TextArea from "renderer/components/form/TextArea";
 import { useNavigate } from "react-router-dom";
 import style from "./style.module.scss";
+import { shallow } from "zustand/shallow";
 
 export type SessionFormState = {
   title: string;
@@ -23,8 +24,12 @@ type InputError = {
 
 interface SessionFormProps {
   onCreate?: (values: SessionFormState) => void;
+  values?: SessionFormState;
+  isUpdate?: boolean;
 }
-export default function SessionForm({ onCreate }: SessionFormProps) {
+export default function SessionForm(
+  { onCreate, values, isUpdate }: SessionFormProps,
+) {
   const [inputs, setInputs] = useState<SessionFormState>({
     title: "",
     description: "",
@@ -34,8 +39,18 @@ export default function SessionForm({ onCreate }: SessionFormProps) {
 
   const router = useNavigate();
   const addSession = useAppStore(({ sessions }) =>
-    sessions.getState().addSessions
+    sessions.getState().addSessions, shallow
   );
+
+  useEffect(() => {
+    if(values){
+      setInputs({
+        title: values?.title,
+        schedule: values?.schedule,
+        description: values?.description
+      })
+    }
+  }, [values])
 
   const handleInputChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -148,6 +163,7 @@ export default function SessionForm({ onCreate }: SessionFormProps) {
         <SelectTime
           onSelectTime={handleSelectTime}
           label="Schedule"
+          value={values?.schedule}
           clear={!inputs.schedule ? true : false}
         />
         <div className={style.span__full}>
@@ -160,7 +176,9 @@ export default function SessionForm({ onCreate }: SessionFormProps) {
           />
         </div>
         <div>
-          <button className="btn btn__primary">Create Session</button>
+          <button className="btn btn__primary">
+            {isUpdate ? "Update" : "Create"} Session
+          </button>
         </div>
       </div>
     </Form>
