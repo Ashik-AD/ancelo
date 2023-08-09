@@ -174,6 +174,7 @@ input[type='number'],
 textarea,
 .input {
   height: 56px;
+  width: 100%;
   background: transparent;
   padding-inline: 24px;
   font-family: inherit;
@@ -244,4 +245,11 @@ textarea {
     left: 0;
     z-index: -1;
   }
+}
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
 }
