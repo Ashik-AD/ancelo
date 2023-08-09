@@ -45,12 +45,12 @@ model SessionItems {
 model Routines {
   id         String         @id @default(cuid())
   title      String
-  startAt    DateTime
-  finishAt   DateTime
-  repeatDays String
-  interval   Int
+  schedule DateTime
+  scheduleDays String
+  breakDuration Int
   cover      String
   tasks      RoutineTasks[]
+  theme      String
   created_at DateTime       @default(now())
 }
 
