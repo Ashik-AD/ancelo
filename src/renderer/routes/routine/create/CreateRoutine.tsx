@@ -32,8 +32,8 @@ export default function CreateRoutine() {
     <div>
       <h3>Create Routine</h3>
       <RoutineForm onSubmit={onSubmit}>
-        <CreateRoutineTask ref={routineTaskRef} />
         <button className="btn btn__primary">Create Routine</button>
+        <CreateRoutineTask ref={routineTaskRef} />
       </RoutineForm>
     </div>
   );
