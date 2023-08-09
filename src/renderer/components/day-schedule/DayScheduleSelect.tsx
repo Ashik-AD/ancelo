@@ -20,8 +20,7 @@ export default function DayScheduleSelect(
 ) {
   const [selectedDays, setSelectedDays] = useState<DaySchedule>(selected || []);
 
-  const handleSelectDay = (evt: React.MouseEvent<HTMLButtonElement>) => {
-    var value = evt.currentTarget.value;
+  const handleSelectDay = (value: string) => {
     var indexOfDay = selectedDays.findIndex((day) => day == value);
     var days = [...selectedDays];
     if (indexOfDay >= 0) {
@@ -38,16 +37,17 @@ export default function DayScheduleSelect(
   }, [selectedDays])
 
   const renderDay = days.map((day) => (
-    <button
+    <span
       key={day}
+      tabIndex={0}
+      role="button"
       aria-selected={selectedDays.findIndex((selected) => selected == day) != -1 }
       aria-label={day}
       className={style.option}
-      value={day}
-      onClick={handleSelectDay}
+      onClick={() => handleSelectDay(day)}
     >
       {day[0]}
-    </button>
+    </span>
   ));
   return (
     <div className={style.day__selection}>
