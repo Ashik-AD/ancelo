@@ -3,7 +3,7 @@ import prisma from "../lib/prisma";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import type { Sessions, Tasks } from "@prisma/client";
+import type { Routines, RoutineTasks, Sessions, Tasks } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { thumbnailNameByTime } from "../lib/thumbnail";
 import path from "path";
@@ -168,14 +168,14 @@ app.patch("/sessions/:id", async (req, res) => {
         thumbnail,
       },
     });
-    res.json({session: updatedSession})
+    res.json({ session: updatedSession });
   } catch (error) {
-    if(error instanceof PrismaClientKnownRequestError){
-      if(error.code){
-        res.json({error: `Can't update database.\n error: ${error}`})
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code) {
+        res.json({ error: `Can't update database.\n error: ${error}` });
       }
     }
-    res.json({error: error.message})
+    res.json({ error: error.message });
   }
 });
 
@@ -195,4 +195,60 @@ app.delete("/sessions/:id/flush", async (req, res) => {
     res.send({ error: `Something went wrong`, dev: error.message });
   }
 });
+
+// @Routine rotues
+app.get("/routines", async (req, res) => {
+  var routines = await prisma.routines.findMany({
+    include: {
+      tasks: true,
+    },
+  });
+
+  res.json({ routines });
+});
+
+app.post("/routines", async (req, res) => {
+  try {
+    const {
+      title,
+      breakDuration,
+      schedule,
+      scheduleDays,
+      tasks,
+      theme,
+    } = req.body;
+
+    if (!title?.trim() || !breakDuration || !schedule || !scheduleDays) {
+      res.status(400).json({
+        error: `Ahh! you should provide full information`,
+      });
+    }
+
+    if (breakDuration < 5 || breakDuration > 25) {
+      res.status(400).json({
+        error:
+          `I understand you want a break as you like. \n But I don't allowed to happen :)`,
+      });
+    }
+
+    var addRoutine = await prisma.routines.create({
+      data: {
+        title,
+        breakDuration,
+        scheduleDays: scheduleDays.toString(),
+        schedule,
+        theme,
+        cover: 'hell.jpg',
+        tasks: {
+          create: tasks,
+        },
+      },
+    });
+    res.send({ routine: addRoutine });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: error.message });
+  }
+});
+
 export default app;
