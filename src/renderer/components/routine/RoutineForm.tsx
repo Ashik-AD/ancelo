@@ -71,7 +71,7 @@ export default function RoutineForm(
   }
   return (
     <>
-      {error && <p>{error}</p>}
+      {error && <p className="alert__error">{error}</p>}
       <Form onSubmit={handleSubmit} className={style.routine__form}>
         <div className={style.span__2}>
           <Input

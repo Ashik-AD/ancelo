@@ -2,6 +2,8 @@ import { ChangeEvent, forwardRef, useImperativeHandle, useState } from "react";
 import TaskList from "../task/TaskList";
 import TaskItem, { TaskItemProps } from "../task/TaskItem";
 import Input from "../form/Input";
+import style from "./style.module.scss";
+
 export type RoutineTaskState = TaskItemProps;
 
 export type RoutineTaskRef = {
@@ -23,8 +25,11 @@ const CreateRoutineTask = forwardRef<RoutineTaskRef>((_, ref) => {
     setTasks(taskList);
   };
   return (
-    <div>
-      <TaskList list={tasks} />
+    <div className={style.create__routine__task}>
+      <div>
+        <h4>Create task</h4>
+        <TaskList list={tasks} />
+      </div>
       <TaskForm onCreate={handleAddTask} />
     </div>
   );
@@ -71,14 +76,14 @@ function TaskForm(
   };
 
   return (
-    <div>
+    <div className={style.create__task}>
       {task && (
         <TaskItem
           {...task}
           title={task?.title || "#task name"}
         />
       )}
-      <div className="flex">
+      <div className={`${style.wrapper}`}>
         <Input
           type="text"
           name="title"

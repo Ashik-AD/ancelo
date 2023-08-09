@@ -12,10 +12,37 @@
 
       & .span__2 {
         grid-column: span 2;
+        gap: 24px;
+
+        & > * {
+          flex: 1;
+        }
       }
       & .span__full {
         grid-column: span 4;
       }
+    }
+  }
+}
+
+.create__routine__task {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 2rem;
+}
+.create__task {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  & .wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    & div:first-child {
+      grid-column: span 3;
     }
   }
 }
