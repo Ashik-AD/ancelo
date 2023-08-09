@@ -5,12 +5,15 @@ import style from "./style.module.scss";
 import TaskDuration from "./TaskDuration";
 import { Tasks } from "@prisma/client";
 
-interface Props extends Tasks {
-  bulletNo: number;
-  onUpdateDescription: (id: string) => void;
+export interface TaskItemProps extends Partial<Tasks>{
+  title: string;
+  id: string;
+  duration: number;
+  bulletNo?: number;
+  onUpdateDescription?: (id: string) => void;
 }
 function TaskItem(
-  { id, bulletNo, title, description, duration, onUpdateDescription }: Props,
+  { id, bulletNo, title, description, duration, onUpdateDescription }: TaskItemProps,
 ) {
   return (
     <article
@@ -23,7 +26,7 @@ function TaskItem(
         <h4 className={style.task__title}>{title}</h4>
         <span
           className="text-small pointer"
-          onClick={() => onUpdateDescription(id)}
+          onClick={() => onUpdateDescription && onUpdateDescription(id)}
         >
           {description || "Add description"}
         </span>
