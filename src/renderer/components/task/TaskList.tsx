@@ -1,18 +1,16 @@
-import { Tasks } from "@prisma/client";
 import TaskItem, { TaskItemProps } from "./TaskItem";
+
+// @Todo: implement update description feature
 
 interface Props {
   list: TaskItemProps[];
 }
 function TaskList({ list }: Props) {
-  if (list.length == 0 || !Array.isArray(list)) {
-    return <h2>No Task for Today</h2>;
-  }
 
   function handleUpdateTaskDescription(id: string) { }
   return (
     <div>
-      {list.map((task, index) => (
+      {list?.map((task, index) => (
         <TaskItem
           key={task.id}
           bulletNo={index + 2}

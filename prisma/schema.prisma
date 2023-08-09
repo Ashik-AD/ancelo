@@ -45,7 +45,7 @@ model SessionItems {
 model Routines {
   id         String         @id @default(cuid())
   title      String
-  schedule DateTime
+  schedule String
   scheduleDays String
   breakDuration Int
   cover      String
