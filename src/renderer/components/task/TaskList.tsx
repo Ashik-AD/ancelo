@@ -1,8 +1,8 @@
 import { Tasks } from "@prisma/client";
-import TaskItem from "./TaskItem";
+import TaskItem, { TaskItemProps } from "./TaskItem";
 
 interface Props {
-  list: Tasks[];
+  list: TaskItemProps[];
 }
 function TaskList({ list }: Props) {
   if (list.length == 0 || !Array.isArray(list)) {

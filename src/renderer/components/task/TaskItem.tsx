@@ -5,7 +5,7 @@ import style from "./style.module.scss";
 import TaskDuration from "./TaskDuration";
 import { Tasks } from "@prisma/client";
 
-export interface TaskItemProps extends Partial<Tasks>{
+export interface TaskItemProps extends Partial<Tasks> {
   title: string;
   id: string;
   duration: number;
@@ -13,7 +13,8 @@ export interface TaskItemProps extends Partial<Tasks>{
   onUpdateDescription?: (id: string) => void;
 }
 function TaskItem(
-  { id, bulletNo, title, description, duration, onUpdateDescription }: TaskItemProps,
+  { id, bulletNo, title, description, duration, onUpdateDescription }:
+    TaskItemProps,
 ) {
   return (
     <article
