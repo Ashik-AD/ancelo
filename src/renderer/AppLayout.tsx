@@ -14,10 +14,6 @@ function AppLayout({ children }: { children: ReactNode }) {
     setSessions: state.sessions.getState().addLists,
     setRotuines: state.routines.getState().setRoutine
   }), shallow);
-  const addSessionList = useAppStore(
-    ({ sessions }) => sessions.getState().addLists,
-    shallow,
-  );
 
   useEffect(() => {
     (async function () {
@@ -35,7 +31,7 @@ function AppLayout({ children }: { children: ReactNode }) {
 
       setTasks(taskList.tasks);
       setSessions(sessionList);
-      setRotuines(routineList)
+      setRotuines(routineList.routines)
     })();
   }, []);
 
