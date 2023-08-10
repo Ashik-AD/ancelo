@@ -114,6 +114,14 @@ h3,
   font-family: Outfit;
   font-weight: 500;
 }
+h4,
+.h4 {
+  font-family: Outfit;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
 .text-lg {
   font-style: normal;
   font-weight: 600;
@@ -252,4 +260,16 @@ textarea {
 }
 .flex-col {
   flex-direction: column;
+}
+.item-center {
+  align-items: center;
+}
+.item-end {
+  align-items: end;
+}
+.content-space {
+  justify-content: space-between;
+}
+.content-even {
+  justify-content: space-evenly;
 }
