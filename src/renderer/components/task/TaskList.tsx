@@ -4,10 +4,10 @@ import TaskItem, { TaskItemProps } from "./TaskItem";
 
 interface Props {
   list: TaskItemProps[];
+  minimal?: boolean;
 }
-function TaskList({ list }: Props) {
-
-  function handleUpdateTaskDescription(id: string) { }
+function TaskList({ list, minimal }: Props) {
+  function handleUpdateTaskDescription(id: string) {}
   return (
     <div>
       {list?.map((task, index) => (
@@ -21,6 +21,7 @@ function TaskList({ list }: Props) {
           completed={task.completed}
           onUpdateDescription={handleUpdateTaskDescription}
           created_at={task.created_at}
+          varient={minimal ? "minimal" : "default"}
         />
       ))}
     </div>

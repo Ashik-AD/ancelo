@@ -11,9 +11,10 @@ export interface TaskItemProps extends Partial<Tasks> {
   duration: number;
   bulletNo?: number;
   onUpdateDescription?: (id: string) => void;
+  varient?: "default" | "minimal";
 }
 function TaskItem(
-  { id, bulletNo, title, description, duration, onUpdateDescription }:
+  { id, bulletNo, title, description, duration, onUpdateDescription, varient }:
     TaskItemProps,
 ) {
   return (
@@ -24,13 +25,16 @@ function TaskItem(
     >
       <span className="semiBold small">#{bulletNo}</span>
       <div className={`${style.task__details}`}>
-        <h4 className={style.task__title}>{title}</h4>
-        <span
-          className="text-small pointer"
-          onClick={() => onUpdateDescription && onUpdateDescription(id)}
-        >
-          {description || "Add description"}
-        </span>
+        <p className={`${ varient == 'minimal' ? 'text-lg' : 'h4' } ${style.task__title}`}>{title}</p>
+        {varient != "minimal" &&
+          (
+            <span
+              className="text-small pointer"
+              onClick={() => onUpdateDescription && onUpdateDescription(id)}
+            >
+              {description || "Add description"}
+            </span>
+          )}
       </div>
       <TaskDuration duration={duration} />
     </article>
