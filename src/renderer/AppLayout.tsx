@@ -9,13 +9,11 @@ import { toast } from "react-hot-toast";
 import { useAppStore } from "./store";
 
 function AppLayout({ children }: { children: ReactNode }) {
-  const { addTaskList } = useAppStore(
-    ({ tasks }) =>
-      tasks((state) => ({
-        addTaskList: state.addList,
-      }), shallow),
-    shallow,
-  );
+  const { setTasks, setSessions, setRotuines } = useAppStore( (state) => ({
+    setTasks: state.tasks.getState().addList,
+    setSessions: state.sessions.getState().addLists,
+    setRotuines: state.routines.getState().setRoutine
+  }), shallow);
   const addSessionList = useAppStore(
     ({ sessions }) => sessions.getState().addLists,
     shallow,
@@ -23,9 +21,10 @@ function AppLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     (async function () {
-      const [taskList, sessionList] = await Promise.all([
+      const [ taskList, sessionList, routineList ] = await Promise.all([
         await fetcher("/tasks/today"),
         await fetcher("/sessions"),
+        await fetcher('/routines')
       ]);
 
       const netError = taskList.error || sessionList.error;
@@ -34,8 +33,9 @@ function AppLayout({ children }: { children: ReactNode }) {
         console.log(netError);
       }
 
-      addTaskList(taskList.tasks);
-      addSessionList(sessionList);
+      setTasks(taskList.tasks);
+      setSessions(sessionList);
+      setRotuines(routineList)
     })();
   }, []);
 
