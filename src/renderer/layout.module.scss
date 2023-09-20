@@ -8,15 +8,6 @@
   z-index: 1000;
   overflow-x: hidden;
 
-  & .side__bar {
-    max-width: 333px;
-    min-width: 333px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding: 1rem 1.25rem;
-  }
-
   & .main__content {
     position: relative;
     display: flex;
