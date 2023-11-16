@@ -1,15 +1,25 @@
 $skin: rgba(16, 185, 129, 1);
-$skin-hover: #0D8C62;
+$skin-400: rgba(16, 185, 129, 0.877);
+$skin-hover: #0d8c62;
 $primary: #404040;
 $dark: rgba(0, 0, 0, 1);
 $white: rgba(248, 248, 248, 1);
+$white-200: rgba(248, 248, 248, 0.2);
 $red: #de2059;
-$bg-gradient: linear-gradient(250.01deg, #7637A9 37.58%, #580899 53.52%, rgba(217, 217, 217, 0) 98.05%);
-$gradient-1: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.17) 100%);
-$outfit-font-path: "../../assets/font/static";
+$bg-gradient: linear-gradient(
+  250.01deg,
+  #7637a9 37.58%,
+  #580899 53.52%,
+  rgba(217, 217, 217, 0) 98.05%
+);
+$gradient-1: linear-gradient(
+  180deg,
+  rgba(255, 255, 255, 0) 0%,
+  rgba(255, 255, 255, 0.17) 100%
+);
+$outfit-font-path: '../../assets/font/static';
 
 $paragraph: 16px;
 $small: 12px;
 $h1: 50px;
 $h2: 38px;
-

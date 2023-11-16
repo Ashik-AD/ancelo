@@ -2,46 +2,47 @@
 
 .app__navigation {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  // align-items: center;
+  // justify-content: space-between;
+  -moz-column-gap: 24px;
   column-gap: 24px;
 
   & .nav__main {
     display: flex;
+    flex-direction: column;
+    -moz-column-gap: 24px;
     column-gap: 24px;
-    align-items: center;
   }
   & .nav__item {
-    height: 30px;
     display: flex;
     align-items: center;
     justify-items: center;
-    column-gap: 6px;
-    background: rgba(255, 255, 255, 0.68);
+    -moz-column-gap: 6px;
+    column-gap: 12px;
     font-size: $small;
-    padding: 6px 12px;
-    border-radius: 24px;
+    font-weight: 600;
+    padding: 8px 12px;
     text-decoration: none;
+    text-wrap: nowrap;
     text-transform: capitalize;
-    border: 1px solid rgba(195, 188, 188, 1);
-    backdrop-filter: blur(25px);
+    border: none;
 
     &_active {
-      background: $skin;
-      border-color: $skin;
+      background: $skin-400;
       color: $white;
       transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
 
-       &:hover {
-           background: $skin-hover!important;
-        }
+      &:hover {
+        background: $skin-hover !important;
+      }
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.89);
+      background: $white-200;
     }
     & svg {
-      font-size: 18px;
+      font-size: 20px;
     }
 
     &:focus {
