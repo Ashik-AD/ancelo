@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
-import SessionCard from "renderer/components/session/SessionCard";
-import { useAppStore } from "renderer/store";
-import { shallow } from "zustand/shallow";
-import style from "./style.module.scss";
-import images, { Images } from "renderer/components/images";
+import SessionCard from 'renderer/components/session/SessionCard';
+import { useAppStore } from 'renderer/store';
+import { shallow } from 'zustand/shallow';
+import style from './style.module.scss';
+import images, { Images } from 'renderer/components/images';
+import RouteNav from 'renderer/components/nav/RouteNav';
 
 export default function SessionList() {
   const sessions = useAppStore(
     (state) => state.sessions((state) => state.lists),
-    shallow,
+    shallow
   );
   const renderList = sessions.map((session) => (
     <SessionCard
@@ -18,11 +18,9 @@ export default function SessionList() {
     />
   ));
   return (
-    <div className={style.session__list__wrapper}>
-      {renderList}
-      <Link to="create/" relative="path">
-        Create New Session
-      </Link>
-    </div>
+    <>
+      <RouteNav title="Sessions"></RouteNav>
+      <div className={style.session__list__wrapper}>{renderList}</div>;
+    </>
   );
 }

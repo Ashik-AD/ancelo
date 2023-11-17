@@ -1,5 +1,10 @@
 @import '../../../variables';
-
+.routine_btn_add {
+  background: $skin-400;
+  padding: 8px 12px;
+  color: $white;
+  border-color: $skin;
+}
 .routine__card {
   position: relative;
   width: 100%;
@@ -14,6 +19,7 @@
     & > img {
       height: 140px;
       width: 1005;
+      -o-object-fit: cover;
       object-fit: cover;
     }
   }

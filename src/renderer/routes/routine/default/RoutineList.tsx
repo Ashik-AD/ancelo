@@ -1,20 +1,23 @@
-import { Routines, RoutineTasks } from "@prisma/client";
-import { formatTime12Sys } from "lib/time";
-import DayScheduleSelect from "renderer/components/day-schedule/DayScheduleSelect";
-import TaskList from "renderer/components/task/TaskList";
-import { useAppStore } from "renderer/store";
-import { shallow } from "zustand/shallow";
+import { Routines, RoutineTasks } from '@prisma/client';
+import { formatTime12Sys } from 'lib/time';
+import DayScheduleSelect from 'renderer/components/day-schedule/DayScheduleSelect';
+import TaskList from 'renderer/components/task/TaskList';
+import { useAppStore } from 'renderer/store';
+import { shallow } from 'zustand/shallow';
 
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
 
-import style from "./style.module.scss";
-import { ReactNode, useRef, useState } from "react";
-import TaskDuration from "renderer/components/task/TaskDuration";
+import style from './style.module.scss';
+import { ReactNode, useRef, useState } from 'react';
+import TaskDuration from 'renderer/components/task/TaskDuration';
+import { Link } from 'react-router-dom';
+import RouteNav from 'renderer/components/nav/RouteNav';
+import ButtonAdd from 'renderer/components/button/button-add';
 
 export default function RoutineList() {
   const routines = useAppStore(
     (state) => state.routines(({ list }) => list),
-    shallow,
+    shallow
   );
 
   const render = routines.map((routine) => (
@@ -22,7 +25,11 @@ export default function RoutineList() {
   ));
   return (
     <>
-      <h1>Routine List</h1>
+      <RouteNav title="Routine">
+        <Link to="./create">
+          <ButtonAdd label="New Routine" />
+        </Link>
+      </RouteNav>
       {render}
     </>
   );
@@ -43,10 +50,9 @@ function RoutineCard(props: RoutineCardProps) {
     tasks,
   } = props;
 
-  var shortTasksPrev = tasks?.slice(0, 2)?.reduce(
-    (ac, cur) => cur.title + ", " + ac,
-    "",
-  );
+  var shortTasksPrev = tasks
+    ?.slice(0, 2)
+    ?.reduce((ac, cur) => cur.title + ', ' + ac, '');
 
   var routineDuration = tasks?.reduce((ac, cur) => cur.duration + ac, 0);
 
@@ -64,14 +70,12 @@ function RoutineCard(props: RoutineCardProps) {
           className={`flex item-end content-space ${style.details__schedules}`}
         >
           <div className={`flex text-small bold ${style.schedules_times}`}>
-            <span>
-              Start at: {formatTime12Sys(schedule)}
-            </span>
+            <span>Start at: {formatTime12Sys(schedule)}</span>
             <span>Break: {breakDuration}min each</span>
             {routineDuration && <TaskDuration duration={routineDuration} />}
           </div>
           <DayScheduleSelect
-            selected={scheduleDays.split(",")}
+            selected={scheduleDays.split(',')}
             onSelect={() => {}}
           />
         </div>
@@ -105,7 +109,7 @@ function Accordion({ children }: { children: ReactNode }) {
       </div>
       <div className={style.accordion__action}>
         <Icon
-          icon={`fluent:caret-${open ? "up" : "down"}-12-filled`}
+          icon={`fluent:caret-${open ? 'up' : 'down'}-12-filled`}
           className={style.action_btn}
           role="button"
           onClick={() => setOpen((prevOpen) => !prevOpen)}

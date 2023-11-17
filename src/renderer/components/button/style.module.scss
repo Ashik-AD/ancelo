@@ -1,0 +1,13 @@
+@import '../../variables';
+
+.btn_add {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: $skin-400;
+  padding: 6px 16px;
+  color: $white;
+  font-size: $small;
+  border-color: $skin;
+  border-radius: 1.4rem;
+}

@@ -50,3 +50,32 @@
     }
   }
 }
+
+.route__nav {
+  display: flex;
+  justify-content: space-between;
+
+  .title_btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .btn_back {
+      background: transparent;
+      display: flex;
+      padding: 0.4rem;
+      font-size: 26px;
+      border-radius: 50%;
+      border-color: transparent;
+
+      &:hover {
+        background: $white-200;
+      }
+
+      &:active {
+        color: $white;
+        background: $skin;
+        border-color: $skin-400;
+      }
+    }
+  }
+}

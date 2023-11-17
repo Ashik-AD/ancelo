@@ -1,21 +1,22 @@
-import { useRef } from "react";
-import { toast } from "react-hot-toast";
-import fetcher from "lib/fetch";
+import { useRef } from 'react';
+import { toast } from 'react-hot-toast';
+import fetcher from 'lib/fetch';
 import CreateRoutineTask, {
   RoutineTaskRef,
-} from "renderer/components/routine/CreateRoutineTask";
+} from 'renderer/components/routine/CreateRoutineTask';
 import RoutineForm, {
   RoutineFormState,
-} from "renderer/components/routine/RoutineForm";
-import { useNavigate } from "react-router-dom";
+} from 'renderer/components/routine/RoutineForm';
+import { useNavigate } from 'react-router-dom';
+import RouteNav from 'renderer/components/nav/RouteNav';
 
 export default function CreateRoutine() {
   const router = useNavigate();
   const routineTaskRef = useRef<RoutineTaskRef>(null);
   async function onSubmit(values: RoutineFormState) {
     var routineTasks = routineTaskRef.current?.getRoutineTask() || [];
-    var res = await fetcher("/routines", {
-      method: "POST",
+    var res = await fetcher('/routines', {
+      method: 'POST',
       body: JSON.stringify({ ...values, tasks: routineTasks }),
     });
 
@@ -25,16 +26,16 @@ export default function CreateRoutine() {
     }
     toast.success(`A new routine is created successfully`);
     setTimeout(() => {
-      router("/routine");
+      router('/routine');
     }, 2000);
   }
   return (
-    <div>
-      <h3>Create Routine</h3>
+    <>
+      <RouteNav title="Create Routine" />
       <RoutineForm onSubmit={onSubmit}>
         <button className="btn btn__primary">Create Routine</button>
         <CreateRoutineTask ref={routineTaskRef} />
       </RoutineForm>
-    </div>
+    </>
   );
 }
