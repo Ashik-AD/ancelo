@@ -1,9 +1,9 @@
-
-  .sidebar {
-    max-width: 333px;
-    min-width: 333px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding: 1rem 1.25rem;
-  }
+.sidebar {
+  max-width: 333px;
+  min-width: 333px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 1rem 1.25rem;
+}
