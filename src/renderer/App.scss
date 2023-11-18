@@ -60,6 +60,7 @@ body::after {
   left: -78px;
   background: #7637a9;
   border-radius: 50%;
+  -webkit-filter: blur(19px);
   filter: blur(19px);
 }
 #root {
@@ -199,6 +200,22 @@ textarea {
   padding-top: 24px;
   padding-bottom: 24px;
 }
+::-webkit-input-placeholder {
+  color: #6c6c6c;
+  font-size: 16px;
+}
+::-moz-placeholder {
+  color: #6c6c6c;
+  font-size: 16px;
+}
+:-ms-input-placeholder {
+  color: #6c6c6c;
+  font-size: 16px;
+}
+::-ms-input-placeholder {
+  color: #6c6c6c;
+  font-size: 16px;
+}
 ::placeholder {
   color: #6c6c6c;
   font-size: 16px;
@@ -270,4 +287,12 @@ textarea {
 }
 .content-even {
   justify-content: space-evenly;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  width: 5px;
+  border-radius: 4px;
+  background: #454040;
 }
