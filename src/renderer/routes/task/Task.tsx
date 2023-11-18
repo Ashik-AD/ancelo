@@ -1,17 +1,16 @@
-import AddTask from "renderer/components/task/AddTask";
-import CurrentTask from "renderer/components/task/CurrentTask";
-import TaskList from "renderer/components/task/TaskList";
-import { useAppStore } from "renderer/store";
-import { playAlert } from "renderer/components/play-alert/PlayAlert";
+import CurrentTask from 'renderer/components/task/CurrentTask';
+import TaskList from 'renderer/components/task/TaskList';
+import { useAppStore } from 'renderer/store';
+import TaskBanner from 'renderer/components/task/notask-banner';
 function Task() {
-  const taskList = useAppStore(
-    ({tasks}) => tasks(({list}) => list) 
+  const { list, current } = useAppStore(({ tasks }) =>
+    tasks(({ list, current }) => ({ list, current }))
   );
-
   return (
     <>
+      {!current && <TaskBanner />}
       <CurrentTask />
-      <TaskList list={taskList} />
+      <TaskList list={list} />
     </>
   );
 }

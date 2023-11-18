@@ -1,35 +1,35 @@
-import { useState } from "react";
-import { useModal } from "renderer/hooks/useModal";
-import fetcher from "../../../lib/fetch";
-import Form from "../form/Form";
-import Input from "../form/Input";
-import TextArea from "../form/TextArea";
-import Modal from "../modal/Modal";
-import { shallow } from "zustand/shallow";
-import style from "./style.module.scss";
-import { toast } from "react-hot-toast";
-import { useAppStore } from "renderer/store";
+import { ReactNode, useState } from 'react';
+import { useModal } from 'renderer/hooks/useModal';
+import fetcher from '../../../lib/fetch';
+import Form from '../form/Form';
+import Input from '../form/Input';
+import TextArea from '../form/TextArea';
+import Modal from '../modal/Modal';
+import { shallow } from 'zustand/shallow';
+import style from './style.module.scss';
+import { toast } from 'react-hot-toast';
+import { useAppStore } from 'renderer/store';
 type State = {
   title: string;
   duration: number;
   description?: string;
 };
 
-function AddTask() {
+function AddTask({ children }: { children?: ReactNode }) {
   const addTask = useAppStore(
     ({ tasks }) => tasks((state) => state.addTask),
-    shallow,
+    shallow
   );
   const [input, setInput] = useState<State>({
-    title: "",
+    title: '',
     duration: 25,
-    description: "",
+    description: '',
   });
   const [error, setError] = useState<string | null>(null);
 
   const { showModal, onToggle } = useModal();
   function handleMutateInput(
-    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     const { name, value } = event.target;
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
@@ -37,16 +37,16 @@ function AddTask() {
   async function handleSubmitForm() {
     const { title, duration, description } = input;
     if (!title.trim() || !duration) {
-      return setError("Empty field founds");
+      return setError('Empty field founds');
     }
 
     try {
       const res = await fetcher(`/tasks`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({ title, duration, description }),
       });
       addTask(res);
-      toast.success("One task created");
+      toast.success('One task created');
       onToggle();
     } catch (error) {
       console.log(error);
@@ -56,7 +56,11 @@ function AddTask() {
   }
   return (
     <div>
-      <button onClick={onToggle}>Add Task</button>
+      {children ? (
+        <span onClick={onToggle}>{children}</span>
+      ) : (
+        <button onClick={onToggle}>Add Task</button>
+      )}
       {showModal && (
         <Modal onClose={onToggle}>
           <div className={style.add__task}>

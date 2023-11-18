@@ -76,6 +76,7 @@
     rgba(190, 139, 255, 0.4) 0%,
     rgba(193, 158, 239, 0.4) 100%
   );
+  -webkit-backdrop-filter: blur(25px);
   backdrop-filter: blur(25px);
 
   & .task__form {
@@ -129,6 +130,7 @@
     & .banner {
       height: 150px;
       width: 100%;
+      -o-object-fit: cover;
       object-fit: cover;
       border-radius: 1rem;
     }
@@ -148,6 +150,7 @@
     background: $gradient-1;
     padding: 14px 12px;
     border-radius: 1rem;
+    -webkit-backdrop-filter: blur(28px);
     backdrop-filter: blur(28px);
     z-index: 1;
 
@@ -166,7 +169,7 @@
         cursor: pointer;
 
         &:hover {
-          opacity: .8;
+          opacity: 0.8;
         }
 
         &__thumbnail {
@@ -198,6 +201,7 @@
         left: calc(100% + 1rem);
         top: 0;
         background: rgb(255 255 255 / 90%);
+        -webkit-backdrop-filter: blur(42px);
         backdrop-filter: blur(42px);
         padding: 1rem 1.2rem;
         border-radius: 1rem;
@@ -214,6 +218,44 @@
         visibility: visible;
         transition: 200ms ease;
       }
+    }
+  }
+}
+
+.task__banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $peach;
+  height: 260px;
+  border-radius: 2rem;
+
+  & .banner__message {
+    width: 24rem;
+
+    & .add {
+      text-decoration: underline;
+      cursor: pointer;
+      &:hover {
+        color: $skin;
+      }
+    }
+  }
+
+  & img {
+    position: absolute;
+    bottom: 0;
+
+    &.banner__img {
+      width: 240px;
+      left: 20px;
+    }
+    &.banner__img_anima {
+      width: 180px;
+      right: 0;
+      top: 58px;
     }
   }
 }
