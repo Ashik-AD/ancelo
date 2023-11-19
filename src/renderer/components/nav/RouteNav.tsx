@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { CSSProperties, ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import style from './Style.module.scss';
 export type RouteNavProps = {
   title: string;
@@ -12,9 +12,6 @@ function RouteNav({ title, children, css }: RouteNavProps) {
   function handleBackBtnClick() {
     history.back();
   }
-  window.addEventListener('popstate', (eve) => {
-    console.log(eve);
-  });
   return (
     <article className={style.route__nav} style={css}>
       <div className={style.title_btn}>
