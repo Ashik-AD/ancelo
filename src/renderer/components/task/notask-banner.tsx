@@ -6,14 +6,14 @@ function TaskBanner() {
     <article className={style.task__banner}>
       <div className={style.banner__message}>
         <h2 className="bold">Hello there!</h2>
-        <p className="bold">
+        <div className="bold">
           No task is running. Start new task{' '}
           <AddTask>
             <span className={style.add} role="button">
               click here!
             </span>{' '}
           </AddTask>
-        </p>
+        </div>
       </div>
       <img
         src={image.girl}
