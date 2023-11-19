@@ -26,10 +26,11 @@ export class QueueRecent<T> {
       //@ts-ignore
       (ls: any) => ls['id'] === item['id']
     );
+    const newList = [...this.list];
     if (duplicateItemIndex != -1) {
-      this.list.splice(duplicateItemIndex, 1);
+      newList.splice(duplicateItemIndex, 1);
     }
-    const newList = this.list.concat([item]);
+    newList.push(item);
     this.list = newList;
     return item;
   }
