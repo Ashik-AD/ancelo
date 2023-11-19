@@ -229,8 +229,8 @@
   align-items: center;
   justify-content: center;
   background: $peach;
-  height: 260px;
-  border-radius: 2rem;
+  height: 200px;
+  border-radius: 1.4rem;
 
   & .banner__message {
     width: 24rem;
@@ -249,11 +249,11 @@
     bottom: 0;
 
     &.banner__img {
-      width: 240px;
+      width: 190px;
       left: 20px;
     }
     &.banner__img_anima {
-      width: 180px;
+      width: 160px;
       right: 0;
       top: 58px;
     }
