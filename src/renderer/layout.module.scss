@@ -3,10 +3,11 @@
   display: flex;
   min-width: 100vw;
   height: 100vh;
-  background: #FCFCFC66;
+  background: #fcfcfc66;
+  -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
   z-index: 1000;
-  overflow-x: hidden;
+  overflow: hidden;
 
   & .main__content {
     position: relative;
@@ -14,7 +15,11 @@
     flex-direction: column;
     gap: 28px;
     flex-grow: 1;
-    background: linear-gradient(233.56deg, rgba(255, 255, 255, 0.28) 28.76%, rgba(255, 255, 255, 0) 77.84%);
+    background: linear-gradient(
+      233.56deg,
+      rgba(255, 255, 255, 0.28) 28.76%,
+      rgba(255, 255, 255, 0) 77.84%
+    );
     border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
     overflow-x: hidden;
