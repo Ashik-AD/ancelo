@@ -1,14 +1,17 @@
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
 
-import style from "./style.module.scss";
+import style from './style.module.scss';
 
-function TaskDuration({ duration }: { duration: string | number }) {
+export type TaskDurationProps = {
+  duration: string | number;
+  showIcon?: boolean;
+};
+
+function TaskDuration({ duration, showIcon = true }: TaskDurationProps) {
   return (
     <div className={style.task__duration}>
-      <Icon icon="mdi:clock-outline" />
-      <span className="text-small bold">
-        {calculateDuration(duration)}
-      </span>
+      {showIcon ? <Icon icon="mdi:clock-outline" /> : null}
+      <span className="text-small bold">{calculateDuration(duration)}</span>
     </div>
   );
 }
@@ -20,7 +23,9 @@ function calculateDuration(duration: number | string) {
   if (duration > 60) {
     const hr = Math.floor(duration / 60);
     const min = duration % 60;
-    return `${hr}${hr > 1 ? "hrs" : "hr"} ${min > 0 ? `${min}${min > 1 ? "mins" : "min"}` : ''}`;
+    return `${hr}${hr > 1 ? 'hrs' : 'hr'} ${
+      min > 0 ? `${min}${min > 1 ? 'mins' : 'min'}` : ''
+    }`;
   }
-  return `${duration}${duration > 1 ? "mins" : "min"}`;
+  return `${duration}${duration > 1 ? 'mins' : 'min'}`;
 }
