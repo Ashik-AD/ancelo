@@ -40,8 +40,20 @@ export const taskSlice = create(
       listId: undefined,
       addList: (payload) => set({ list: payload }),
       addTask: (payload) =>
-        set((state) => {
-          state.list.push(payload);
+        set(({ list }) => {
+          let i,
+            arrLen = list.length;
+          let hasElement = false;
+          for (i = 0; i < arrLen; i++) {
+            if (list[i].id == payload.id) {
+              hasElement = true;
+              break;
+            }
+          }
+
+          if (!hasElement) {
+            list.push(payload);
+          }
         }),
       addCurrent: () =>
         set((state) => {
