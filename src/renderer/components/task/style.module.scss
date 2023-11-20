@@ -22,6 +22,7 @@
     }
   }
 }
+
 .current__task {
   position: relative;
   display: flex;
@@ -256,6 +257,49 @@
       width: 160px;
       right: 0;
       top: 58px;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff6f963;
+  padding: 24px;
+  border-radius: 1rem;
+}
+
+.list__container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  & .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 0.6rem;
+    border-radius: 4px;
+    cursor: default;
+    overflow-x: auto;
+
+    &_active {
+      color: $skin;
+    }
+
+    &:hover {
+      background: rgba(190, 139, 255, 0.4);
+    }
+
+    .cell__title {
+      width: 45%;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .cell__description {
+      width: 45%;
     }
   }
 }
