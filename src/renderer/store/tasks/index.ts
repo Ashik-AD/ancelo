@@ -10,6 +10,7 @@ interface TasksState {
   start: boolean;
   listId: string | undefined;
   recent: Tasks[];
+  // status: 'running' | 'ideal'
 }
 
 interface TasksAction {
@@ -20,6 +21,7 @@ interface TasksAction {
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
   addListId: (payload: string) => void;
+  setRecent: (payload: Tasks[]) => void;
 }
 export type TaskSlice = TasksState & TasksAction;
 
@@ -58,8 +60,13 @@ export const taskSlice = create(
       addCurrent: () =>
         set((state) => {
           state.current = state.list[0];
-          state.recent = addRecentTask({ ...state.current });
           state.list = state.list.slice(1, state.list.length);
+          let newRecentTasks = addRecentTask({ ...state.current });
+          state.recent = [...newRecentTasks];
+          window.electron.ipcRenderer.sendMessage(
+            'ipc-set-recent-task',
+            newRecentTasks
+          );
         }),
       addNext: () =>
         set((state) => {
@@ -73,6 +80,10 @@ export const taskSlice = create(
           state.completed.push(state.current!!);
           state.current = currentTask[0];
           state.recent = addRecentTask({ ...state.current });
+          window.electron.ipcRenderer.sendMessage(
+            'ipc-set-recent-task',
+            state.recent
+          );
         }),
       addStart: () =>
         set((state) => {
@@ -85,6 +96,11 @@ export const taskSlice = create(
       addListId: (payload) =>
         set((state) => {
           state.listId = payload;
+        }),
+      setRecent: (payload) =>
+        set((state) => {
+          state.recent = payload;
+          recentTasks.setList(payload);
         }),
     }))
   )
