@@ -4,12 +4,14 @@ import TaskDuration from './TaskDuration';
 import { shallow } from 'zustand/shallow';
 
 export default function RecentTask() {
-  const { recent, addTask, activeTaskId } = useAppStore(
+  const { recent, addTask, activeTaskId, addCurrent, addStart } = useAppStore(
     ({ tasks }) =>
-      tasks(({ recent, addTask, current }) => ({
+      tasks(({ recent, addTask, addCurrent, current, addStart }) => ({
+        activeTaskId: current?.id,
         recent,
         addTask,
-        activeTaskId: current?.id,
+        addCurrent,
+        addStart,
       })),
     shallow
   );
@@ -19,7 +21,13 @@ export default function RecentTask() {
         item?.id == activeTaskId ? style.row_active : ''
       }`}
       key={item.id}
-      onClick={() => addTask(item)}
+      onClick={() => {
+        addTask(item);
+        if (!activeTaskId) {
+          addCurrent();
+          addStart();
+        }
+      }}
     >
       <div className={style.cell__title}>
         <span className={`text-small bold`}>{idx + 1}</span>
