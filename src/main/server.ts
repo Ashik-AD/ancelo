@@ -1,12 +1,13 @@
-import express from "express";
-import prisma from "../lib/prisma";
-import bodyParser from "body-parser";
-import cors from "cors";
+import path from 'path';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
-import type { Routines, RoutineTasks, Sessions, Tasks } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { thumbnailNameByTime } from "../lib/thumbnail";
-import path from "path";
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import prisma from '../lib/prisma';
+import { thumbnailNameByTime } from '../lib/thumbnail';
+
+import type { Sessions, Tasks } from '@prisma/client';
 
 const app = express();
 const port = 6699;
@@ -19,11 +20,11 @@ app.listen(port, () => {
   console.log(`Server listening ${port}`);
 });
 
-app.use("/static", express.static(path.join(__dirname, "public")));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
-app.post("/tasks", async (req, res, next) => {
+app.post('/tasks', async (req, res, next) => {
   try {
-    const { title, duration, description } = await req.body as Tasks;
+    const { title, duration, description } = (await req.body) as Tasks;
     const save = await prisma.tasks.create({
       data: {
         title,
@@ -35,11 +36,11 @@ app.post("/tasks", async (req, res, next) => {
   } catch (error) {
     res.status(400).send({ error: `Can't create task` });
     console.log(error);
-    next("Something went wrong");
+    next('Something went wrong');
   }
 });
 
-app.get("/tasks", async (req, res) => {
+app.get('/tasks', async (req, res) => {
   try {
     const tasks = await prisma.tasks.findMany();
     res.json({ tasks });
@@ -49,9 +50,9 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-app.get("/tasks/today", async (req, res) => {
+app.get('/tasks/today', async (req, res) => {
   try {
-    const todayDate = new Date().toISOString().split("T")[0];
+    const todayDate = new Date().toISOString().split('T')[0];
     const tasks = await prisma.tasks.findMany({
       where: {
         created_at: {
@@ -62,7 +63,7 @@ app.get("/tasks/today", async (req, res) => {
         },
       },
       orderBy: {
-        created_at: "asc",
+        created_at: 'asc',
       },
     });
     res.json({ tasks });
@@ -72,7 +73,26 @@ app.get("/tasks/today", async (req, res) => {
   }
 });
 
-app.get("/sessions", async (req, res) => {
+app.get('/tasks/completed', async (req, res) => {
+  try {
+    const limit = +req.query?.limit!!;
+    const skip = +req.query?.offset!!;
+    console.log(limit, skip);
+    const completedRecord = await prisma.tasks.findMany({
+      where: {
+        completed: true,
+      },
+      skip: skip,
+      take: limit,
+    });
+
+    res.json({ data: completedRecord });
+  } catch (error) {
+    res.json({ error: 'something went wrong' });
+    console.error(error);
+  }
+});
+app.get('/sessions', async (req, res) => {
   try {
     const sessions = await prisma.sessions.findMany({
       include: {
@@ -98,16 +118,14 @@ app.get("/sessions", async (req, res) => {
     if (error instanceof PrismaClientKnownRequestError) {
       res.json({ error: error.message });
     }
-    res.json({ error: `Someting went wrong. Session can't seems to fetch` });
+    res.json({ error: `Something went wrong. Session can't seems to fetch` });
   }
 });
-app.post("/sessions", async (req, res) => {
-  const { title, description, schedule, tasks } = req.body as
-    & Pick<
-      Sessions,
-      "title" | "description" | "schedule"
-    >
-    & { tasks: Tasks[] };
+app.post('/sessions', async (req, res) => {
+  const { title, description, schedule, tasks } = req.body as Pick<
+    Sessions,
+    'title' | 'description' | 'schedule'
+  > & { tasks: Tasks[] };
   try {
     let thumbnail = thumbnailNameByTime(schedule);
     let duration = tasks?.reduce((acc, cur) => {
@@ -130,12 +148,12 @@ app.post("/sessions", async (req, res) => {
     if (error instanceof PrismaClientKnownRequestError) {
       res.json({ error: error.message });
     }
-    res.json({ error: "Something went wrong. Cant able to create session" });
+    res.json({ error: 'Something went wrong. Cant able to create session' });
     console.log(error);
   }
 });
 
-app.get("/sessions/:sessionId/tasks", async (req, res) => {
+app.get('/sessions/:sessionId/tasks', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const tasks = await prisma.sessionItems.findMany({
@@ -149,7 +167,7 @@ app.get("/sessions/:sessionId/tasks", async (req, res) => {
   }
 });
 
-app.patch("/sessions/:id", async (req, res) => {
+app.patch('/sessions/:id', async (req, res) => {
   let id = req.params.id;
 
   const { title, schedule, description } = req.body as Sessions;
@@ -179,7 +197,7 @@ app.patch("/sessions/:id", async (req, res) => {
   }
 });
 
-app.delete("/sessions/:id/flush", async (req, res) => {
+app.delete('/sessions/:id/flush', async (req, res) => {
   try {
     var id = req.params.id;
     if (!id) {
@@ -197,7 +215,7 @@ app.delete("/sessions/:id/flush", async (req, res) => {
 });
 
 // @Routine rotues
-app.get("/routines", async (req, res) => {
+app.get('/routines', async (req, res) => {
   var routines = await prisma.routines.findMany({
     include: {
       tasks: true,
@@ -207,16 +225,10 @@ app.get("/routines", async (req, res) => {
   res.json({ routines });
 });
 
-app.post("/routines", async (req, res) => {
+app.post('/routines', async (req, res) => {
   try {
-    const {
-      title,
-      breakDuration,
-      schedule,
-      scheduleDays,
-      tasks,
-      theme,
-    } = req.body;
+    const { title, breakDuration, schedule, scheduleDays, tasks, theme } =
+      req.body;
 
     if (!title?.trim() || !breakDuration || !schedule || !scheduleDays) {
       res.status(400).json({
@@ -226,8 +238,7 @@ app.post("/routines", async (req, res) => {
 
     if (breakDuration < 5 || breakDuration > 25) {
       res.status(400).json({
-        error:
-          `I understand you want a break as you like. \n But I don't allowed to happen :)`,
+        error: `I understand you want a break as you like. \n But I don't allowed to happen :)`,
       });
     }
 
