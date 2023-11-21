@@ -1,25 +1,23 @@
-import { useAppStore } from "renderer/store";
-import style from "./style.module.scss";
-import TaskDuration from "./TaskDuration";
-import { Tasks } from "@prisma/client";
-import { useModal } from "renderer/hooks/useModal";
+import { useAppStore } from 'renderer/store';
+import style from './style.module.scss';
+import TaskDuration from './TaskDuration';
+import { Tasks } from '@prisma/client';
 
 export default function MiniTask() {
   const { currentTask, queue } = useAppStore(({ tasks }) =>
-    tasks((task) => ({
-      currentTask: task.current,
-      queue: task.list.slice(0, 1),
+    tasks(({ current, list }) => ({
+      currentTask: current,
+      queue: list.slice(0, 1),
     }))
   );
+
   return (
     <article
       className={style.mini__task}
       tabIndex={0}
       aria-label="Mini task player for showing current running task and next task"
     >
-      <MiniView
-        {...currentTask}
-      />
+      <MiniView {...currentTask} />
       <Queue list={queue} />
     </article>
   );
@@ -45,10 +43,8 @@ function Queue({ list }: { list: Tasks[] }) {
   var renderQueue = list?.map((item) => <QueueItem {...item} />);
   return (
     <article className={style.queue__task}>
-      <p className={`text-small bold ${style.divider__title}`}>
-        Next in queue
-      </p>
-      {isQueueEmpty ? "Please add task" : renderQueue}
+      <p className={`text-small bold ${style.divider__title}`}>Next in queue</p>
+      {isQueueEmpty ? 'Please add task' : renderQueue}
     </article>
   );
 }
