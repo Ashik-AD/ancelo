@@ -2,7 +2,10 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels =
+  | 'ipc-example'
+  | 'ipc-get-recent-task'
+  | 'ipc-set-recent-task';
 
 const electronHandler = {
   ipcRenderer: {
