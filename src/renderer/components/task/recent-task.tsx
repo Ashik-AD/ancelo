@@ -1,17 +1,18 @@
-import type { Tasks } from '@prisma/client';
 import { useAppStore } from 'renderer/store';
 import style from './style.module.scss';
 import TaskDuration from './TaskDuration';
+import { shallow } from 'zustand/shallow';
 
 export default function RecentTask() {
-  const { recent, addTask, activeTaskId } = useAppStore(({ tasks }) =>
-    tasks(({ recent, addTask, current }) => ({
-      recent,
-      addTask,
-      activeTaskId: current?.id,
-    }))
+  const { recent, addTask, activeTaskId } = useAppStore(
+    ({ tasks }) =>
+      tasks(({ recent, addTask, current }) => ({
+        recent,
+        addTask,
+        activeTaskId: current?.id,
+      })),
+    shallow
   );
-
   const renderTasks = recent.map((item, idx) => (
     <article
       className={`${style.row} ${
