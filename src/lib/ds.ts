@@ -49,4 +49,8 @@ export class QueueRecent<T> {
   public getList(): T[] {
     return this.list.reverse();
   }
+
+  public setList(list: T[]) {
+    this.list = list;
+  }
 }
