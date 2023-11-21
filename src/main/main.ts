@@ -10,7 +10,7 @@ import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { resolveHtmlPath } from './util';
+import { JsonReadWrite, resolveHtmlPath } from './util';
 import server from './server';
 import devtoolsInstaller, {
   REACT_DEVELOPER_TOOLS,
@@ -27,15 +27,24 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+ipcMain.on('ipc-get-recent-task', async (event) => {
+  try {
+    const res = await JsonReadWrite('../data/recent-task.json', 'READ');
+    event.reply('ipc-get-recent-task', res);
+  } catch (error) {
+    event.reply('ipc-get-recent-task', { error });
+    console.error(error);
+  }
 });
 
-ipcMain.on('greet', async (event, arg) => {
-  console.log(`Incomming message: `, arg);
-  event.reply('greet', 'Hi mom');
+ipcMain.on('ipc-set-recent-task', async (event, arg) => {
+  try {
+    const res = await JsonReadWrite('../data/recent-task.json', 'WRITE', arg);
+    event.reply('ipc-set-recent-task', res);
+  } catch (error) {
+    event.reply('ipc-set-recent-task', { error });
+    console.error(error);
+  }
 });
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
