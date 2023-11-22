@@ -1,13 +1,14 @@
 /**
- * @params {bulletNo, id, title, description, duration, handleUpldateDescription()}
+ * @params {bulletNo, id, title, description, duration, handleUplodDateDescription()}
  */
 import { useState } from 'react';
 import style from './style.module.scss';
 import TaskDuration from './TaskDuration';
-import { Tasks } from '@prisma/client';
 import { Icon } from '@iconify/react';
 import { useAppStore } from 'renderer/store';
 import { shallow } from 'zustand/shallow';
+
+import type { Tasks } from '@prisma/client';
 
 export interface TaskItemProps extends Partial<Tasks> {
   title: string;
@@ -50,7 +51,10 @@ function TaskItem(props: TaskItemProps) {
     >
       <div className={style.bullet_play}>
         {IsShowPlayBtn ? (
-          <Icon icon="basil:play-solid" onClick={() => startNewTask(props)} />
+          <Icon
+            icon="basil:play-solid"
+            onClick={() => startNewTask(props as Tasks)}
+          />
         ) : (
           <span className="semiBold text-small">#{bulletNo}</span>
         )}
