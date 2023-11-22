@@ -77,7 +77,6 @@ app.get('/tasks/completed', async (req, res) => {
   try {
     const limit = +req.query?.limit!!;
     const skip = +req.query?.offset!!;
-    console.log(limit, skip);
     const completedRecord = await prisma.tasks.findMany({
       where: {
         completed: true,
@@ -86,9 +85,27 @@ app.get('/tasks/completed', async (req, res) => {
       take: limit,
     });
 
-    res.json({ data: completedRecord });
+    res.json({ lists: completedRecord, offset: skip + completedRecord.length });
   } catch (error) {
     res.json({ error: 'something went wrong' });
+    console.error(error);
+  }
+});
+
+app.post('tasks/completed/:id', async (req, res) => {
+  try {
+    const completedId = req.params.id;
+    await prisma.tasks.update({
+      where: {
+        id: completedId,
+      },
+      data: {
+        completed: true,
+      },
+    });
+    res.json({ message: 'update successful' });
+  } catch (error) {
+    res.json({ error: error?.message });
     console.error(error);
   }
 });
