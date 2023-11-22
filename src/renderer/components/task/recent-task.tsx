@@ -2,6 +2,7 @@ import { useAppStore } from 'renderer/store';
 import style from './style.module.scss';
 import TaskDuration from './TaskDuration';
 import { shallow } from 'zustand/shallow';
+import { Card, CardTitle } from '../card';
 
 export default function RecentTask() {
   const { recent, addTask, activeTaskId, addCurrent, addStart } = useAppStore(
@@ -44,11 +45,9 @@ export default function RecentTask() {
     </article>
   ));
   return (
-    <div className={style.card}>
-      <div className={style.card__title}>
-        <h5>Recent Tasks</h5>
-      </div>
+    <Card>
+      <CardTitle title="Recent Tasks" />
       <div className={style.list__container}>{renderTasks}</div>
-    </div>
+    </Card>
   );
 }
