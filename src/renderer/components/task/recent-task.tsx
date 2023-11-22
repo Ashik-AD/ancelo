@@ -15,7 +15,7 @@ export default function RecentTask() {
       })),
     shallow
   );
-  const renderTasks = recent.map((item, idx) => (
+  const renderTasks = recent?.map((item, idx) => (
     <article
       className={`${style.row} ${
         item?.id == activeTaskId ? style.row_active : ''
