@@ -3,6 +3,7 @@ import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import { Tasks } from '@prisma/client';
 import { QueueRecent } from 'lib/ds';
+import useFetch from 'renderer/hooks/useFetch';
 interface TasksState {
   list: Tasks[];
   completed: Tasks[];
@@ -17,11 +18,12 @@ interface TasksAction {
   addList: (payload: Tasks[]) => void;
   addCurrent: () => void;
   addStart: () => void;
-  addTask: (payload: Tasks) => void;
+  addTask: (payload: Tasks) => void | { message: string };
   addNext: () => void;
   addCompleted: (payload: Tasks) => void;
   addListId: (payload: string) => void;
   setRecent: (payload: Tasks[]) => void;
+  startNewTask: (payload: Tasks) => { message: string } | void;
 }
 export type TaskSlice = TasksState & TasksAction;
 
@@ -53,9 +55,10 @@ export const taskSlice = create(
             }
           }
 
-          if (!hasElement) {
-            list.push(payload);
+          if (hasElement) {
+            return { message: 'The task is already exist' };
           }
+          list.push(payload);
         }),
       addCurrent: () =>
         set((state) => {
@@ -71,13 +74,11 @@ export const taskSlice = create(
       addNext: () =>
         set((state) => {
           if (state.list.length == 0) {
-            state.completed.push(state.current!!);
             state.current = null;
             state.start = false;
             return;
           }
           const currentTask = state.list.splice(0, 1);
-          state.completed.push(state.current!!);
           state.current = currentTask[0];
           state.recent = addRecentTask({ ...state.current });
           window.electron.ipcRenderer.sendMessage(
@@ -92,6 +93,7 @@ export const taskSlice = create(
       addCompleted: (payload) =>
         set((state) => {
           state.completed.push(payload);
+          useFetch('/tasks/complete/' + payload.id);
         }),
       addListId: (payload) =>
         set((state) => {
@@ -101,6 +103,28 @@ export const taskSlice = create(
         set((state) => {
           state.recent = payload;
           recentTasks.setList(payload);
+        }),
+      startNewTask: (payload) =>
+        set((state) => {
+          if (!state.current && !state.start) {
+            state.current = payload;
+            state.start = true;
+            const newRecentList = addRecentTask(payload);
+            window.electron.ipcRenderer.sendMessage(
+              'ipc-set-recent-task',
+              // IDK why the heck do i need to be cloned object
+              JSON.parse(JSON.stringify(newRecentList))
+            );
+            state.recent = [...newRecentList];
+            return;
+          }
+          let addNewTaskToList = state.addTask({ ...payload });
+          if (addNewTaskToList) {
+            return addNewTaskToList;
+          }
+          return {
+            message: 'The task is added to the queue',
+          };
         }),
     }))
   )
