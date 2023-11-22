@@ -1,37 +1,63 @@
 /**
  * @params {bulletNo, id, title, description, duration, handleUpldateDescription()}
  */
+import { useState } from 'react';
 import style from './style.module.scss';
 import TaskDuration from './TaskDuration';
 import { Tasks } from '@prisma/client';
+import { Icon } from '@iconify/react';
+import { useAppStore } from 'renderer/store';
+import { shallow } from 'zustand/shallow';
 
 export interface TaskItemProps extends Partial<Tasks> {
   title: string;
   id: string;
   duration: number;
   bulletNo?: number;
-  onUpdateDescription?: (id: string) => void;
   variant?: 'default' | 'minimal';
+  onUpdateDescription?: (id: string) => void;
 }
-function TaskItem({
-  id,
-  bulletNo,
-  title,
-  description,
-  duration,
-  onUpdateDescription,
-  variant,
-}: TaskItemProps) {
+function TaskItem(props: TaskItemProps) {
+  const {
+    id,
+    bulletNo,
+    title,
+    description,
+    duration,
+    onUpdateDescription,
+    variant,
+  } = props;
+  const { startNewTask, currentTaskId } = useAppStore(({ tasks }) =>
+    tasks(
+      ({ startNewTask, listId }) => ({
+        currentTaskId: listId,
+        startNewTask,
+      }),
+      shallow
+    )
+  );
+  const [IsShowPlayBtn, setIsShowPlayBtn] = useState(false);
+
   return (
     <article
       tabIndex={0}
       aria-label="Today's your task"
-      className={style.task__item}
+      className={`${style.task__item} ${
+        currentTaskId == id ? style.task__item_active : ''
+      }`}
+      onMouseOver={() => setIsShowPlayBtn(true)}
+      onMouseLeave={() => setIsShowPlayBtn(false)}
     >
-      <span className="semiBold text-small">#{bulletNo}</span>
+      <div className={style.bullet_play}>
+        {IsShowPlayBtn ? (
+          <Icon icon="basil:play-solid" onClick={() => startNewTask(props)} />
+        ) : (
+          <span className="semiBold text-small">#{bulletNo}</span>
+        )}
+      </div>
       <div className={`${style.task__details}`}>
         <p
-          className={`${variant == 'minimal' ? 'text-lg' : 'h5'} ${
+          className={`${variant == 'minimal' ? 'text-lg' : 'h5 medium'} ${
             style.task__title
           }`}
         >
@@ -39,14 +65,14 @@ function TaskItem({
         </p>
         {variant != 'minimal' && (
           <span
-            className="text-small pointer"
+            className="text-small text-ellipsis pointer"
             onClick={() => onUpdateDescription && onUpdateDescription(id)}
           >
             {description || 'Add description'}
           </span>
         )}
       </div>
-      <TaskDuration duration={duration} />
+      <TaskDuration duration={duration} showIcon={false} />
     </article>
   );
 }
