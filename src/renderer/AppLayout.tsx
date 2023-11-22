@@ -40,7 +40,6 @@ function AppLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     window.electron.ipcRenderer.sendMessage('ipc-get-recent-task');
     window.electron.ipcRenderer.on('ipc-get-recent-task', (args: any) => {
-      console.log(args?.data);
       if (args || args.hasOwnProperty('data')) {
         setRecentTask(args.data);
       }
