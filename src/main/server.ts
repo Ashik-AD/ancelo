@@ -11,6 +11,7 @@ import type { Sessions, Tasks } from '@prisma/client';
 
 const app = express();
 const port = 6699;
+const WEEK_MS = 640173549;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +41,7 @@ app.post('/tasks', async (req, res, next) => {
   }
 });
 
-app.get('/tasks', async (req, res) => {
+app.get('/tasks', async (_, res) => {
   try {
     const tasks = await prisma.tasks.findMany();
     res.json({ tasks });
@@ -50,7 +51,7 @@ app.get('/tasks', async (req, res) => {
   }
 });
 
-app.get('/tasks/today', async (req, res) => {
+app.get('/tasks/today', async (_, res) => {
   try {
     const todayDate = new Date().toISOString().split('T')[0];
     const tasks = await prisma.tasks.findMany({
@@ -109,7 +110,7 @@ app.post('tasks/completed/:id', async (req, res) => {
     console.error(error);
   }
 });
-app.get('/sessions', async (req, res) => {
+app.get('/sessions', async (_, res) => {
   try {
     const sessions = await prisma.sessions.findMany({
       include: {
@@ -227,12 +228,12 @@ app.delete('/sessions/:id/flush', async (req, res) => {
       res.send({ error: `Session is not found` });
     }
     console.log(error);
-    res.send({ error: `Something went wrong`, dev: error.message });
+    res.send({ error: `Something went wrong`, dev: error?.message });
   }
 });
 
-// @Routine rotues
-app.get('/routines', async (req, res) => {
+// @Routine routes
+app.get('/routines', async (_, res) => {
   var routines = await prisma.routines.findMany({
     include: {
       tasks: true,
@@ -279,4 +280,69 @@ app.post('/routines', async (req, res) => {
   }
 });
 
+app.get('/stat/count', async (_, res) => {
+  try {
+    const [task, uncompletedTask, session, routine] = await Promise.all([
+      await prisma.tasks.count(),
+      await prisma.tasks.count({
+        where: {
+          completed: false,
+        },
+      }),
+      await prisma.sessions.count(),
+      await prisma.routines.count(),
+    ]);
+    res.json({ task, uncompletedTask, session, routine });
+  } catch (err: any) {
+    console.log(err);
+    res.send({ err: err?.message });
+  }
+});
+
+type GroupDay = Record<string, number[]>;
+app.get('/stat/weekly', async (_, res) => {
+  try {
+    const weeklyTask = await prisma.tasks.findMany({
+      where: {
+        created_at: {
+          gte: new Date(+new Date() - WEEK_MS),
+        },
+      },
+    });
+    const groupByDay = countAndGroupRecord(weeklyTask);
+    const normalized = mergeCount(groupByDay);
+    res.json(normalized);
+
+    function countAndGroupRecord(records: Tasks[]): GroupDay {
+      const result: GroupDay = {};
+
+      records?.forEach((task) => {
+        const day = new Date(task.created_at).getDay();
+        const counts = result[day] || [0, 0];
+        if (task.completed) {
+          counts[0] += 1;
+        } else {
+          counts[1] -= 1;
+        }
+        result[day] = counts;
+      });
+      return result;
+    }
+
+    function mergeCount(obj: GroupDay) {
+      const mergeCounts = {
+        completed: Array(7).fill(0),
+        unCompleted: Array(7).fill(0),
+      };
+      for (const day in obj) {
+        mergeCounts.completed[Number(day)] = obj[day][0];
+        mergeCounts.unCompleted[Number(day)] = obj[day][1];
+      }
+      return mergeCounts;
+    }
+  } catch (err) {
+    res.json({ error: err });
+    console.error(err);
+  }
+});
 export default app;
