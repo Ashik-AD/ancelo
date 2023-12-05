@@ -1,0 +1,26 @@
+.dashboard_layout {
+  display: flex;
+  flex-direction: column;
+
+  .stat_one {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+
+    .greet__gami {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+
+      & > *:first-child {
+        grid-column: span 2;
+      }
+    }
+
+    .stat__count {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+}

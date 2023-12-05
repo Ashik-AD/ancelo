@@ -1,0 +1,31 @@
+@import '../../variables';
+$morning: #b3fcbb;
+$afternoon: #f9f5ff;
+$night: #bd00ff;
+$evening: #e3ea99;
+
+.greeting_card {
+  background: $evening;
+  display: flex;
+  min-height: 240px;
+  flex-direction: column;
+
+  .card__scenery {
+    height: 115px;
+
+    & > img {
+      height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+    }
+  }
+  .greet_message {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .greet__user {
+      color: $dark;
+    }
+  }
+}
