@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
-import { Icon } from "@iconify/react";
-import Style from "./Style.module.scss";
+import { ReactNode } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+import Style from './Style.module.scss';
 
 function Navigation() {
   return (
@@ -9,54 +9,63 @@ function Navigation() {
       <div className={Style.nav__main}>
         <NavItem
           path="/index.html"
+          icon={<Icon icon="akar-icons:home-alt1" />}
+          label={'Dashboard'}
+        />
+        <NavItem
+          path="/task"
           icon={<Icon icon="vscode-icons:file-type-taskfile" />}
-          label={"My Task"}
+          label={'My Task'}
         />
         <NavItem
           path="/session"
           icon={<Icon icon="fluent-emoji:mushroom" />}
-          label={"Session"}
+          label={'Session'}
         />
         <NavItem
           path="/routine"
           icon={<Icon icon="fluent-emoji:smiling-face-with-sunglasses" />}
-          label={"Routine"}
+          label={'Routine'}
         />
-        <NavItem
+        {/* <NavItem
           path="/music"
           icon={<Icon icon="flat-color-icons:music" />}
-          label={"Music"}
-        />
+          label={'Music'}
+        /> */}
       </div>
-      <div className={Style.nav__setting}>
+      {/* <div className={Style.nav__setting}>
         <NavItem
           icon={<Icon icon="basil:settings-alt-outline" />}
           path="/setting"
           label={"Setting"}
         />
-      </div>
+      </div> */}
     </nav>
   );
 }
 export default Navigation;
 
-function NavItem(
-  { icon, label, path }: {
-    label: string;
-    icon: ReactNode;
-    path: string;
-  },
-) {
+function NavItem({
+  icon,
+  label,
+  path,
+}: {
+  label: string;
+  icon: ReactNode;
+  path: string;
+}) {
   return (
     <NavLink
       to={path}
       role="button"
-      className={({isActive}) =>
-        `${isActive ? Style.nav__item_active : ""
-        } btn ${Style.nav__item} small `}
+      className={({ isActive }) =>
+        `${isActive ? Style.nav__item_active : ''} btn ${
+          Style.nav__item
+        } small `
+      }
     >
-        {icon}
-        <span>{label}</span>
+      {icon}
+      <span>{label}</span>
     </NavLink>
   );
 }
