@@ -1,7 +1,8 @@
 import Chart from 'react-apexcharts';
 import { Card, CardTitle } from '../card';
-import { ApexOptions } from 'apexcharts';
 import useFetch from 'renderer/hooks/useFetch';
+
+import type { ApexOptions } from 'apexcharts';
 
 const options: ApexOptions = {
   chart: {
@@ -10,17 +11,26 @@ const options: ApexOptions = {
     zoom: {
       enabled: false,
     },
+    toolbar: {
+      show: false,
+    },
     width: '100%',
+    height: '100%',
     redrawOnParentResize: true,
+
+    foreColor: '#858585',
   },
+
   dataLabels: { enabled: false },
   plotOptions: {
     bar: {
-      borderRadius: 24,
-      columnWidth: '50%',
+      borderRadius: 16,
+      columnWidth: '60%',
+      rangeBarGroupRows: true,
       borderRadiusWhenStacked: 'all',
     },
   },
+
   grid: { show: false },
   yaxis: {
     show: false,
@@ -32,11 +42,19 @@ const options: ApexOptions = {
     axisBorder: {
       show: false,
     },
+    labels: {
+      style: {
+        fontWeight: 500,
+        fontSize: '14px',
+      },
+    },
+  },
+  legend: {
+    show: false,
   },
   labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thus', 'Fri', 'Sat'],
   stroke: {
     show: false,
-    width: 8,
   },
   colors: ['#8A60E2', '#8A60E278'],
 };
@@ -48,6 +66,8 @@ export default function WeeklyTaskStatus() {
       <Chart
         type="bar"
         options={options}
+        width={'100%'}
+        height={'100%'}
         series={[
           {
             name: 'Completed',

@@ -1,11 +1,17 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import Greeting from 'renderer/components/dashboard/greeting';
 import StatCard from 'renderer/components/dashboard/stat-card';
 import useFetch from 'renderer/hooks/useFetch';
 import style from './layout.module.scss';
 import images from 'renderer/components/images';
 import WeeklyTaskStatus from 'renderer/components/dashboard/weekly-task-status';
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+import StatGroup from 'renderer/components/dashboard/stat-group';
+
+export default function DashboardLayout({
+  children,
+}: {
+  children?: ReactNode;
+}) {
   const { data, isLoading, error } = useFetch('/stat/count');
 
   return (
@@ -39,8 +45,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           />
         </div>
       </div>
-      <div>
+      <div className={style.stat__charts}>
         <WeeklyTaskStatus />
+        <StatGroup />
       </div>
       {children}
     </section>

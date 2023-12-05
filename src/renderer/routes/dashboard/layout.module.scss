@@ -23,4 +23,11 @@
       gap: 24px;
     }
   }
+
+  .stat__charts {
+    display: grid;
+    grid-template-columns: max(525px) 1fr;
+    gap: 24px;
+    padding-block: 32px;
+  }
 }
