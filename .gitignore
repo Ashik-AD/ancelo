@@ -29,5 +29,5 @@ npm-debug.log.*
 *.scss.d.ts
 
 # DB, JSON
-prisma/*.db
 src/data
+prisma/dev.db
