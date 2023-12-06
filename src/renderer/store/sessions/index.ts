@@ -1,7 +1,6 @@
-import { session } from "electron";
-import type { Sessions } from "lib/api";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+import type { Sessions } from 'lib/api';
 
 type State = {
   lists: Sessions[];
@@ -18,37 +17,41 @@ type Action = {
 
 export type SessionSlice = State & Action;
 
-export const sessionSlice = create(immer<SessionSlice>((set) => ({
-  lists: [],
-  active: null,
-  addLists: (payload) =>
-    set((state) => {
-      state.lists = payload;
-    }),
-  setActive: (payload) =>
-    set((state) => {
-      state.active = payload;
-    }),
-  addSessions: (payload) =>
-    set((state) => {
-      state.lists.push(payload);
-    }),
+export const sessionSlice = create(
+  immer<SessionSlice>((set) => ({
+    lists: [],
+    active: null,
+    addLists: (payload) =>
+      set((state) => {
+        state.lists = payload;
+      }),
+    setActive: (payload) =>
+      set((state) => {
+        state.active = payload;
+      }),
+    addSessions: (payload) =>
+      set((state) => {
+        state.lists.push(payload);
+      }),
 
-  removeSession: (payload) =>
-    set((session) => {
-      var sessionIndex = session.lists.findIndex((item) => item.id == payload);
-      session.lists.splice(sessionIndex, 1);
-    }),
+    removeSession: (payload) =>
+      set((session) => {
+        var sessionIndex = session.lists.findIndex(
+          (item) => item.id == payload
+        );
+        session.lists.splice(sessionIndex, 1);
+      }),
 
-  updateSession: (payload) =>
-    set((state) => {
-      let updatedList = state.lists.map((session) => {
-        if (session.id == payload.id) {
-          return { ...payload };
-        }
-        return { ...session };
-      });
+    updateSession: (payload) =>
+      set((state) => {
+        let updatedList = state.lists.map((session) => {
+          if (session.id == payload.id) {
+            return { ...payload };
+          }
+          return { ...session };
+        });
 
-      state.lists = updatedList;
-    }),
-})));
+        state.lists = updatedList;
+      }),
+  }))
+);
