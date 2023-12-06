@@ -1,6 +1,7 @@
 .root__layout {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(120px, 280px) 1fr;
   min-width: 100vw;
   height: 100vh;
   background: #fcfcfc66;
