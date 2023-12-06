@@ -17,7 +17,7 @@ export default function MiniTask() {
       tabIndex={0}
       aria-label="Mini task player for showing current running task and next task"
     >
-      <MiniView {...currentTask} />
+      {currentTask && <MiniView {...currentTask} />}
       <Queue list={queue} />
     </article>
   );
@@ -27,7 +27,7 @@ function MiniView({ title, description }: Partial<Tasks>) {
   return (
     <article className={style.current__running__task}>
       <img
-        src="http://localhost:6699/static/images/task.jpg"
+        src="http://localhost:6699/static/images/task-running.jpg"
         alt="current active task banner"
         className={style.banner}
       />
