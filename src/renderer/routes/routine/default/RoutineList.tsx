@@ -59,7 +59,7 @@ function RoutineCard(props: RoutineCardProps) {
   return (
     <article className={`flex ${style.routine__card}`}>
       <div className={style.card_thumbnail} style={{ background: theme }}>
-        <img src={`http://localhost:6699/static/images/routine/${cover}`} />
+        <img src={`http://localhost:6699/static/images/routine.png`} />
       </div>
       <div className={style.card_details}>
         <div className={style.details_titles}>
