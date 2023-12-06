@@ -1,22 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
-import { useAppStore } from "../store";
-import { playAlert } from "renderer/components/play-alert/PlayAlert";
-import progressCounter, { ProgressCountCb } from "../../lib/progress_counter";
+import { useEffect, useMemo, useState } from 'react';
+import { useAppStore } from '../store';
+import { playAlert } from 'renderer/components/play-alert/PlayAlert';
+import progressCounter, { ProgressCountCb } from '../../lib/progress_counter';
+import { shallow } from 'zustand/shallow';
 
 export type UseProgressProps = {
   start: boolean;
 };
 
 export default function useProgress(start: boolean) {
-  const { current, isStart, setNextTask, allTaskCompleted } = useAppStore(
-    ({ tasks }) =>
-      tasks((state) => ({
-        current: state.current,
-        isStart: state.start,
-        setNextTask: state.addNext,
-        allTaskCompleted: state.list?.length == 0,
-      })),
-  );
+  const { current, isStart, setNextTask, allTaskCompleted, setCompleted } =
+    useAppStore(
+      ({ tasks }) =>
+        tasks((state) => ({
+          current: state.current,
+          isStart: state.start,
+          setNextTask: state.addNext,
+          allTaskCompleted: state.list?.length == 0,
+          setCompleted: state.addCompleted,
+        })),
+      shallow
+    );
 
   const intervalTime = useAppStore(({ settings }) =>
     settings(({ interval }) => interval)
@@ -30,9 +34,12 @@ export default function useProgress(start: boolean) {
   const [hour, setHour] = useState(time.hour);
   const [progress, setProgress] = useState(time.progress);
 
-  const onIncrementCount = (
-    { hour, second, minute, progress }: ProgressCountCb,
-  ) => {
+  const onIncrementCount = ({
+    hour,
+    second,
+    minute,
+    progress,
+  }: ProgressCountCb) => {
     setSecond(second);
     setMinute(minute);
     setHour(hour);
@@ -61,6 +68,16 @@ export default function useProgress(start: boolean) {
       counter.stop();
       counter.reset();
       setMinute(0);
+      fetch(`http://localhost:6699/tasks/completed`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(current),
+      })
+        .then(() => setCompleted(current))
+        .catch(console.log);
+
       if (!allTaskCompleted) {
         setTimeout(() => {
           playAlert.play();
