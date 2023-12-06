@@ -1,9 +1,10 @@
-import { create } from 'zustand';
+import { createWithEqualityFn } from 'zustand/traditional';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import { Tasks } from '@prisma/client';
 import { QueueRecent } from 'lib/ds';
 import useFetch from 'renderer/hooks/useFetch';
+
 interface TasksState {
   list: Tasks[];
   completed: Tasks[];
@@ -33,7 +34,7 @@ function addRecentTask(item: Tasks) {
   return recentTasks.getList();
 }
 
-export const taskSlice = create(
+export const taskSlice = createWithEqualityFn(
   devtools(
     immer<TaskSlice>((set) => ({
       list: [],
@@ -92,8 +93,8 @@ export const taskSlice = create(
         }),
       addCompleted: (payload) =>
         set((state) => {
-          state.completed.push(payload);
-          useFetch('/tasks/complete/' + payload.id);
+          const newCompletedList = [payload].concat(state.completed);
+          state.completed = newCompletedList;
         }),
       addListId: (payload) =>
         set((state) => {
@@ -109,13 +110,14 @@ export const taskSlice = create(
           if (!state.current && !state.start) {
             state.current = payload;
             state.start = true;
+            state.listId = payload.id;
             const newRecentList = addRecentTask(payload);
+            state.recent = [...newRecentList];
             window.electron.ipcRenderer.sendMessage(
               'ipc-set-recent-task',
               // IDK why the heck do i need to be cloned object
               JSON.parse(JSON.stringify(newRecentList))
             );
-            state.recent = [...newRecentList];
             return;
           }
           let addNewTaskToList = state.addTask({ ...payload });
