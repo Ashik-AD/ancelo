@@ -93,19 +93,19 @@ app.get('/tasks/completed', async (req, res) => {
   }
 });
 
-app.post('tasks/completed/:id', async (req, res) => {
+app.put('/tasks/completed', async (req, res) => {
   try {
-    const completedId = req.params.id;
+    const { id } = req.body;
     await prisma.tasks.update({
       where: {
-        id: completedId,
+        id: id,
       },
       data: {
         completed: true,
       },
     });
     res.json({ message: 'update successful' });
-  } catch (error) {
+  } catch (error: any) {
     res.json({ error: error?.message });
     console.error(error);
   }
