@@ -56,8 +56,15 @@ body {
 
 @media (prefers-color-scheme: light) {
   body {
-    @include theme($primary, $dark);
+    @include theme($bg-light, $text-light-primary);
   }
+}
+
+body:has(.theme_light) {
+  @include theme($bg-light, $text-light-primary);
+}
+body:has(.theme_dark) {
+  @include theme($bg-dark, $text-dark-primary);
 }
 
 .App {
