@@ -1,12 +1,9 @@
 .root__layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(120px, 280px) 1fr;
+  grid-template-columns: minmax(80px, 260px) 1fr;
   min-width: 100vw;
   height: 100vh;
-  background: #fcfcfc66;
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
   z-index: 1000;
   overflow: hidden;
 
@@ -16,11 +13,6 @@
     flex-direction: column;
     gap: 28px;
     flex-grow: 1;
-    background: linear-gradient(
-      233.56deg,
-      rgba(255, 255, 255, 0.28) 28.76%,
-      rgba(255, 255, 255, 0) 77.84%
-    );
     border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
     overflow-x: hidden;
