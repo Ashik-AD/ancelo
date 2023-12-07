@@ -50,7 +50,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    @include theme($bg-dark, $fg-dark);
+    @include theme($bg-dark, $text-dark-primary);
   }
 }
 
