@@ -1,17 +1,22 @@
 @use './mixins';
 @import './variables';
 
+@mixin theme_text_color($primary, $secondary) {
+  .text_primary {
+    color: $primary;
+  }
+
+  .text_secondary {
+    color: $secondary;
+  }
+}
 .theme_dark {
   .main_content {
     background: $fg-dark;
   }
-  .low__op__bg {
+  .low_op_bg {
     background: $low-op-dark;
   }
-  .text__primary {
-    color: $text-dark-primary;
-  }
-  .text__secondary {
-    color: $text-dark-secondary;
-  }
+
+  @include theme_text_color($text-dark-primary, $text-dark-secondary);
 }
