@@ -1,0 +1,6 @@
+@import './variables';
+
+@mixin theme($bg_color, $fg_color) {
+  background: $bg_color;
+  color: $fg_color;
+}

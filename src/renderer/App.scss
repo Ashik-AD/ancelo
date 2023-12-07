@@ -3,6 +3,7 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 @import './variables';
+@import './mixins';
 
 @font-face {
   font-family: 'Outfit';
@@ -47,6 +48,18 @@ body {
   font-weight: 400;
   border-radius: 24px;
   overflow-y: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @include theme($bg-dark, $fg-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    @include theme($primary, $dark);
+  }
 }
 /* bottom-left corner shape */
 body::after {
