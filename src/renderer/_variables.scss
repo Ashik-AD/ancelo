@@ -2,11 +2,17 @@ $skin: rgba(16, 185, 129, 1);
 $skin-400: rgba(16, 185, 129, 0.877);
 $skin-hover: #0d8c62;
 $primary: #404040;
-$dark: rgba(0, 0, 0, 1);
+$dark: #000000;
+
+// Theme dark
 $bg-dark: #131413;
 $fg-dark: #1f1f20;
-$white: rgba(248, 248, 248, 1);
-$white-200: rgba(248, 248, 248, 0.2);
+$text-dark-primary: #f8f8f8;
+$text-dark-secondary: #858585;
+$low-op-dark: #171717e5;
+
+$white: #f8f8f8;
+$white-200: #f8f8f833;
 $red: #de2059;
 $peach: #e6ffd7;
 $bg-gradient: linear-gradient(
