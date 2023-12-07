@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.scss';
+import './theme.scss';
+
 import Layout from './Layout';
 import AppLayout from './AppLayout';
 import Task from './routes/task/Task';
