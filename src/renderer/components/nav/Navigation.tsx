@@ -59,9 +59,7 @@ function NavItem({
       to={path}
       role="button"
       className={({ isActive }) =>
-        `${isActive ? Style.nav__item_active : ''} btn ${
-          Style.nav__item
-        } small `
+        `${isActive ? 'low__op__bg text__primary' : ''} btn ${Style.nav__item}`
       }
     >
       {icon}
