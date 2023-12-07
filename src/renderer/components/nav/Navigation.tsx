@@ -27,19 +27,7 @@ function Navigation() {
           icon={<Icon icon="fluent-emoji:smiling-face-with-sunglasses" />}
           label={'Routine'}
         />
-        {/* <NavItem
-          path="/music"
-          icon={<Icon icon="flat-color-icons:music" />}
-          label={'Music'}
-        /> */}
       </div>
-      {/* <div className={Style.nav__setting}>
-        <NavItem
-          icon={<Icon icon="basil:settings-alt-outline" />}
-          path="/setting"
-          label={"Setting"}
-        />
-      </div> */}
     </nav>
   );
 }
@@ -59,7 +47,9 @@ function NavItem({
       to={path}
       role="button"
       className={({ isActive }) =>
-        `${isActive ? 'low__op__bg text__primary' : ''} btn ${Style.nav__item}`
+        `${isActive ? 'low_op_bg text_primary' : 'text_secondary'} btn ${
+          Style.nav__item
+        }`
       }
     >
       {icon}
