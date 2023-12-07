@@ -1,0 +1,17 @@
+@use './mixins';
+@import './variables';
+
+.theme_dark {
+  .main_content {
+    background: $fg-dark;
+  }
+  .low__op__bg {
+    background: $low-op-dark;
+  }
+  .text__primary {
+    color: $text-dark-primary;
+  }
+  .text__secondary {
+    color: $text-dark-secondary;
+  }
+}
