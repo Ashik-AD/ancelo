@@ -1,0 +1,5 @@
+@use "sass:map";
+@import "../../../mixins";
+@import "../../../variables";
+
+@include typography("hd", $text-heading, $heading-weight);
