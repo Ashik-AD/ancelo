@@ -1,6 +1,19 @@
+@use "sass:map";
 @import './variables';
 
 @mixin theme($bg_color, $fg_color) {
   background: $bg_color;
   color: $fg_color;
+}
+
+@mixin typography($variant_name, $variants, $weight) {
+    .#{$variant_name} {
+        font-weight: $weight;
+     @each $variant in $variants {
+      &.#{map.get($variant, "label")} {
+        font-size: map.get($variant, "size");
+        line-height: map.get($variant, "lineHeight");
+      }
+    }
+  }
 }
