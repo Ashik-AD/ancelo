@@ -1,12 +1,6 @@
-import { HTMLAttributes } from "react";
-import type { TextSize } from "../type";
-
 import style from './paragraph.module.scss'
+import type { ParagraphProps } from '../type'
 
-export interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
-  children: string | number;
-  size?: TextSize;
-}
 export default function Pg({className, size = 'm', children, ...rest}: ParagraphProps) {
 
   return(

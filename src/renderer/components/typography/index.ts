@@ -1,4 +1,5 @@
 export { default as Paragraph } from './paragraph/paragraph'
+export { default as Title } from './title/title'
 export {default as HeadingXXL} from './heading/h1'
 export {default as HeadingXL} from './heading/h2'
 export {default as HeadingLarge} from './heading/h3'

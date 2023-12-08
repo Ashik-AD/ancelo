@@ -1,11 +1,5 @@
-import { ReactNode } from 'react';
-
-import type { HTMLAttributes } from 'react'
-
 import style from './heading.module.scss';
-export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
-  children: ReactNode;
-}
+import type { HeadingProps } from '../type'
 
 function h6( {children, ...props}: HeadingProps) {
   return (<h6 className={`${style.hd} ${style.xs} ${props.className}`}>{children}</h6>)
