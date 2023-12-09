@@ -8,7 +8,7 @@ interface Base<T> extends HTMLAttributes<T> {
   size?: TextSize;
 }
 export type ParagraphProps = Base<HTMLParagraphElement>;
-export type LabelProps = Base<HTMLSpanElement>;
+export type LabelProps<T> = Base<T>;
 
 export type HeadingProps = Omit<Base<HTMLHeadingElement>, 'size'>;
 
