@@ -7,6 +7,10 @@ interface Base<T> extends HTMLAttributes<T> {
   children: ReactNode;
   size?: TextSize;
 }
+export type FormLabel = Base<HTMLLabelElement> & {
+  htmlFor?: string;
+};
+
 export type ParagraphProps = Base<HTMLParagraphElement>;
 export type LabelProps<T> = Base<T>;
 
